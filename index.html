@@ -8,11 +8,13 @@
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
-  <body data-layout="landing">
+  <body data-layout="docs">
     <header id="site-header"></header>
 
-    <main class="layout">
-      <section class="content">
+    <div class="layout">
+      <aside id="site-sidebar"></aside>
+
+      <main class="content">
         <div class="hero">
           <h1>LeggedWiki</h1>
           <p>
@@ -129,10 +131,16 @@
             >
           </div>
         </div>
-      </section>
-    </main>
+      </main>
+
+      <aside id="site-toc" class="toc" aria-label="目录">
+        <div class="toc-title">本页目录</div>
+        <div id="toc-items"></div>
+      </aside>
+    </div>
 
     <footer id="site-footer"></footer>
     <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/page-toc.js" defer></script>
   </body>
 </html>

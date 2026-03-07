@@ -85,7 +85,9 @@
           <span class="kdb">T</span>
           <span>主题</span>
         </button>
-        <a class="icon-btn" href="${escapeAttr(config?.links?.repo || "#")}" target="_blank" rel="noopener noreferrer">
+        <a id="github-link" class="icon-btn" href="${escapeAttr(
+          config?.links?.repo || "#",
+        )}" target="_blank" rel="noopener noreferrer">
           <span class="kdb">GitHub</span>
         </a>
       </div>
@@ -186,4 +188,3 @@
     });
   });
 })();
-
