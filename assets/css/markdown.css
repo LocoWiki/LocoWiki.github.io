@@ -1,0 +1,132 @@
+.md {
+  line-height: 1.75;
+  font-size: 16px;
+  min-width: 0;
+}
+
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  scroll-margin-top: calc(var(--topbar-h) + 18px);
+}
+
+.md h1 {
+  margin: 0 0 14px;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+.md h2 {
+  margin: 26px 0 10px;
+  font-size: 22px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.md h3 {
+  margin: 20px 0 8px;
+  font-size: 18px;
+}
+
+.md p {
+  margin: 10px 0;
+}
+
+.md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.95em;
+  padding: 0.15em 0.35em;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg-elev) 70%, var(--bg));
+  border: 1px solid var(--border);
+}
+
+.md pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: var(--radius);
+  padding: 12px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+.md pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.md blockquote {
+  margin: 14px 0;
+  padding: 10px 12px;
+  border-left: 4px solid color-mix(in srgb, var(--link) 45%, var(--border));
+  background: color-mix(in srgb, var(--bg-elev) 80%, var(--bg));
+  border-radius: 12px;
+  color: color-mix(in srgb, var(--text) 88%, var(--muted));
+}
+
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  display: block;
+  overflow: auto;
+}
+
+.md th,
+.md td {
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.md th {
+  background: color-mix(in srgb, var(--bg-elev) 70%, var(--bg));
+}
+
+.md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.md hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 18px 0;
+}
+
+.md .doc-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.md .doc-meta a {
+  font-weight: 600;
+}
+
+.md .loading {
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  border-radius: var(--radius);
+  padding: 14px;
+  color: var(--muted);
+}
+
+.md .error {
+  border: 1px solid color-mix(in srgb, #ef4444 35%, var(--border));
+  background: color-mix(in srgb, #ef4444 10%, var(--bg-elev));
+  border-radius: var(--radius);
+  padding: 14px;
+}

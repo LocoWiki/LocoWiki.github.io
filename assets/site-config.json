@@ -1,0 +1,45 @@
+{
+  "site": {
+    "title": "LeggedWiki",
+    "tagline": "足式机器人资源整合仓库（ROBOCON / 科研 / 开发检索）",
+    "defaultDoc": "README.md"
+  },
+  "sourceRepo": {
+    "owner": "Lain-Ego0",
+    "repo": "LeggedWiki",
+    "branch": "main"
+  },
+  "nav": [
+    { "title": "首页", "href": "index.html" },
+    { "title": "文档", "href": "docs.html?path=README.md" },
+    { "title": "资源下载", "href": "downloads.html" },
+    { "title": "关于", "href": "about.html" }
+  ],
+  "sidebar": [
+    {
+      "title": "快速导航",
+      "items": [
+        { "title": "总览", "path": "README.md" },
+        { "title": "比赛规则", "path": "competition-rules/README.md" },
+        { "title": "技术分享", "path": "technical-sharing/README.md" },
+        { "title": "推荐论文", "path": "recommended-papers/README.md" },
+        { "title": "阅读清单", "path": "reading-list/README.md" },
+        { "title": "维护脚本", "path": "scripts/README.md" }
+      ]
+    },
+    {
+      "title": "Language",
+      "items": [
+        { "title": "README (EN)", "path": "README.en.md" },
+        { "title": "Reading List (EN)", "path": "reading-list/README.en.md" },
+        { "title": "Recommended Papers (EN)", "path": "recommended-papers/README.en.md" }
+      ]
+    }
+  ],
+  "links": {
+    "repo": "https://github.com/Lain-Ego0/LeggedWiki",
+    "issues": "https://github.com/Lain-Ego0/LeggedWiki/issues",
+    "discussions": "https://github.com/Lain-Ego0/LeggedWiki/discussions",
+    "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
+  }
+}
