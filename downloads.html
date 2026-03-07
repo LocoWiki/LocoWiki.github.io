@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>LeggedWiki · 资源下载</title>
+    <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/markdown.css" />
+  </head>
+  <body data-layout="docs">
+    <header id="site-header"></header>
+
+    <div class="layout">
+      <aside id="site-sidebar"></aside>
+
+      <main class="content">
+        <article class="md">
+          <h1>资源下载与获取</h1>
+          <p>
+            本站不重复存储资源文件；所有 PDF / PPT / 脚本均来源于
+            <a href="https://github.com/Lain-Ego0/LeggedWiki" target="_blank" rel="noopener noreferrer"
+              >LeggedWiki 仓库</a
+            >。你可以按需：整仓下载、克隆、或在文档页直接点文件名下载。
+          </p>
+
+          <div id="download-dynamic" class="loading">正在生成下载入口…</div>
+
+          <h2>按模块获取</h2>
+          <ul>
+            <li><a href="docs.html?path=competition-rules%2FREADME.md">比赛规则（PDF）</a></li>
+            <li><a href="docs.html?path=technical-sharing%2FREADME.md">技术分享（PPT/PPTX）</a></li>
+            <li><a href="docs.html?path=recommended-papers%2FREADME.md">推荐论文（本地 PDF）</a></li>
+            <li><a href="docs.html?path=reading-list%2FREADME.md">阅读清单（索引 + 抓取说明）</a></li>
+            <li><a href="docs.html?path=scripts%2FREADME.md">维护脚本</a></li>
+          </ul>
+
+          <h2>论文 PDF 批量抓取（可公开获取）</h2>
+          <p>如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
+          <pre><code>python3 scripts/fetch_open_access_pdfs.py --download</code></pre>
+
+          <h2>大文件说明</h2>
+          <p>
+            单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用
+            <code>git clone</code> 或镜像。
+          </p>
+        </article>
+      </main>
+
+      <aside id="site-toc" class="toc" aria-label="目录">
+        <div class="toc-title">本页目录</div>
+        <div id="toc-items"></div>
+      </aside>
+    </div>
+
+    <footer id="site-footer"></footer>
+
+    <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/downloads.js" defer></script>
+    <script src="assets/js/page-toc.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>LeggedWiki · 文档</title>
+    <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/markdown.css" />
+  </head>
+  <body data-layout="docs">
+    <header id="site-header"></header>
+
+    <div class="layout">
+      <aside id="site-sidebar"></aside>
+
+      <main class="content">
+        <article id="doc" class="md">
+          <div class="loading">正在加载文档…</div>
+        </article>
+      </main>
+
+      <aside id="site-toc" class="toc" aria-label="目录">
+        <div class="toc-title">本页目录</div>
+        <div id="toc-items"></div>
+      </aside>
+    </div>
+
+    <footer id="site-footer"></footer>
+
+    <script src="assets/js/site.js" defer></script>
+    <script src="assets/vendor/marked.umd.js" defer></script>
+    <script src="assets/js/docs.js" defer></script>
+  </body>
+</html>
