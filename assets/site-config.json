@@ -46,7 +46,7 @@
   "integrations": {
     "readmydock": {
       "syncStatusUrl": "assets/feishu-sync-status.json",
-      "webhookEventType": "feishu_wiki_sync"
+      "dispatchEventType": "feishu_wiki_sync"
     }
   }
 }
