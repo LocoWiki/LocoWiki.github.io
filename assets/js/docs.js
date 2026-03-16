@@ -183,7 +183,7 @@
     const docEl = document.getElementById("doc");
     if (!docEl) return;
 
-    const config = await window.LeggedWikiSite.getConfig();
+    const config = await window.LocoWikiSite.getConfig();
     const params = new URLSearchParams(window.location.search);
     const docPath = params.get("path") || config.site.defaultDoc || "README.md";
 
@@ -191,7 +191,7 @@
 
     docEl.innerHTML = `
       <div class="doc-meta">
-        <span>路径：<code>${window.LeggedWikiSite.escapeHtml(docPath)}</code></span>
+        <span>路径：<code>${window.LocoWikiSite.escapeHtml(docPath)}</code></span>
         <a href="${urls.blob}" target="_blank" rel="noopener noreferrer">在 GitHub 查看</a>
         <a href="${urls.download}" target="_blank" rel="noopener noreferrer">下载/原始文件</a>
       </div>
@@ -222,8 +222,8 @@
       renderToc(contentEl);
       scrollToHash();
 
-      if (typeof window.LeggedWikiSite?.getConfig === "function") {
-        const titleBase = config.site.title || "LeggedWiki";
+      if (typeof window.LocoWikiSite?.getConfig === "function") {
+        const titleBase = config.site.title || "LocoWiki";
         document.title = `${titleBase} · ${docPath}`;
       }
     } catch (err) {
@@ -232,7 +232,7 @@
       contentEl.innerHTML = `
         <div><strong>加载失败</strong></div>
         <div style="margin-top: 8px; color: var(--muted);">
-          无法从源仓库拉取 <code>${window.LeggedWikiSite.escapeHtml(docPath)}</code>。你可以：
+          无法从源仓库拉取 <code>${window.LocoWikiSite.escapeHtml(docPath)}</code>。你可以：
           <ul>
             <li>确认网络可访问 raw.githubusercontent.com</li>
             <li>检查文件路径是否存在</li>

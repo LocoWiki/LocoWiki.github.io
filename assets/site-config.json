@@ -1,18 +1,19 @@
 {
   "site": {
-    "title": "LeggedWiki",
+    "title": "LocoWiki",
     "tagline": "足式机器人资源整合仓库（ROBOCON / 科研 / 开发检索）",
     "defaultDoc": "README.md"
   },
   "sourceRepo": {
     "owner": "Lain-Ego0",
-    "repo": "LeggedWiki",
+    "repo": "LocoWiki",
     "branch": "main"
   },
   "nav": [
     { "title": "首页", "href": "index.html" },
     { "title": "文档", "href": "docs.html?path=README.md" },
     { "title": "资源下载", "href": "downloads.html" },
+    { "title": "Readmydock", "href": "readmydock.html" },
     { "title": "关于", "href": "about.html" }
   ],
   "sidebar": [
@@ -37,9 +38,15 @@
     }
   ],
   "links": {
-    "repo": "https://github.com/Lain-Ego0/LeggedWiki",
-    "issues": "https://github.com/Lain-Ego0/LeggedWiki/issues",
-    "discussions": "https://github.com/Lain-Ego0/LeggedWiki/discussions",
+    "repo": "https://github.com/Lain-Ego0/LocoWiki",
+    "issues": "https://github.com/Lain-Ego0/LocoWiki/issues",
+    "discussions": "https://github.com/Lain-Ego0/LocoWiki/discussions",
     "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
+  },
+  "integrations": {
+    "readmydock": {
+      "syncStatusUrl": "assets/feishu-sync-status.json",
+      "webhookEventType": "feishu_wiki_sync"
+    }
   }
 }
