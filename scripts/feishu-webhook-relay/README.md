@@ -8,9 +8,9 @@
 
 1. 飞书触发 Webhook
 2. Cloudflare Worker 收到请求并调用 GitHub `repository_dispatch`
-3. 工作流 `.github/workflows/feishu-readmydock-sync.yml` 执行
+3. 工作流 `.github/workflows/feishu-wiki-sync.yml` 执行
 4. 脚本 `scripts/update-feishu-sync-status.mjs` 写入状态 JSON
-5. `readmydock.html` 显示最新同步时间与来源
+5. 飞书知识库页面 `feishu-wiki.html` 显示最新同步时间与来源
 
 ## 0. 先做环境自检
 
@@ -37,7 +37,7 @@ npm i -g wrangler
 
 ### 1.1 确认仓库中已有这些文件
 
-- `.github/workflows/feishu-readmydock-sync.yml`
+- `.github/workflows/feishu-wiki-sync.yml`
 - `scripts/update-feishu-sync-status.mjs`
 - `assets/feishu-sync-status.json`
 - `scripts/feishu-webhook-relay/worker.js`
@@ -154,7 +154,7 @@ curl -X POST "<WORKER_URL>" \
 
 ### 4.2 检查 GitHub Actions
 
-打开仓库 `Actions`，确认 `Feishu Readmydock Sync` 出现一次新运行并成功。
+打开仓库 `Actions`，确认 `Feishu Wiki Sync` 出现一次新运行并成功。
 
 ### 4.3 检查状态文件
 
@@ -170,7 +170,7 @@ curl -X POST "<WORKER_URL>" \
 
 访问站点：
 
-- `readmydock.html`
+- 飞书知识库页面：`feishu-wiki.html`
 
 确认页面上的“Webhook 同步状态”已更新。
 
@@ -200,7 +200,7 @@ curl -X POST "<WORKER_URL>" \
 - 处理：
   - 打开仓库确认 JSON 最近一次提交时间
   - 强制刷新页面（Ctrl/Cmd + Shift + R）
-  - 检查 `assets/site-config.json` 的 `integrations.readmydock.syncStatusUrl`
+  - 检查 `assets/site-config.json` 的 `integrations.feishuWiki.syncStatusUrl`
 
 ### 5.5 Worker 返回 `encrypted_payload_not_supported`
 

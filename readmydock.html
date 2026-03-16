@@ -3,70 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <title>LocoWiki · Readmydock</title>
-    <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="stylesheet" href="assets/css/markdown.css" />
+    <title>LocoWiki · 页面迁移</title>
+    <meta http-equiv="refresh" content="0; url=feishu-wiki.html" />
+    <script>
+      window.location.replace(`feishu-wiki.html${window.location.search}${window.location.hash}`);
+    </script>
   </head>
-  <body data-layout="docs">
-    <header id="site-header"></header>
-
-    <div class="layout">
-      <aside id="site-sidebar"></aside>
-
-      <main class="content">
-        <article class="md readmydock-page">
-          <h1>Readmydock · 飞书知识库</h1>
-          <p>
-            这个页面用于在站内查看飞书知识库。若浏览器策略阻止内嵌（常见于第三方 Cookie / 跨域限制），可直接使用“新标签打开”。
-          </p>
-
-          <div class="dock-toolbar">
-            <a id="open-feishu-link" class="btn primary" href="#" target="_blank" rel="noopener noreferrer"
-              >新标签打开飞书</a
-            >
-            <button id="reload-feishu" class="btn" type="button">刷新内嵌视图</button>
-          </div>
-
-          <div class="sync-meta">
-            <div><strong>飞书同步状态：</strong><span id="sync-status-text">读取中…</span></div>
-            <div id="sync-status-detail" class="sync-meta-detail"></div>
-          </div>
-
-          <div id="embed-notice" class="loading">正在尝试加载飞书知识库…</div>
-          <div class="feishu-embed-wrap">
-            <iframe
-              id="feishu-frame"
-              title="Readmydock · Feishu Wiki"
-              loading="lazy"
-              referrerpolicy="strict-origin-when-cross-origin"
-            ></iframe>
-          </div>
-
-          <h2>同步接入（长连接推荐）</h2>
-          <p>
-            已提供 GitHub Actions 接口（<code>repository_dispatch: feishu_wiki_sync</code>），你可以通过飞书“长连接接收事件”触发它，把最新同步时间展示在本站。
-          </p>
-          <ul>
-            <li>工作流文件：<code>.github/workflows/feishu-readmydock-sync.yml</code></li>
-            <li>状态写入脚本：<code>scripts/update-feishu-sync-status.mjs</code></li>
-            <li>长连接中继方案：<code>scripts/feishu-ws-relay/README.md</code></li>
-            <li>回调中转备选：<code>scripts/feishu-webhook-relay/README.md</code></li>
-          </ul>
-        </article>
-      </main>
-
-      <aside id="site-toc" class="toc" aria-label="目录">
-        <div class="toc-title">本页目录</div>
-        <div id="toc-items"></div>
-      </aside>
-    </div>
-
-    <footer id="site-footer"></footer>
-
-    <script src="assets/js/site.js" defer></script>
-    <script src="assets/js/readmydock.js" defer></script>
-    <script src="assets/js/page-toc.js" defer></script>
+  <body>
+    <p>
+      页面已迁移至 <a href="feishu-wiki.html">feishu-wiki.html</a>。
+    </p>
   </body>
 </html>
