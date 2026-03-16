@@ -1,9 +1,9 @@
 {
   "project": "LocoWiki",
-  "lastSyncAt": "2026-03-16T17:11:15.816Z",
+  "lastSyncAt": "2026-03-16T18:07:21.345Z",
   "source": "repository_dispatch:feishu_wiki_sync",
-  "eventType": "manual_test",
-  "message": "manual dispatch from codex",
+  "eventType": "manual_ws_check",
+  "message": "manual ws relay token check",
   "feishuSpaceUrl": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home",
-  "receivedAt": "2026-03-16T17:11:03Z"
+  "receivedAt": "2026-03-16T18:07:12Z"
 }
