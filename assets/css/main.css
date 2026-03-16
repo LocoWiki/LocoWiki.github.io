@@ -379,6 +379,7 @@ body[data-layout="landing"] .toc {
   font-weight: 600;
 }
 
+.feishu-wiki-page,
 .readmydock-page {
   max-width: none;
 }

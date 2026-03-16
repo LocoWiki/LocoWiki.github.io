@@ -13,7 +13,7 @@
     { "title": "首页", "href": "index.html" },
     { "title": "文档", "href": "docs.html?path=README.md" },
     { "title": "资源下载", "href": "downloads.html" },
-    { "title": "Readmydock", "href": "readmydock.html" },
+    { "title": "飞书知识库", "href": "feishu-wiki.html" },
     { "title": "关于", "href": "about.html" }
   ],
   "sidebar": [
@@ -44,7 +44,7 @@
     "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
   },
   "integrations": {
-    "readmydock": {
+    "feishuWiki": {
       "syncStatusUrl": "assets/feishu-sync-status.json",
       "dispatchEventType": "feishu_wiki_sync"
     }

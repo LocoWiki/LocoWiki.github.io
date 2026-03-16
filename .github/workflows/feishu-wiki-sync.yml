@@ -1,4 +1,4 @@
-name: Feishu Readmydock Sync
+name: Feishu Wiki Sync
 
 on:
   repository_dispatch:
@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       event_type:
-        description: "Event type shown on Readmydock status panel"
+        description: "Event type shown on Feishu status panel"
         required: false
         default: "manual"
       message:
-        description: "Status message shown on Readmydock panel"
+        description: "Status message shown on Feishu panel"
         required: false
         default: "Manual sync trigger"
 

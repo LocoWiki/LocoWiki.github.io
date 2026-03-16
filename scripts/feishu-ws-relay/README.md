@@ -4,7 +4,7 @@
 
 1. 本地/服务器进程通过 WebSocket 长连接接收飞书事件
 2. 收到事件后调用 GitHub `repository_dispatch`
-3. 触发仓库工作流 `.github/workflows/feishu-readmydock-sync.yml`
+3. 触发仓库工作流 `.github/workflows/feishu-wiki-sync.yml`
 4. 更新 `assets/feishu-sync-status.json`
 
 ## 适用场景
@@ -71,9 +71,9 @@ npm run start:env
 ## 5) 验收
 
 1. 在飞书触发一次已订阅事件
-2. 查看 GitHub Actions 是否出现 `Feishu Readmydock Sync`
+2. 查看 GitHub Actions 是否出现 `Feishu Wiki Sync`
 3. 查看 `assets/feishu-sync-status.json` 是否更新
-4. 打开 `readmydock.html` 看“飞书同步状态”
+4. 打开飞书知识库页面 `feishu-wiki.html` 查看“飞书同步状态”
 
 ## 6) 常见问题
 
