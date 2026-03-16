@@ -46,7 +46,7 @@ async function main() {
     message:
       payload.message ||
       process.env.MANUAL_MESSAGE ||
-      "飞书事件心跳已更新；当前站点通过 Readmydock 内嵌显示飞书知识库。",
+      "飞书知识库同步状态已更新。",
     feishuSpaceUrl: payload.feishu_space_url || process.env.FEISHU_SPACE_URL || FALLBACK_FEISHU_URL,
     receivedAt: payload.timestamp || now,
   };
