@@ -6,7 +6,7 @@
  * - GITHUB_REPO
  * - GITHUB_TOKEN (repo scope)
  * - FEISHU_SPACE_URL (optional, for status panel display)
- * - FEISHU_WEBHOOK_SECRET (optional, simple header check)
+ * - FEISHU_WEBHOOK_SECRET (optional, checks x-feishu-token or payload token/header.token)
  */
 
 function json(data, init = {}) {
@@ -22,13 +22,6 @@ export default {
       return json({ ok: false, error: "method_not_allowed" }, { status: 405 });
     }
 
-    if (env.FEISHU_WEBHOOK_SECRET) {
-      const token = request.headers.get("x-feishu-token") || "";
-      if (token !== env.FEISHU_WEBHOOK_SECRET) {
-        return json({ ok: false, error: "invalid_webhook_secret" }, { status: 401 });
-      }
-    }
-
     let payload = {};
     try {
       payload = await request.json();
@@ -36,8 +29,33 @@ export default {
       return json({ ok: false, error: "invalid_json" }, { status: 400 });
     }
 
+    // Feishu callback URL verification must echo challenge quickly.
     if (payload?.type === "url_verification" && payload.challenge) {
       return json({ challenge: payload.challenge });
+    }
+
+    // This relay does not implement Encrypt Key decryption yet.
+    if (payload?.encrypt) {
+      return json(
+        {
+          ok: false,
+          error: "encrypted_payload_not_supported",
+          message: "Please disable Encrypt Key in Feishu event callback settings.",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (env.FEISHU_WEBHOOK_SECRET) {
+      const headerToken = request.headers.get("x-feishu-token") || "";
+      const bodyToken =
+        (payload && typeof payload.token === "string" && payload.token) ||
+        (payload?.header && typeof payload.header.token === "string" && payload.header.token) ||
+        "";
+      const token = headerToken || bodyToken;
+      if (token !== env.FEISHU_WEBHOOK_SECRET) {
+        return json({ ok: false, error: "invalid_webhook_secret" }, { status: 401 });
+      }
     }
 
     const eventType = payload?.header?.event_type || payload?.event?.type || payload?.type || "unknown";

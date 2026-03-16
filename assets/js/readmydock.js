@@ -43,7 +43,7 @@
     } catch (err) {
       console.error(err);
       textEl.textContent = "未配置自动同步";
-      detailEl.textContent = "可使用仓库内的 Webhook 中转示例触发 GitHub Actions。";
+      detailEl.textContent = "可使用仓库内的飞书长连接中继（scripts/feishu-ws-relay）触发 GitHub Actions。";
     }
   }
 
