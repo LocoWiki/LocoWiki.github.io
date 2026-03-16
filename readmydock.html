@@ -30,7 +30,7 @@
           </div>
 
           <div class="sync-meta">
-            <div><strong>Webhook 同步状态：</strong><span id="sync-status-text">读取中…</span></div>
+            <div><strong>飞书同步状态：</strong><span id="sync-status-text">读取中…</span></div>
             <div id="sync-status-detail" class="sync-meta-detail"></div>
           </div>
 
@@ -44,15 +44,15 @@
             ></iframe>
           </div>
 
-          <h2>Webhook 接入（可选）</h2>
+          <h2>同步接入（长连接推荐）</h2>
           <p>
-            已提供 GitHub Actions 接口（<code>repository_dispatch: feishu_wiki_sync</code>），你可以用飞书事件 Webhook
-            触发它，把最新同步时间展示在本站。
+            已提供 GitHub Actions 接口（<code>repository_dispatch: feishu_wiki_sync</code>），你可以通过飞书“长连接接收事件”触发它，把最新同步时间展示在本站。
           </p>
           <ul>
             <li>工作流文件：<code>.github/workflows/feishu-readmydock-sync.yml</code></li>
             <li>状态写入脚本：<code>scripts/update-feishu-sync-status.mjs</code></li>
-            <li>Webhook 中转示例：<code>scripts/feishu-webhook-relay/worker.js</code></li>
+            <li>长连接中继方案：<code>scripts/feishu-ws-relay/README.md</code></li>
+            <li>回调中转备选：<code>scripts/feishu-webhook-relay/README.md</code></li>
           </ul>
         </article>
       </main>
