@@ -379,6 +379,45 @@ body[data-layout="landing"] .toc {
   font-weight: 600;
 }
 
+.readmydock-page {
+  max-width: none;
+}
+
+.dock-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 6px;
+}
+
+.sync-meta {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: color-mix(in srgb, var(--bg-elev) 76%, var(--bg));
+}
+
+.sync-meta-detail {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.feishu-embed-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-elev);
+}
+
+.feishu-embed-wrap iframe {
+  display: block;
+  width: 100%;
+  min-height: 72vh;
+  border: 0;
+  background: var(--bg);
+}
+
 .footer {
   border-top: 1px solid var(--border);
   background: var(--bg);
@@ -441,6 +480,10 @@ body[data-layout="landing"] .toc {
 }
 
 @media (max-width: 720px) {
+  .feishu-embed-wrap iframe {
+    min-height: 62vh;
+  }
+
   .topbar-inner {
     gap: 10px;
   }

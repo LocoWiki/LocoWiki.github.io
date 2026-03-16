@@ -1,13 +1,13 @@
 (function () {
   function escapeHtml(str) {
-    return window.LeggedWikiSite?.escapeHtml ? window.LeggedWikiSite.escapeHtml(str) : String(str);
+    return window.LocoWikiSite?.escapeHtml ? window.LocoWikiSite.escapeHtml(str) : String(str);
   }
 
   async function render() {
     const el = document.getElementById("download-dynamic");
     if (!el) return;
 
-    const config = await window.LeggedWikiSite.getConfig();
+    const config = await window.LocoWikiSite.getConfig();
     const owner = config.sourceRepo.owner;
     const repo = config.sourceRepo.repo;
     const branch = config.sourceRepo.branch;

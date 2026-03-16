@@ -1,6 +1,6 @@
 (function () {
   const CONFIG_URL = "assets/site-config.json";
-  const THEME_KEY = "leggedwiki_theme";
+  const THEME_KEY = "locowiki_theme";
 
   let configPromise;
 
@@ -68,9 +68,9 @@
     header.className = "topbar";
     header.innerHTML = `
       <div class="topbar-inner">
-        <a class="brand" href="index.html" aria-label="${escapeHtml(config?.site?.title || "LeggedWiki")}">
+        <a class="brand" href="index.html" aria-label="${escapeHtml(config?.site?.title || "LocoWiki")}">
           <img src="assets/img/icon.svg" alt="" />
-          <span>${escapeHtml(config?.site?.title || "LeggedWiki")}</span>
+          <span>${escapeHtml(config?.site?.title || "LocoWiki")}</span>
         </a>
         <div class="spacer"></div>
         <nav class="nav" aria-label="主导航">
@@ -131,7 +131,7 @@
     const year = new Date().getFullYear();
     footer.innerHTML = `
       <div class="footer-inner">
-        <div>© ${year} ${escapeHtml(config?.site?.title || "LeggedWiki")} · MIT License</div>
+        <div>© ${year} ${escapeHtml(config?.site?.title || "LocoWiki")} · MIT License</div>
         <div>
           <a href="${escapeAttr(config?.links?.issues || "#")}" target="_blank" rel="noopener noreferrer">Issues</a>
           ·
@@ -175,10 +175,11 @@
     highlightActiveDocLink();
   }
 
-  window.LeggedWikiSite = {
+  const siteApi = {
     getConfig,
     escapeHtml,
   };
+  window.LocoWikiSite = siteApi;
 
   window.addEventListener("DOMContentLoaded", () => {
     init().catch((err) => {
