@@ -1,3 +1,10 @@
 scripts/feishu-webhook-relay/.wrangler/
 scripts/feishu-ws-relay/node_modules/
 scripts/feishu-ws-relay/.env
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
