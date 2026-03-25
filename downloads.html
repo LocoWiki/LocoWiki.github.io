@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>LocoWiki · 资源下载</title>
+    <title data-i18n="downloads.pageTitle">LocoWiki · 资源下载</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
@@ -17,39 +17,35 @@
 
       <main class="content">
         <article class="md">
-          <h1>资源下载与获取</h1>
+          <h1 data-i18n="downloads.heading">资源下载与获取</h1>
           <p>
-            本站不重复存储资源文件；所有 PDF / PPT / 脚本均来源于
-            <a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer"
-              >LocoWiki 仓库</a
-            >。你可以按需：整仓下载、克隆、或在文档页直接点文件名下载。
+            <span data-i18n="downloads.introPrefix">本站不重复存储资源文件；所有 PDF / PPT / 脚本均来源于</span><a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer">LocoWiki 仓库</a><span data-i18n="downloads.introSuffix">。你可以按需：整仓下载、克隆、或在文档页直接点文件名下载。</span>
           </p>
 
-          <div id="download-dynamic" class="loading">正在生成下载入口…</div>
+          <div id="download-dynamic" class="loading" data-i18n="downloads.loadingEntry">正在生成下载入口…</div>
 
-          <h2>按模块获取</h2>
+          <h2 data-i18n="downloads.modulesTitle">按模块获取</h2>
           <ul>
-            <li><a href="docs.html?path=competition-rules%2FREADME.md">比赛规则（PDF）</a></li>
-            <li><a href="docs.html?path=technical-sharing%2FREADME.md">技术分享（PPT/PPTX）</a></li>
-            <li><a href="docs.html?path=recommended-papers%2FREADME.md">推荐论文（本地 PDF）</a></li>
-            <li><a href="docs.html?path=reading-list%2FREADME.md">阅读清单（索引 + 抓取说明）</a></li>
-            <li><a href="docs.html?path=scripts%2FREADME.md">维护脚本</a></li>
+            <li><a href="docs.html?path=competition-rules%2FREADME.md" data-i18n="downloads.modules.rules">比赛规则（PDF）</a></li>
+            <li><a href="docs.html?path=technical-sharing%2FREADME.md" data-i18n="downloads.modules.sharing">技术分享（PPT/PPTX）</a></li>
+            <li><a href="docs.html?path=reading-list%2FREADME.md" data-i18n="downloads.modules.paperHub">论文学习清单（索引 + 推荐论文 PDF）</a></li>
+            <li><a href="docs.html?path=network-open-source%2FREADME.md" data-i18n="downloads.modules.network">推荐网络项目（实物开源 + 框架开源）</a></li>
+            <li><a href="docs.html?path=scripts%2FREADME.md" data-i18n="downloads.modules.scripts">维护脚本</a></li>
           </ul>
 
-          <h2>论文 PDF 批量抓取（可公开获取）</h2>
-          <p>如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
+          <h2 data-i18n="downloads.paperFetchTitle">论文 PDF 批量抓取（可公开获取）</h2>
+          <p data-i18n="downloads.paperFetchDesc">如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
           <pre><code>python3 scripts/fetch_open_access_pdfs.py --download</code></pre>
 
-          <h2>大文件说明</h2>
-          <p>
-            单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用
-            <code>git clone</code> 或镜像。
+          <h2 data-i18n="downloads.largeFileTitle">大文件说明</h2>
+          <p data-i18n-html="downloads.largeFileDesc">
+            单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用 <code>git clone</code> 或镜像。
           </p>
         </article>
       </main>
 
-      <aside id="site-toc" class="toc" aria-label="目录">
-        <div class="toc-title">本页目录</div>
+      <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
+        <div class="toc-title" data-i18n="common.tocTitle">本页目录</div>
         <div id="toc-items"></div>
       </aside>
     </div>

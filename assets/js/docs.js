@@ -1,4 +1,11 @@
 (function () {
+  function t(key, fallback, vars) {
+    if (typeof window.LocoWikiSite?.t === "function") {
+      return window.LocoWikiSite.t(key, { fallback, vars });
+    }
+    return fallback;
+  }
+
   function encodePath(path) {
     return String(path)
       .split("/")
@@ -99,7 +106,11 @@
       const lower = decodedBase.toLowerCase();
 
       if (lower.endsWith(".md")) {
-        a.setAttribute("href", `docs.html?path=${encodeURIComponent(resolved)}${hash}`);
+        const mappedPath =
+          typeof window.LocoWikiSite?.mapDocPathToLanguage === "function"
+            ? window.LocoWikiSite.mapDocPathToLanguage(resolved, getLanguage(), config)
+            : resolved;
+        a.setAttribute("href", `docs.html?path=${encodeURIComponent(mappedPath)}${hash}`);
         return;
       }
 
@@ -152,7 +163,7 @@
 
     const headings = Array.from(container.querySelectorAll("h2, h3"));
     if (headings.length === 0) {
-      tocRoot.innerHTML = `<div style="color: var(--muted); font-size: 13px;">无</div>`;
+      tocRoot.innerHTML = `<div style="color: var(--muted); font-size: 13px;">${window.LocoWikiSite.escapeHtml(t("common.tocEmpty", "无"))}</div>`;
       return;
     }
 
@@ -179,23 +190,34 @@
     return String(value).replace(/["\\]/g, "\\$&");
   }
 
+  function getLanguage() {
+    const lang =
+      typeof window.LocoWikiSite?.getLanguage === "function" ? window.LocoWikiSite.getLanguage() : "zh";
+    return lang === "en" ? "en" : "zh";
+  }
+
   async function loadDoc() {
     const docEl = document.getElementById("doc");
     if (!docEl) return;
 
     const config = await window.LocoWikiSite.getConfig();
+    const lang = getLanguage();
     const params = new URLSearchParams(window.location.search);
-    const docPath = params.get("path") || config.site.defaultDoc || "README.md";
+    const defaultDocPath =
+      typeof window.LocoWikiSite?.getDefaultDocPath === "function"
+        ? window.LocoWikiSite.getDefaultDocPath(config, lang)
+        : config.site.defaultDoc || "README.md";
+    const docPath = params.get("path") || defaultDocPath;
 
     const urls = buildUrls(config, docPath);
 
     docEl.innerHTML = `
       <div class="doc-meta">
-        <span>路径：<code>${window.LocoWikiSite.escapeHtml(docPath)}</code></span>
-        <a href="${urls.blob}" target="_blank" rel="noopener noreferrer">在 GitHub 查看</a>
-        <a href="${urls.download}" target="_blank" rel="noopener noreferrer">下载/原始文件</a>
+        <span>${window.LocoWikiSite.escapeHtml(t("docs.metaPath", "路径"))}: <code>${window.LocoWikiSite.escapeHtml(docPath)}</code></span>
+        <a href="${urls.blob}" target="_blank" rel="noopener noreferrer">${window.LocoWikiSite.escapeHtml(t("docs.viewOnGitHub", "在 GitHub 查看"))}</a>
+        <a href="${urls.download}" target="_blank" rel="noopener noreferrer">${window.LocoWikiSite.escapeHtml(t("docs.downloadRaw", "下载/原始文件"))}</a>
       </div>
-      <div id="doc-content" class="loading">正在加载内容…</div>
+      <div id="doc-content" class="loading">${window.LocoWikiSite.escapeHtml(t("docs.loadingContent", "正在加载内容…"))}</div>
     `;
 
     const contentEl = document.getElementById("doc-content");
@@ -230,13 +252,17 @@
       console.error(err);
       contentEl.className = "error";
       contentEl.innerHTML = `
-        <div><strong>加载失败</strong></div>
+        <div><strong>${window.LocoWikiSite.escapeHtml(t("docs.loadFailed", "加载失败"))}</strong></div>
         <div style="margin-top: 8px; color: var(--muted);">
-          无法从源仓库拉取 <code>${window.LocoWikiSite.escapeHtml(docPath)}</code>。你可以：
+          ${window.LocoWikiSite.escapeHtml(t("docs.cannotFetch", "无法从源仓库拉取"))}
+          <code>${window.LocoWikiSite.escapeHtml(docPath)}</code>${window.LocoWikiSite.escapeHtml(t("docs.fetchSeparator", "。"))}
+          ${window.LocoWikiSite.escapeHtml(t("docs.youCan", "你可以："))}
           <ul>
-            <li>确认网络可访问 raw.githubusercontent.com</li>
-            <li>检查文件路径是否存在</li>
-            <li>直接在 GitHub 上查看：<a href="${urls.blob}" target="_blank" rel="noopener noreferrer">${urls.blob}</a></li>
+            <li>${window.LocoWikiSite.escapeHtml(t("docs.tipNetwork", "确认网络可访问 raw.githubusercontent.com"))}</li>
+            <li>${window.LocoWikiSite.escapeHtml(t("docs.tipPath", "检查文件路径是否存在"))}</li>
+            <li>${window.LocoWikiSite.escapeHtml(t("docs.tipGitHub", "直接在 GitHub 上查看："))}
+              <a href="${urls.blob}" target="_blank" rel="noopener noreferrer">${urls.blob}</a>
+            </li>
           </ul>
         </div>
       `;
@@ -247,6 +273,9 @@
     loadDoc().catch((e) => console.error(e));
     window.addEventListener("hashchange", () => {
       scrollToHash();
+    });
+    window.addEventListener("locowiki:languagechange", () => {
+      loadDoc().catch((e) => console.error(e));
     });
   });
 })();

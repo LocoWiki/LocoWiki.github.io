@@ -1,4 +1,11 @@
 (function () {
+  function t(key, fallback) {
+    if (typeof window.LocoWikiSite?.t === "function") {
+      return window.LocoWikiSite.t(key, { fallback });
+    }
+    return fallback;
+  }
+
   function cssEscape(value) {
     if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(value);
     return String(value).replace(/["\\]/g, "\\$&");
@@ -42,7 +49,7 @@
     tocRoot.innerHTML = "";
 
     if (!headings.length) {
-      tocRoot.innerHTML = `<div style="color: var(--muted); font-size: 13px;">无</div>`;
+      tocRoot.innerHTML = `<div style="color: var(--muted); font-size: 13px;">${t("common.tocEmpty", "无")}</div>`;
       return;
     }
 
@@ -64,7 +71,10 @@
     el.scrollIntoView();
   }
 
-  function init() {
+  function renderPageToc() {
+    const tocTitle = document.querySelector(".toc .toc-title");
+    if (tocTitle) tocTitle.textContent = t("common.tocTitle", "本页目录");
+
     const container = document.querySelector("main.content") || document.querySelector(".content");
     if (!container) return;
 
@@ -73,9 +83,15 @@
     renderToc(headings);
     scrollToHash();
 
+  }
+
+  function init() {
+    renderPageToc();
     window.addEventListener("hashchange", () => scrollToHash());
+    window.addEventListener("locowiki:languagechange", () => {
+      renderPageToc();
+    });
   }
 
   window.addEventListener("DOMContentLoaded", init);
 })();
-

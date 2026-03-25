@@ -7,7 +7,7 @@ LocoWiki 的静态展示站点仓库（GitHub Pages）。
 ## 项目定位
 
 - 面向对象：ROBOCON 备赛成员、机器人方向学习者、科研与工程实践者
-- 核心目标：提供统一入口，快速访问规则、技术分享、论文与阅读索引
+- 核心目标：提供统一入口，快速访问规则、技术分享、论文学习清单与网络开源项目
 - 展示方式：前台页面 + 动态拉取源仓库 Markdown（不在本站重复存储资料文件）
 
 ## 页面入口
@@ -31,7 +31,7 @@ LocoWiki 的静态展示站点仓库（GitHub Pages）。
 
 当前默认源仓库：
 
-- Owner: `Lain-Ego0`
+- Owner: `LocoWiki`
 - Repo: `LocoWiki`
 - Branch: `main`
 
