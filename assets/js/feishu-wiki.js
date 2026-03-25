@@ -7,11 +7,25 @@
   const FALLBACK_FEISHU_URL =
     "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home";
 
+  function t(key, fallback, vars) {
+    if (typeof window.LocoWikiSite?.t === "function") {
+      return window.LocoWikiSite.t(key, { fallback, vars });
+    }
+    return fallback;
+  }
+
+  function getLanguage() {
+    const lang =
+      typeof window.LocoWikiSite?.getLanguage === "function" ? window.LocoWikiSite.getLanguage() : "zh";
+    return lang === "en" ? "en" : "zh";
+  }
+
   function formatTime(isoString) {
-    if (!isoString) return "尚未同步";
+    if (!isoString) return t("feishu.statusNeverSynced", "尚未同步");
     const d = new Date(isoString);
     if (Number.isNaN(d.getTime())) return isoString;
-    return d.toLocaleString("zh-CN", { hour12: false });
+    const locale = getLanguage() === "en" ? "en-US" : "zh-CN";
+    return d.toLocaleString(locale, { hour12: false });
   }
 
   function setNotice(kind, text) {
@@ -41,12 +55,14 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const hasSyncTime = Boolean(data.lastSyncAt);
-      textEl.textContent = hasSyncTime ? `最近同步：${formatTime(data.lastSyncAt)}` : "暂无自动同步记录";
-      detailEl.textContent = data.message || "状态面板仅展示最近一次同步记录。";
+      textEl.textContent = hasSyncTime
+        ? t("feishu.statusRecentSynced", "最近同步：{time}", { time: formatTime(data.lastSyncAt) })
+        : t("feishu.statusNoAutoSync", "暂无自动同步记录");
+      detailEl.textContent = data.message || t("feishu.statusDefaultMessage", "状态面板仅展示最近一次同步记录。");
     } catch (err) {
       console.error(err);
-      textEl.textContent = "未配置自动同步";
-      detailEl.textContent = "如需启用自动同步，请查看仓库 docs/feishu-sync.md。";
+      textEl.textContent = t("feishu.statusNotConfigured", "未配置自动同步");
+      detailEl.textContent = t("feishu.statusNotConfiguredDetail", "如需启用自动同步，请查看仓库 docs/feishu-sync.md。");
     }
   }
 
@@ -57,7 +73,7 @@
     let loaded = false;
     const timeout = window.setTimeout(() => {
       if (loaded) return;
-      setNotice("error", "内嵌加载超时。请点击上方按钮在新标签页打开飞书知识库。");
+      setNotice("error", t("feishu.noticeEmbedTimeout", "内嵌加载超时。请点击上方按钮在新标签页打开飞书知识库。"));
     }, EMBED_TIMEOUT_MS);
 
     frame.addEventListener(
@@ -65,7 +81,7 @@
       () => {
         loaded = true;
         window.clearTimeout(timeout);
-        setNotice("loading", "知识库页面已加载。如果看到登录页或空白，请改用新标签页打开。");
+        setNotice("loading", t("feishu.noticeEmbedLoaded", "知识库页面已加载。如果看到登录页或空白，请改用新标签页打开。"));
       },
       { once: true },
     );
@@ -75,7 +91,7 @@
       () => {
         loaded = true;
         window.clearTimeout(timeout);
-        setNotice("error", "当前浏览器阻止了内嵌加载，请点击上方按钮打开原页面。");
+        setNotice("error", t("feishu.noticeEmbedBlocked", "当前浏览器阻止了内嵌加载，请点击上方按钮打开原页面。"));
       },
       { once: true },
     );
@@ -96,15 +112,15 @@
 
     const reloadBtn = document.getElementById("reload-feishu");
     if (reloadBtn) {
-      reloadBtn.addEventListener("click", () => {
+      reloadBtn.onclick = () => {
         const frame = document.getElementById("feishu-frame");
         if (!frame) return;
-        setNotice("loading", "正在刷新内嵌视图…");
+        setNotice("loading", t("feishu.noticeReloading", "正在刷新内嵌视图…"));
         frame.src = withCacheBuster(feishuUrl);
-      });
+      };
     }
 
-    setNotice("loading", "正在尝试加载飞书知识库…");
+    setNotice("loading", t("feishu.noticeLoading", "正在尝试加载飞书知识库…"));
     initFrame(feishuUrl);
     await loadSyncStatus(syncStatusUrl);
   }
@@ -112,7 +128,7 @@
   function bootstrap() {
     init().catch((err) => {
       console.error(err);
-      setNotice("error", "飞书知识库页面初始化失败，请稍后重试。");
+      setNotice("error", t("feishu.noticeInitFailed", "飞书知识库页面初始化失败，请稍后重试。"));
     });
   }
 
@@ -121,4 +137,11 @@
   } else {
     bootstrap();
   }
+
+  window.addEventListener("locowiki:languagechange", () => {
+    init().catch((err) => {
+      console.error(err);
+      setNotice("error", t("feishu.noticeInitFailed", "飞书知识库页面初始化失败，请稍后重试。"));
+    });
+  });
 })();

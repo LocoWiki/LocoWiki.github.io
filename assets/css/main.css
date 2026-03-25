@@ -607,6 +607,10 @@ body[data-layout="landing"] .toc {
     display: none;
   }
 
+  #lang-toggle span:last-child {
+    display: none;
+  }
+
   #github-link {
     display: none;
   }

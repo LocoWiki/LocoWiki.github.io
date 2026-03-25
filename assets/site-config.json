@@ -2,42 +2,75 @@
   "site": {
     "title": "LocoWiki",
     "tagline": "足式机器人资源整合仓库（ROBOCON / 科研 / 开发检索）",
-    "defaultDoc": "README.md"
+    "defaultDoc": "README.md",
+    "defaultDocByLang": {
+      "zh": "README.md",
+      "en": "README.en.md"
+    }
+  },
+  "i18n": {
+    "defaultLanguage": "zh",
+    "supportedLanguages": ["zh", "en"],
+    "docPathAliases": {
+      "README.md": "README.en.md",
+      "competition-rules/README.md": "competition-rules/README.en.md",
+      "technical-sharing/README.md": "technical-sharing/README.en.md",
+      "reading-list/README.md": "reading-list/README.en.md",
+      "network-open-source/README.md": "network-open-source/README.en.md",
+      "scripts/README.md": "scripts/README.en.md"
+    }
   },
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
     "branch": "main"
   },
-  "nav": [
-    { "title": "首页", "href": "index.html" },
-    { "title": "文档", "href": "docs.html?path=README.md" },
-    { "title": "资源下载", "href": "downloads.html" },
-    { "title": "贡献者", "href": "contributors.html" },
-    { "title": "飞书知识库", "href": "feishu-wiki.html" },
-    { "title": "关于", "href": "about.html" }
-  ],
-  "sidebar": [
-    {
-      "title": "快速导航",
-      "items": [
-        { "title": "总览", "path": "README.md" },
-        { "title": "比赛规则", "path": "competition-rules/README.md" },
-        { "title": "技术分享", "path": "technical-sharing/README.md" },
-        { "title": "推荐论文", "path": "recommended-papers/README.md" },
-        { "title": "阅读清单", "path": "reading-list/README.md" },
-        { "title": "维护脚本", "path": "scripts/README.md" }
-      ]
-    },
-    {
-      "title": "Language",
-      "items": [
-        { "title": "README (EN)", "path": "README.en.md" },
-        { "title": "Reading List (EN)", "path": "reading-list/README.en.md" },
-        { "title": "Recommended Papers (EN)", "path": "recommended-papers/README.en.md" }
-      ]
-    }
-  ],
+  "nav": {
+    "zh": [
+      { "title": "首页", "href": "index.html" },
+      { "title": "文档", "href": "docs.html?path=README.md" },
+      { "title": "资源下载", "href": "downloads.html" },
+      { "title": "贡献者", "href": "contributors.html" },
+      { "title": "飞书知识库", "href": "feishu-wiki.html" },
+      { "title": "关于", "href": "about.html" }
+    ],
+    "en": [
+      { "title": "Home", "href": "index.html" },
+      { "title": "Docs", "href": "docs.html?path=README.en.md" },
+      { "title": "Downloads", "href": "downloads.html" },
+      { "title": "Contributors", "href": "contributors.html" },
+      { "title": "Feishu Wiki", "href": "feishu-wiki.html" },
+      { "title": "About", "href": "about.html" }
+    ]
+  },
+  "sidebar": {
+    "zh": [
+      {
+        "title": "快速导航",
+        "items": [
+          { "title": "总览", "path": "README.md" },
+          { "title": "比赛规则", "path": "competition-rules/README.md" },
+          { "title": "技术分享", "path": "technical-sharing/README.md" },
+          { "title": "论文学习清单", "path": "reading-list/README.md" },
+          { "title": "推荐网络项目", "path": "network-open-source/README.md" },
+          { "title": "维护脚本", "path": "scripts/README.md" }
+        ]
+      }
+    ],
+    "en": [
+      {
+        "title": "Quick Navigation",
+        "items": [
+          { "title": "Overview", "path": "README.en.md" },
+          { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
+          { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
+          { "title": "Paper Study Hub", "path": "reading-list/README.en.md" },
+          { "title": "Web Open-Source Projects", "path": "network-open-source/README.en.md" },
+          { "title": "Maintenance Scripts", "path": "scripts/README.en.md" }
+        ]
+      }
+    ]
+  },
   "links": {
     "repo": "https://github.com/LocoWiki/LocoWiki",
     "issues": "https://github.com/LocoWiki/LocoWiki/issues",
