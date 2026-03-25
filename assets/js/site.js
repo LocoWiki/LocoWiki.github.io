@@ -129,14 +129,10 @@
     footer.className = "footer";
 
     const year = new Date().getFullYear();
+
     footer.innerHTML = `
       <div class="footer-inner">
         <div>© ${year} ${escapeHtml(config?.site?.title || "LocoWiki")} · MIT License</div>
-        <div>
-          <a href="${escapeAttr(config?.links?.issues || "#")}" target="_blank" rel="noopener noreferrer">Issues</a>
-          ·
-          <a href="${escapeAttr(config?.links?.discussions || "#")}" target="_blank" rel="noopener noreferrer">Discussions</a>
-        </div>
       </div>
     `;
   }
