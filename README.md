@@ -70,7 +70,7 @@ python3 -m http.server 8080
 ## 引用资料与版权声明
 
 1. 内容来源
-- 本站展示内容主要来自源仓库 [LocoWiki](https://github.com/Lain-Ego0/LocoWiki) 及其索引。
+- 本站展示内容主要来自源仓库 [LocoWiki](https://github.com/LocoWiki/LocoWiki) 及其索引。
 - 页面中的外部工具链接（如 MuJoCo、Webots、ROS 2 等）指向各官方站点。
 
 2. 版权归属

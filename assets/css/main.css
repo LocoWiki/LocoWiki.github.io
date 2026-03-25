@@ -379,6 +379,99 @@ body[data-layout="landing"] .toc {
   font-weight: 600;
 }
 
+.contributors-page h1 {
+  margin-bottom: 10px;
+}
+
+.contributors-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+
+.contributors-summary-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: color-mix(in srgb, var(--bg-elev) 78%, var(--bg));
+}
+
+.contributors-summary-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.contributors-summary-value {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.contributors-summary-link {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contributors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.contributor-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.contributor-card:hover {
+  background: color-mix(in srgb, var(--bg-elev) 70%, var(--hover));
+  text-decoration: none;
+}
+
+.contributor-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.contributor-info {
+  min-width: 0;
+}
+
+.contributor-login {
+  font-weight: 700;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contributor-meta {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.contributor-empty {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--bg-elev) 75%, var(--bg));
+  color: var(--muted);
+  padding: 14px;
+}
+
 .feishu-wiki-page,
 .readmydock-page {
   max-width: none;

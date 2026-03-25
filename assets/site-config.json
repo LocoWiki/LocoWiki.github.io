@@ -5,7 +5,7 @@
     "defaultDoc": "README.md"
   },
   "sourceRepo": {
-    "owner": "Lain-Ego0",
+    "owner": "LocoWiki",
     "repo": "LocoWiki",
     "branch": "main"
   },
@@ -13,6 +13,7 @@
     { "title": "首页", "href": "index.html" },
     { "title": "文档", "href": "docs.html?path=README.md" },
     { "title": "资源下载", "href": "downloads.html" },
+    { "title": "贡献者", "href": "contributors.html" },
     { "title": "飞书知识库", "href": "feishu-wiki.html" },
     { "title": "关于", "href": "about.html" }
   ],
@@ -38,9 +39,9 @@
     }
   ],
   "links": {
-    "repo": "https://github.com/Lain-Ego0/LocoWiki",
-    "issues": "https://github.com/Lain-Ego0/LocoWiki/issues",
-    "discussions": "https://github.com/Lain-Ego0/LocoWiki/discussions",
+    "repo": "https://github.com/LocoWiki/LocoWiki",
+    "issues": "https://github.com/LocoWiki/LocoWiki/issues",
+    "discussions": "https://github.com/LocoWiki/LocoWiki/discussions",
     "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
   },
   "integrations": {
