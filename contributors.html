@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>LocoWiki · 贡献者</title>
+    <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/markdown.css" />
+  </head>
+  <body data-layout="docs">
+    <header id="site-header"></header>
+
+    <div class="layout">
+      <aside id="site-sidebar"></aside>
+
+      <main class="content">
+        <article class="md contributors-page">
+          <h1>贡献者</h1>
+          <p>
+            感谢所有为
+            <a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer">LocoWiki</a>
+            提交代码、文档和建议的伙伴。此页面会读取 GitHub Contributors 数据并展示贡献者列表。
+          </p>
+
+          <div id="contributors-meta" class="sync-meta">正在加载贡献者数据…</div>
+
+          <h2>Contributors</h2>
+          <p>按贡献次数排序展示，点击卡片可跳转到对应 GitHub 主页。</p>
+
+          <div id="contributors-list" class="contributors-grid" aria-live="polite">
+            <div class="contributor-empty">正在加载贡献者列表…</div>
+          </div>
+        </article>
+      </main>
+
+      <aside id="site-toc" class="toc" aria-label="目录">
+        <div class="toc-title">本页目录</div>
+        <div id="toc-items"></div>
+      </aside>
+    </div>
+
+    <footer id="site-footer"></footer>
+
+    <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/contributors.js" defer></script>
+    <script src="assets/js/page-toc.js" defer></script>
+  </body>
+</html>
