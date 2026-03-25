@@ -522,10 +522,7 @@ body[data-layout="landing"] .toc {
   margin: 0 auto;
   padding: 18px var(--container-pad);
   color: var(--muted);
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  text-align: center;
 }
 
 .kdb {
