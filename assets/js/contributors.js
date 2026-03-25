@@ -2,6 +2,9 @@
   const API_ACCEPT = "application/vnd.github+json";
   const MAX_PAGES = 10;
   const PAGE_SIZE = 100;
+  let cachedContributors = null;
+  let cachedContributorsUrl = "";
+  let cachedErrorMessage = "";
 
   function escapeHtml(value) {
     if (window.LocoWikiSite?.escapeHtml) return window.LocoWikiSite.escapeHtml(value);
@@ -17,8 +20,22 @@
     return escapeHtml(value).replaceAll("`", "&#96;");
   }
 
+  function t(key, fallback, vars) {
+    if (typeof window.LocoWikiSite?.t === "function") {
+      return window.LocoWikiSite.t(key, { fallback, vars });
+    }
+    return fallback;
+  }
+
+  function getLanguage() {
+    const lang =
+      typeof window.LocoWikiSite?.getLanguage === "function" ? window.LocoWikiSite.getLanguage() : "zh";
+    return lang === "en" ? "en" : "zh";
+  }
+
   function formatCount(value) {
-    return new Intl.NumberFormat("zh-CN").format(Number.isFinite(value) ? value : 0);
+    const locale = getLanguage() === "en" ? "en-US" : "zh-CN";
+    return new Intl.NumberFormat(locale).format(Number.isFinite(value) ? value : 0);
   }
 
   function buildContributorsApiUrl(owner, repo, page) {
@@ -40,10 +57,18 @@
       const res = await fetch(buildContributorsApiUrl(owner, repo, page), {
         headers: { Accept: API_ACCEPT },
       });
-      if (!res.ok) throw new Error(`GitHub API 返回 HTTP ${res.status}`);
+      if (!res.ok) {
+        throw new Error(
+          t("contributors.apiHttpError", "GitHub API 返回 HTTP {status}", {
+            status: res.status,
+          }),
+        );
+      }
 
       const rows = await res.json();
-      if (!Array.isArray(rows)) throw new Error("GitHub API 返回数据格式异常");
+      if (!Array.isArray(rows)) {
+        throw new Error(t("contributors.apiFormatError", "GitHub API 返回数据格式异常"));
+      }
       if (!rows.length) break;
 
       all.push(
@@ -70,17 +95,17 @@
     metaEl.className = "contributors-summary";
     metaEl.innerHTML = `
       <div class="contributors-summary-item">
-        <div class="contributors-summary-label">贡献者总数</div>
+        <div class="contributors-summary-label">${escapeHtml(t("contributors.summary.totalContributors", "贡献者总数"))}</div>
         <div class="contributors-summary-value">${formatCount(contributors.length)}</div>
       </div>
       <div class="contributors-summary-item">
-        <div class="contributors-summary-label">累计贡献次数</div>
+        <div class="contributors-summary-label">${escapeHtml(t("contributors.summary.totalContributions", "累计贡献次数"))}</div>
         <div class="contributors-summary-value">${formatCount(totalContributions)}</div>
       </div>
       <div class="contributors-summary-item">
-        <div class="contributors-summary-label">数据来源</div>
+        <div class="contributors-summary-label">${escapeHtml(t("contributors.summary.dataSource", "数据来源"))}</div>
         <div class="contributors-summary-value contributors-summary-link">
-          <a href="${escapeAttr(contributorsUrl)}" target="_blank" rel="noopener noreferrer">GitHub Contributors</a>
+          <a href="${escapeAttr(contributorsUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("contributors.summary.dataSourceLink", "GitHub Contributors"))}</a>
         </div>
       </div>
     `;
@@ -88,24 +113,30 @@
 
   function renderContributors(listEl, contributors) {
     if (!contributors.length) {
-      listEl.innerHTML = `<div class="contributor-empty">暂无贡献者数据。</div>`;
+      listEl.innerHTML = `<div class="contributor-empty">${escapeHtml(t("contributors.empty", "暂无贡献者数据。"))}</div>`;
       return;
     }
 
     listEl.innerHTML = contributors
       .map((item) => {
-        const login = escapeHtml(item.login || "unknown");
+        const rawLogin = item.login || "unknown";
+        const login = escapeHtml(rawLogin);
         const profileUrl = escapeAttr(item.html_url || "#");
         const avatarUrl = escapeAttr(item.avatar_url || "");
         const contributionCount = Number.isFinite(item.contributions) ? item.contributions : 0;
-        const extraMeta = item.type === "Bot" ? " · Bot" : "";
+        const extraMeta = item.type === "Bot" ? ` ${escapeHtml(t("contributors.botSuffix", "· Bot"))}` : "";
+        const countText = t("contributors.metaContribution", "{count} 次贡献", {
+          count: formatCount(contributionCount),
+        });
+        const profileAria = t("contributors.cardAria", "查看 {login} 的 GitHub 主页", { login: rawLogin });
+        const avatarAlt = t("contributors.avatarAlt", "{login} 的头像", { login: rawLogin });
 
         return `
-          <a class="contributor-card" href="${profileUrl}" target="_blank" rel="noopener noreferrer" aria-label="查看 ${login} 的 GitHub 主页">
-            <img class="contributor-avatar" src="${avatarUrl}" alt="${login} 的头像" loading="lazy" decoding="async" />
+          <a class="contributor-card" href="${profileUrl}" target="_blank" rel="noopener noreferrer" aria-label="${escapeAttr(profileAria)}">
+            <img class="contributor-avatar" src="${avatarUrl}" alt="${escapeAttr(avatarAlt)}" loading="lazy" decoding="async" />
             <div class="contributor-info">
               <div class="contributor-login">${login}</div>
-              <div class="contributor-meta">${formatCount(contributionCount)} 次贡献${extraMeta}</div>
+              <div class="contributor-meta">${escapeHtml(countText)}${extraMeta}</div>
             </div>
           </a>
         `;
@@ -116,17 +147,17 @@
   function renderError(metaEl, listEl, contributorsUrl, message) {
     metaEl.className = "sync-meta";
     metaEl.innerHTML = `
-      <strong>贡献者数据加载失败</strong>
+      <strong>${escapeHtml(t("contributors.errorTitle", "贡献者数据加载失败"))}</strong>
       <div class="sync-meta-detail">
-        你可以直接访问
-        <a href="${escapeAttr(contributorsUrl)}" target="_blank" rel="noopener noreferrer">GitHub Contributors 页面</a>。
+        ${escapeHtml(t("contributors.errorHintPrefix", "你可以直接访问"))}
+        <a href="${escapeAttr(contributorsUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("contributors.errorHintLink", "GitHub Contributors 页面"))}</a>${escapeHtml(t("contributors.errorHintSuffix", "。"))}
       </div>
     `;
 
     listEl.innerHTML = `
       <div class="contributor-empty">
-        <div>当前无法读取 GitHub API。</div>
-        <div style="margin-top: 6px; color: var(--muted);">${escapeHtml(message || "未知错误")}</div>
+        <div>${escapeHtml(t("contributors.errorListTop", "当前无法读取 GitHub API。"))}</div>
+        <div style="margin-top: 6px; color: var(--muted);">${escapeHtml(message || t("contributors.errorUnknown", "未知错误"))}</div>
       </div>
     `;
   }
@@ -140,18 +171,34 @@
     const owner = config?.sourceRepo?.owner || "LocoWiki";
     const repo = config?.sourceRepo?.repo || "LocoWiki";
     const contributorsUrl = buildContributorsPageUrl(owner, repo);
+    cachedContributorsUrl = contributorsUrl;
+    cachedErrorMessage = "";
 
     try {
       const contributors = await fetchContributors(owner, repo);
+      cachedContributors = contributors;
       renderSummary(metaEl, contributors, contributorsUrl);
       renderContributors(listEl, contributors);
     } catch (err) {
       console.error(err);
-      renderError(metaEl, listEl, contributorsUrl, err instanceof Error ? err.message : String(err));
+      cachedContributors = null;
+      cachedErrorMessage = err instanceof Error ? err.message : String(err);
+      renderError(metaEl, listEl, contributorsUrl, cachedErrorMessage);
     }
   }
 
   window.addEventListener("DOMContentLoaded", () => {
     render().catch((err) => console.error(err));
+    window.addEventListener("locowiki:languagechange", () => {
+      const metaEl = document.getElementById("contributors-meta");
+      const listEl = document.getElementById("contributors-list");
+      if (!metaEl || !listEl) return;
+      if (Array.isArray(cachedContributors)) {
+        renderSummary(metaEl, cachedContributors, cachedContributorsUrl);
+        renderContributors(listEl, cachedContributors);
+      } else if (cachedContributorsUrl) {
+        renderError(metaEl, listEl, cachedContributorsUrl, cachedErrorMessage);
+      }
+    });
   });
 })();
