@@ -3,53 +3,177 @@
   const I18N_URL = "assets/i18n.json";
   const THEME_KEY = "locowiki_theme";
   const LANG_KEY = "locowiki_lang";
+  const PAGE_WIDTH_KEY = "locowiki_page_width";
+  const FONT_SIZE_KEY = "locowiki_font_size";
+  const DOC_NAV_KEY = "locowiki_doc_nav";
 
   const UI_TEXT = {
     zh: {
       navAria: "主导航",
-      themeBtn: "主题",
-      themeAriaToLight: "切换为浅色",
-      themeAriaToDark: "切换为深色",
-      langBtn: "English",
-      langAria: "切换到英文",
       tocTitle: "本页目录",
+      settingsBtn: "页面设置",
+      settingsAria: "打开页面设置",
+      settingsPanelTitle: "页面设置",
+      sectionWidth: "页面宽度",
+      widthStandard: "标准",
+      widthFull: "无限宽",
+      sectionFontSize: "字体大小",
+      fontSmall: "小",
+      fontMedium: "中",
+      fontLarge: "大",
+      sectionLanguage: "语言",
+      languageZh: "中文",
+      languageEn: "English",
+      sectionTheme: "亮暗模式",
+      themeLight: "浅色",
+      themeDark: "深色",
+      sectionDocNav: "文档导航",
+      docNavShow: "展开导航",
+      docNavHide: "收起导航",
     },
     en: {
       navAria: "Primary Navigation",
-      themeBtn: "Theme",
-      themeAriaToLight: "Switch to light theme",
-      themeAriaToDark: "Switch to dark theme",
-      langBtn: "中文",
-      langAria: "Switch to Chinese",
       tocTitle: "On This Page",
+      settingsBtn: "Page Settings",
+      settingsAria: "Open page settings",
+      settingsPanelTitle: "Page Settings",
+      sectionWidth: "Page Width",
+      widthStandard: "Standard",
+      widthFull: "Full Width",
+      sectionFontSize: "Font Size",
+      fontSmall: "Small",
+      fontMedium: "Medium",
+      fontLarge: "Large",
+      sectionLanguage: "Language",
+      languageZh: "中文",
+      languageEn: "English",
+      sectionTheme: "Theme",
+      themeLight: "Light",
+      themeDark: "Dark",
+      sectionDocNav: "Doc Navigation",
+      docNavShow: "Show Navigation",
+      docNavHide: "Hide Navigation",
     },
   };
 
   const ICONS = {
-    globe: `
+    settings: `
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <circle cx="12" cy="12" r="9"></circle>
-        <path d="M3 12h18"></path>
-        <path d="M12 3a14 14 0 0 1 0 18"></path>
-        <path d="M12 3a14 14 0 0 0 0 18"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33 1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82 1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    `,
+    slider: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <line x1="5" y1="6.5" x2="19" y2="6.5"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <line x1="5" y1="17.5" x2="19" y2="17.5"></line>
+        <circle cx="9" cy="6.5" r="1.8"></circle>
+        <circle cx="15" cy="12" r="1.8"></circle>
+        <circle cx="11" cy="17.5" r="1.8"></circle>
+      </svg>
+    `,
+    sectionWidth: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="4" y="6" width="16" height="12" rx="2"></rect>
+        <path d="M9 6v12"></path>
+      </svg>
+    `,
+    sectionFont: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 18L10.5 6h3L18 18"></path>
+        <path d="M8 14h8"></path>
+      </svg>
+    `,
+    sectionLang: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="8.5"></circle>
+        <path d="M3.5 12h17"></path>
+        <path d="M12 3.5a14 14 0 0 1 0 17"></path>
+        <path d="M12 3.5a14 14 0 0 0 0 17"></path>
+      </svg>
+    `,
+    sectionTheme: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 3v18"></path>
+        <path d="M12 21a9 9 0 1 0 0-18"></path>
+      </svg>
+    `,
+    sectionDocNav: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+        <path d="M9 4v16"></path>
+      </svg>
+    `,
+    widthStandard: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="6" y="7" width="12" height="10" rx="1.8"></rect>
+      </svg>
+    `,
+    widthFull: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9V4h5"></path>
+        <path d="M20 9V4h-5"></path>
+        <path d="M4 15v5h5"></path>
+        <path d="M20 15v5h-5"></path>
+      </svg>
+    `,
+    fontSmall: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M9 16l2.5-8h1L15 16"></path>
+        <path d="M10 13h4"></path>
+      </svg>
+    `,
+    fontMedium: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M7.5 17l3-10h1L14.5 17"></path>
+        <path d="M8.8 13.5h4.8"></path>
+      </svg>
+    `,
+    fontLarge: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 18l3.5-12h1L15 18"></path>
+        <path d="M7.7 14h5.6"></path>
+      </svg>
+    `,
+    langGlobe: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="8"></circle>
+        <path d="M4 12h16"></path>
       </svg>
     `,
     sun: `
-      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <circle cx="12" cy="12" r="4"></circle>
-        <path d="M12 2v2"></path>
-        <path d="M12 20v2"></path>
-        <path d="M4.93 4.93l1.41 1.41"></path>
-        <path d="M17.66 17.66l1.41 1.41"></path>
-        <path d="M2 12h2"></path>
-        <path d="M20 12h2"></path>
-        <path d="M4.93 19.07l1.41-1.41"></path>
-        <path d="M17.66 6.34l1.41-1.41"></path>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="3.5"></circle>
+        <path d="M12 2.8v2.2"></path>
+        <path d="M12 19v2.2"></path>
+        <path d="M2.8 12h2.2"></path>
+        <path d="M19 12h2.2"></path>
+        <path d="M5.8 5.8l1.6 1.6"></path>
+        <path d="M16.6 16.6l1.6 1.6"></path>
+        <path d="M18.2 5.8l-1.6 1.6"></path>
+        <path d="M7.4 16.6l-1.6 1.6"></path>
       </svg>
     `,
     moon: `
-      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79z"></path>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M19 14.8A7.4 7.4 0 1 1 9.2 5a6 6 0 1 0 9.8 9.8z"></path>
+      </svg>
+    `,
+    docNavOpen: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+        <path d="M9 4v16"></path>
+        <path d="M5.6 8h1"></path>
+        <path d="M5.6 12h1"></path>
+      </svg>
+    `,
+    docNavCollapsed: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+        <path d="M5.6 8h1"></path>
+        <path d="M5.6 12h1"></path>
+        <path d="M5.6 16h1"></path>
       </svg>
     `,
     github: `
@@ -63,8 +187,7 @@
   let i18nPromise;
   let i18nCache;
   let reverseAliasesCache;
-  let themeInited = false;
-  let languageInited = false;
+  let settingsInited = false;
 
   function isString(value) {
     return typeof value === "string";
@@ -83,16 +206,65 @@
     return "";
   }
 
+  function normalizeTheme(value) {
+    const s = String(value || "")
+      .trim()
+      .toLowerCase();
+    if (s === "dark" || s === "light") return s;
+    return "";
+  }
+
+  function normalizePageWidth(value) {
+    const s = String(value || "")
+      .trim()
+      .toLowerCase();
+    if (s === "standard" || s === "full") return s;
+    return "";
+  }
+
+  function normalizeFontSize(value) {
+    const s = String(value || "")
+      .trim()
+      .toLowerCase();
+    if (s === "sm" || s === "md" || s === "lg") return s;
+    return "";
+  }
+
+  function normalizeDocNav(value) {
+    const s = String(value || "")
+      .trim()
+      .toLowerCase();
+    if (s === "open" || s === "collapsed") return s;
+    return "";
+  }
+
   function getUiText(lang) {
     const fallback = UI_TEXT[lang === "en" ? "en" : "zh"];
     return {
       navAria: t("header.navAria", { lang, fallback: fallback.navAria }),
-      themeBtn: t("header.themeBtn", { lang, fallback: fallback.themeBtn }),
-      themeAriaToLight: t("header.themeAriaToLight", { lang, fallback: fallback.themeAriaToLight }),
-      themeAriaToDark: t("header.themeAriaToDark", { lang, fallback: fallback.themeAriaToDark }),
-      langBtn: t("header.langBtn", { lang, fallback: fallback.langBtn }),
-      langAria: t("header.langAria", { lang, fallback: fallback.langAria }),
       tocTitle: t("common.tocTitle", { lang, fallback: fallback.tocTitle }),
+      settingsBtn: t("header.settingsBtn", { lang, fallback: fallback.settingsBtn }),
+      settingsAria: t("header.settingsAria", { lang, fallback: fallback.settingsAria }),
+      settingsPanelTitle: t("header.settingsPanelTitle", {
+        lang,
+        fallback: fallback.settingsPanelTitle,
+      }),
+      sectionWidth: t("header.sectionWidth", { lang, fallback: fallback.sectionWidth }),
+      widthStandard: t("header.widthStandard", { lang, fallback: fallback.widthStandard }),
+      widthFull: t("header.widthFull", { lang, fallback: fallback.widthFull }),
+      sectionFontSize: t("header.sectionFontSize", { lang, fallback: fallback.sectionFontSize }),
+      fontSmall: t("header.fontSmall", { lang, fallback: fallback.fontSmall }),
+      fontMedium: t("header.fontMedium", { lang, fallback: fallback.fontMedium }),
+      fontLarge: t("header.fontLarge", { lang, fallback: fallback.fontLarge }),
+      sectionLanguage: t("header.sectionLanguage", { lang, fallback: fallback.sectionLanguage }),
+      languageZh: t("header.languageZh", { lang, fallback: fallback.languageZh }),
+      languageEn: t("header.languageEn", { lang, fallback: fallback.languageEn }),
+      sectionTheme: t("header.sectionTheme", { lang, fallback: fallback.sectionTheme }),
+      themeLight: t("header.themeLight", { lang, fallback: fallback.themeLight }),
+      themeDark: t("header.themeDark", { lang, fallback: fallback.themeDark }),
+      sectionDocNav: t("header.sectionDocNav", { lang, fallback: fallback.sectionDocNav }),
+      docNavShow: t("header.docNavShow", { lang, fallback: fallback.docNavShow }),
+      docNavHide: t("header.docNavHide", { lang, fallback: fallback.docNavHide }),
     };
   }
 
@@ -212,11 +384,53 @@
   }
 
   function getPreferredTheme() {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") return saved;
+    const saved = normalizeTheme(localStorage.getItem(THEME_KEY));
+    if (saved) return saved;
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
+  }
+
+  function getCurrentTheme() {
+    const active = normalizeTheme(document.documentElement.dataset.theme);
+    if (active) return active;
+    return getPreferredTheme();
+  }
+
+  function getPreferredPageWidth() {
+    const saved = normalizePageWidth(localStorage.getItem(PAGE_WIDTH_KEY));
+    if (saved) return saved;
+    return "standard";
+  }
+
+  function getCurrentPageWidth() {
+    const active = normalizePageWidth(document.documentElement.dataset.pageWidth);
+    if (active) return active;
+    return getPreferredPageWidth();
+  }
+
+  function getPreferredFontSize() {
+    const saved = normalizeFontSize(localStorage.getItem(FONT_SIZE_KEY));
+    if (saved) return saved;
+    return "md";
+  }
+
+  function getCurrentFontSize() {
+    const active = normalizeFontSize(document.documentElement.dataset.fontSize);
+    if (active) return active;
+    return getPreferredFontSize();
+  }
+
+  function getPreferredDocNav() {
+    const saved = normalizeDocNav(localStorage.getItem(DOC_NAV_KEY));
+    if (saved) return saved;
+    return "collapsed";
+  }
+
+  function getCurrentDocNav() {
+    const active = normalizeDocNav(document.body?.dataset.docNav);
+    if (active) return active;
+    return getPreferredDocNav();
   }
 
   function getDefaultLanguage(config) {
@@ -247,26 +461,39 @@
   }
 
   function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem(THEME_KEY, theme);
-    const btn = document.getElementById("theme-toggle");
-    if (btn) {
-      const lang = getCurrentLanguage();
-      const text = getUiText(lang);
-      btn.setAttribute("aria-label", theme === "dark" ? text.themeAriaToLight : text.themeAriaToDark);
-    }
+    const normalized = normalizeTheme(theme) || getPreferredTheme();
+    document.documentElement.dataset.theme = normalized;
+    localStorage.setItem(THEME_KEY, normalized);
+    syncSettingsControls();
+    return normalized;
   }
 
-  function initTheme() {
-    if (themeInited) return;
-    themeInited = true;
-    applyTheme(getPreferredTheme());
-    document.addEventListener("click", (e) => {
-      const target = e.target instanceof Element ? e.target.closest("#theme-toggle") : null;
-      if (!target) return;
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      applyTheme(next);
-    });
+  function applyPageWidth(width) {
+    const normalized = normalizePageWidth(width) || getPreferredPageWidth();
+    document.documentElement.dataset.pageWidth = normalized;
+    localStorage.setItem(PAGE_WIDTH_KEY, normalized);
+    syncSettingsControls();
+    return normalized;
+  }
+
+  function applyFontSize(size) {
+    const normalized = normalizeFontSize(size) || getPreferredFontSize();
+    document.documentElement.dataset.fontSize = normalized;
+    localStorage.setItem(FONT_SIZE_KEY, normalized);
+    syncSettingsControls();
+    return normalized;
+  }
+
+  function applyDocNav(state) {
+    if (document.body?.dataset.layout !== "docs") {
+      document.body?.removeAttribute("data-doc-nav");
+      return "open";
+    }
+    const normalized = normalizeDocNav(state) || getPreferredDocNav();
+    document.body.dataset.docNav = normalized;
+    localStorage.setItem(DOC_NAV_KEY, normalized);
+    syncSettingsControls();
+    return normalized;
   }
 
   function normalizePathname(pathname) {
@@ -398,6 +625,114 @@
     });
   }
 
+  function renderSettingChipIcon(item) {
+    if (isString(item?.icon) && item.icon) {
+      return `<span class="setting-chip-icon" aria-hidden="true">${item.icon}</span>`;
+    }
+    if (isString(item?.mark) && item.mark) {
+      return `<span class="setting-chip-icon setting-chip-mark" aria-hidden="true">${escapeHtml(item.mark)}</span>`;
+    }
+    return "";
+  }
+
+  function renderSettingGroup(setting, label, sectionIcon, options) {
+    return `
+      <section class="page-setting-group">
+        <div class="page-setting-head">
+          <span class="page-setting-icon" aria-hidden="true">${sectionIcon || ""}</span>
+          <span class="page-setting-label">${escapeHtml(label)}</span>
+        </div>
+        <div class="page-setting-options" role="group" aria-label="${escapeAttr(label)}">
+          ${options
+            .map(
+              (item) => `
+                <button
+                  class="setting-chip"
+                  type="button"
+                  data-setting="${escapeAttr(setting)}"
+                  data-value="${escapeAttr(item.value)}"
+                  aria-pressed="false"
+                >
+                  ${renderSettingChipIcon(item)}
+                  <span class="setting-chip-text">${escapeHtml(item.label)}</span>
+                </button>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderSettingsPanel(lang, options = {}) {
+    const opts = isObject(options) ? options : {};
+    const text = getUiText(lang);
+    const withTitle = opts.withTitle !== false;
+    const withDocNav = opts.withDocNav === true;
+
+    const groups = [
+      renderSettingGroup("page-width", text.sectionWidth, ICONS.sectionWidth, [
+        { value: "standard", label: text.widthStandard, icon: ICONS.widthStandard },
+        { value: "full", label: text.widthFull, icon: ICONS.widthFull },
+      ]),
+      renderSettingGroup("font-size", text.sectionFontSize, ICONS.sectionFont, [
+        { value: "sm", label: text.fontSmall, icon: ICONS.fontSmall },
+        { value: "md", label: text.fontMedium, icon: ICONS.fontMedium },
+        { value: "lg", label: text.fontLarge, icon: ICONS.fontLarge },
+      ]),
+      renderSettingGroup("lang", text.sectionLanguage, ICONS.sectionLang, [
+        { value: "zh", label: text.languageZh, mark: "中" },
+        { value: "en", label: text.languageEn, mark: "EN" },
+      ]),
+      renderSettingGroup("theme", text.sectionTheme, ICONS.sectionTheme, [
+        { value: "light", label: text.themeLight, icon: ICONS.sun },
+        { value: "dark", label: text.themeDark, icon: ICONS.moon },
+      ]),
+    ];
+
+    if (withDocNav) {
+      groups.push(
+        renderSettingGroup("doc-nav", text.sectionDocNav, ICONS.sectionDocNav, [
+          { value: "open", label: text.docNavShow, icon: ICONS.docNavOpen },
+          { value: "collapsed", label: text.docNavHide, icon: ICONS.docNavCollapsed },
+        ]),
+      );
+    }
+
+    return `
+      <div class="page-settings apple-settings" data-page-settings>
+        ${
+          withTitle
+            ? `
+          <div class="page-settings-title">
+            <span class="page-settings-title-icon" aria-hidden="true">${ICONS.slider}</span>
+            <span>${escapeHtml(text.settingsPanelTitle)}</span>
+          </div>
+        `
+            : ""
+        }
+        ${groups.join("")}
+      </div>
+    `;
+  }
+
+  function closeSettingsPopover() {
+    const panel = document.getElementById("settings-popover");
+    const btn = document.getElementById("settings-toggle");
+    if (!panel || !btn) return;
+    panel.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleSettingsPopover(forceOpen) {
+    const panel = document.getElementById("settings-popover");
+    const btn = document.getElementById("settings-toggle");
+    if (!panel || !btn) return;
+    const open = typeof forceOpen === "boolean" ? forceOpen : panel.hidden;
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
   function renderHeader(config, lang) {
     const header = document.getElementById("site-header");
     if (!header) return;
@@ -405,7 +740,7 @@
     const navItems = getLocalizedList(config.nav, lang);
     const text = getUiText(lang);
     const siteTitle = getLocalizedValue(config?.site?.title, lang) || "LocoWiki";
-    const langShort = lang === "en" ? "中" : "EN";
+    const isDocsLayout = document.body?.dataset.layout === "docs";
     header.className = "topbar";
     header.innerHTML = `
       <div class="topbar-inner">
@@ -415,29 +750,30 @@
         </a>
         <nav class="nav" aria-label="${escapeAttr(text.navAria)}">
           ${navItems
-            .map(
-              (it) => {
-                const title = getLocalizedValue(it?.title, lang);
-                const href = getLocalizedValue(it?.href, lang);
-                return `<a data-nav href="${escapeAttr(href)}">${escapeHtml(title)}</a>`;
-              },
-            )
+            .map((it) => {
+              const title = getLocalizedValue(it?.title, lang);
+              const href = getLocalizedValue(it?.href, lang);
+              return `<a data-nav href="${escapeAttr(href)}">${escapeHtml(title)}</a>`;
+            })
             .join("")}
         </nav>
         <div class="topbar-actions">
-          <button
-            class="icon-btn icon-only"
-            id="lang-toggle"
-            type="button"
-            aria-label="${escapeAttr(text.langAria)}"
-            title="${escapeAttr(text.langBtn)}"
-          >
-            <span class="lang-short">${escapeHtml(langShort)}</span>
-          </button>
-          <button class="icon-btn icon-only" id="theme-toggle" type="button" aria-label="${escapeAttr(text.themeAriaToDark)}">
-            ${ICONS.sun}
-            ${ICONS.moon}
-          </button>
+          <div class="settings-menu">
+            <button
+              class="icon-btn icon-only"
+              id="settings-toggle"
+              type="button"
+              aria-label="${escapeAttr(text.settingsAria)}"
+              title="${escapeAttr(text.settingsBtn)}"
+              aria-expanded="false"
+              aria-controls="settings-popover"
+            >
+              ${ICONS.settings}
+            </button>
+            <div id="settings-popover" class="settings-popover" hidden>
+              ${renderSettingsPanel(lang, { withDocNav: isDocsLayout })}
+            </div>
+          </div>
           <a
             id="github-link"
             class="icon-btn icon-only"
@@ -499,11 +835,12 @@
   }
 
   function updateTocTitle(lang) {
-    const tocTitle = document.querySelector(".toc .toc-title");
-    if (!tocTitle) return;
-    tocTitle.textContent = t("common.tocTitle", {
-      lang,
-      fallback: getUiText(lang).tocTitle,
+    const titles = document.querySelectorAll(".toc .toc-title");
+    titles.forEach((tocTitle) => {
+      tocTitle.textContent = t("common.tocTitle", {
+        lang,
+        fallback: getUiText(lang).tocTitle,
+      });
     });
   }
 
@@ -519,6 +856,32 @@
     });
   }
 
+  function syncSettingsControls() {
+    const current = {
+      "page-width": getCurrentPageWidth(),
+      "font-size": getCurrentFontSize(),
+      lang: getCurrentLanguage(),
+      theme: getCurrentTheme(),
+      "doc-nav": getCurrentDocNav(),
+    };
+
+    const chips = document.querySelectorAll(".setting-chip[data-setting][data-value]");
+    chips.forEach((chip) => {
+      const setting = chip.getAttribute("data-setting") || "";
+      const value = chip.getAttribute("data-value") || "";
+      const active = current[setting] === value;
+      chip.dataset.active = active ? "true" : "false";
+      chip.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    const text = getUiText(getCurrentLanguage());
+    const toggle = document.getElementById("settings-toggle");
+    if (toggle) {
+      toggle.setAttribute("title", text.settingsBtn);
+      toggle.setAttribute("aria-label", text.settingsAria);
+    }
+  }
+
   function setLanguage(lang, config, options = {}) {
     reverseAliasesCache = null;
     const normalized = applyLanguage(lang);
@@ -532,7 +895,7 @@
     highlightActiveDocLink(config, normalized);
     rewriteDocLinksForLanguage(normalized, config);
     applyI18n(document, normalized);
-    applyTheme(getPreferredTheme());
+    syncSettingsControls();
     if (options.emitEvent !== false) {
       window.dispatchEvent(
         new CustomEvent("locowiki:languagechange", {
@@ -543,15 +906,63 @@
     return normalized;
   }
 
-  function initLanguage(config) {
-    if (languageInited) return;
-    languageInited = true;
+  function isEditableElement(el) {
+    if (!(el instanceof Element)) return false;
+    if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
+      return true;
+    }
+    return el.isContentEditable;
+  }
+
+  function initSettings(config) {
+    if (settingsInited) return;
+    settingsInited = true;
+
     document.addEventListener("click", (e) => {
-      const target = e.target instanceof Element ? e.target.closest("#lang-toggle") : null;
+      const target = e.target instanceof Element ? e.target : null;
       if (!target) return;
-      const current = getCurrentLanguage(config);
-      const next = current === "en" ? "zh" : "en";
-      setLanguage(next, config);
+
+      const settingsToggle = target.closest("#settings-toggle");
+      if (settingsToggle) {
+        toggleSettingsPopover();
+        return;
+      }
+
+      const option = target.closest(".setting-chip[data-setting][data-value]");
+      if (option) {
+        const setting = option.getAttribute("data-setting") || "";
+        const value = option.getAttribute("data-value") || "";
+
+        if (setting === "theme") {
+          applyTheme(value);
+        } else if (setting === "lang") {
+          setLanguage(value, config);
+          return;
+        } else if (setting === "page-width") {
+          applyPageWidth(value);
+        } else if (setting === "font-size") {
+          applyFontSize(value);
+        } else if (setting === "doc-nav") {
+          applyDocNav(value);
+        }
+
+        syncSettingsControls();
+        return;
+      }
+
+      if (!target.closest(".settings-menu")) {
+        closeSettingsPopover();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSettingsPopover();
+      if (document.body?.dataset.layout !== "docs") return;
+      if (isEditableElement(e.target)) return;
+      if (e.key !== "h" && e.key !== "H") return;
+      e.preventDefault();
+      const next = getCurrentDocNav() === "collapsed" ? "open" : "collapsed";
+      applyDocNav(next);
     });
   }
 
@@ -570,10 +981,13 @@
 
   async function init() {
     const [config] = await Promise.all([getConfig(), getI18n()]);
+    applyTheme(getPreferredTheme());
+    applyPageWidth(getPreferredPageWidth());
+    applyFontSize(getPreferredFontSize());
+    applyDocNav(getPreferredDocNav());
     const lang = getPreferredLanguage(config);
     setLanguage(lang, config, { syncDocPath: false });
-    initTheme();
-    initLanguage(config);
+    initSettings(config);
   }
 
   const siteApi = {
@@ -592,9 +1006,14 @@
     init().catch((err) => {
       // Keep the site usable even if config load fails.
       console.error(err);
+      applyTheme(getPreferredTheme());
+      applyPageWidth(getPreferredPageWidth());
+      applyFontSize(getPreferredFontSize());
+      applyDocNav(getPreferredDocNav());
       const lang = applyLanguage(getPreferredLanguage());
       applyI18n(document, lang);
-      initTheme();
+      syncSettingsControls();
+      initSettings({});
     });
   });
 })();
