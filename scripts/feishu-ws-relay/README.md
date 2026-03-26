@@ -73,7 +73,7 @@ npm run start:env
 1. 在飞书触发一次已订阅事件
 2. 查看 GitHub Actions 是否出现 `Feishu Wiki Sync`
 3. 查看 `assets/feishu-sync-status.json` 是否更新
-4. 打开飞书知识库页面 `feishu-wiki.html` 查看“飞书同步状态”
+4. 打开飞书知识库页面 `docs.html?path=__feishu_wiki__` 查看“飞书同步状态”
 
 ## 6) 常见问题
 
