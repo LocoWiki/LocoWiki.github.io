@@ -25,6 +25,40 @@
     },
   };
 
+  const ICONS = {
+    globe: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M3 12h18"></path>
+        <path d="M12 3a14 14 0 0 1 0 18"></path>
+        <path d="M12 3a14 14 0 0 0 0 18"></path>
+      </svg>
+    `,
+    sun: `
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="M4.93 4.93l1.41 1.41"></path>
+        <path d="M17.66 17.66l1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="M4.93 19.07l1.41-1.41"></path>
+        <path d="M17.66 6.34l1.41-1.41"></path>
+      </svg>
+    `,
+    moon: `
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79z"></path>
+      </svg>
+    `,
+    github: `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.5-4-1.5a3.2 3.2 0 0 0-1.3-1.8c-1.1-.8.1-.8.1-.8a2.5 2.5 0 0 1 1.8 1.2 2.6 2.6 0 0 0 3.6 1 2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-6a4.8 4.8 0 0 1 1.2-3.2 4.5 4.5 0 0 1 .1-3.1s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2a4.5 4.5 0 0 1 .1 3.1 4.8 4.8 0 0 1 1.3 3.2c0 4.7-2.8 5.7-5.5 6 .5.4.9 1.2.9 2.4v3.5c0 .4.2.7.8.6A12 12 0 0 0 12 .5z"></path>
+      </svg>
+    `,
+  };
+
   let configPromise;
   let i18nPromise;
   let i18nCache;
@@ -371,8 +405,7 @@
     const navItems = getLocalizedList(config.nav, lang);
     const text = getUiText(lang);
     const siteTitle = getLocalizedValue(config?.site?.title, lang) || "LocoWiki";
-    const langShort = lang === "zh" ? "EN" : "中";
-
+    const langShort = lang === "en" ? "中" : "EN";
     header.className = "topbar";
     header.innerHTML = `
       <div class="topbar-inner">
@@ -380,7 +413,6 @@
           <img src="assets/img/icon.svg" alt="" />
           <span>${escapeHtml(siteTitle)}</span>
         </a>
-        <div class="spacer"></div>
         <nav class="nav" aria-label="${escapeAttr(text.navAria)}">
           ${navItems
             .map(
@@ -392,19 +424,32 @@
             )
             .join("")}
         </nav>
-        <button class="icon-btn" id="lang-toggle" type="button" aria-label="${escapeAttr(text.langAria)}">
-          <span class="kdb">${langShort}</span>
-          <span>${escapeHtml(text.langBtn)}</span>
-        </button>
-        <button class="icon-btn" id="theme-toggle" type="button" aria-label="${escapeAttr(text.themeAriaToDark)}">
-          <span class="kdb">T</span>
-          <span>${escapeHtml(text.themeBtn)}</span>
-        </button>
-        <a id="github-link" class="icon-btn" href="${escapeAttr(
-          config?.links?.repo || "#",
-        )}" target="_blank" rel="noopener noreferrer">
-          <span class="kdb">GitHub</span>
-        </a>
+        <div class="topbar-actions">
+          <button
+            class="icon-btn icon-only"
+            id="lang-toggle"
+            type="button"
+            aria-label="${escapeAttr(text.langAria)}"
+            title="${escapeAttr(text.langBtn)}"
+          >
+            <span class="lang-short">${escapeHtml(langShort)}</span>
+          </button>
+          <button class="icon-btn icon-only" id="theme-toggle" type="button" aria-label="${escapeAttr(text.themeAriaToDark)}">
+            ${ICONS.sun}
+            ${ICONS.moon}
+          </button>
+          <a
+            id="github-link"
+            class="icon-btn icon-only"
+            href="${escapeAttr(config?.links?.repo || "#")}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            ${ICONS.github}
+          </a>
+        </div>
       </div>
     `;
 

@@ -125,6 +125,8 @@
     await loadSyncStatus(syncStatusUrl);
   }
 
+  window.LocoWikiFeishuWiki = { init };
+
   function bootstrap() {
     init().catch((err) => {
       console.error(err);
