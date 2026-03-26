@@ -9,6 +9,6 @@
 
 ## 使用原则
 
-- 面向访客的信息放在前台页面（`index.html/about.html/downloads.html/feishu-wiki.html`）
+- 面向访客的信息放在前台页面（`index.html/about.html/downloads.html/docs.html?path=__feishu_wiki__`）
 - 面向维护者的操作说明统一放到本目录
 - 根目录 `README.md` 只保留项目总览与入口，技术细节通过链接跳转到本目录

@@ -10,7 +10,7 @@
 2. Cloudflare Worker 收到请求并调用 GitHub `repository_dispatch`
 3. 工作流 `.github/workflows/feishu-wiki-sync.yml` 执行
 4. 脚本 `scripts/update-feishu-sync-status.mjs` 写入状态 JSON
-5. 飞书知识库页面 `feishu-wiki.html` 显示最新同步时间与来源
+5. 飞书知识库页面 `docs.html?path=__feishu_wiki__` 显示最新同步时间与来源
 
 ## 0. 先做环境自检
 
@@ -170,7 +170,7 @@ curl -X POST "<WORKER_URL>" \
 
 访问站点：
 
-- 飞书知识库页面：`feishu-wiki.html`
+- 飞书知识库页面：`docs.html?path=__feishu_wiki__`
 
 确认页面上的“Webhook 同步状态”已更新。
 

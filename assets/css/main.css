@@ -87,7 +87,8 @@ a:hover {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--container-pad);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 14px;
 }
@@ -98,6 +99,7 @@ a:hover {
   gap: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
+  justify-self: start;
 }
 
 .brand img {
@@ -108,14 +110,13 @@ a:hover {
   background: var(--bg-elev);
 }
 
-.spacer {
-  flex: 1;
-}
-
 .nav {
   display: flex;
+  justify-self: center;
+  justify-content: center;
   gap: 4px;
   align-items: center;
+  min-width: 0;
 }
 
 .nav a {
@@ -151,6 +152,62 @@ a:hover {
 
 .icon-btn:hover {
   filter: brightness(1.02);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-only {
+  width: 36px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+
+.lang-short {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.topbar-actions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#github-link svg {
+  stroke: none;
+}
+
+#github-link svg path {
+  fill: currentColor;
+}
+
+#theme-toggle .icon-sun {
+  display: none;
+}
+
+#theme-toggle .icon-moon {
+  display: block;
+}
+
+html[data-theme="dark"] #theme-toggle .icon-sun {
+  display: block;
+}
+
+html[data-theme="dark"] #theme-toggle .icon-moon {
+  display: none;
 }
 
 .layout {
@@ -263,6 +320,14 @@ body[data-layout="landing"] .toc {
 
 .hero {
   padding: 34px 0 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.hero-main {
+  min-width: 0;
 }
 
 .hero h1 {
@@ -288,19 +353,21 @@ body[data-layout="landing"] .toc {
 }
 
 .hero-banner {
-  margin-top: 18px;
-  border: 1px solid var(--border);
+  margin-top: 0;
+  border: 0;
   border-radius: var(--radius);
-  background: var(--bg-elev);
-  padding: 10px;
+  background: transparent;
+  padding: 0;
 }
 
 .hero-banner img {
   display: block;
   width: 100%;
+  max-width: 600px;
   height: auto;
+  margin: 0 auto;
   border-radius: calc(var(--radius) - 6px);
-  border: 1px solid var(--border);
+  border: 0;
   background: var(--bg);
 }
 
@@ -556,6 +623,15 @@ body[data-layout="landing"] .toc {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .hero-banner {
+    margin-top: 2px;
+  }
+
   .sidebar,
   .toc {
     display: none;
@@ -576,16 +652,17 @@ body[data-layout="landing"] .toc {
   }
 
   .topbar-inner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
     gap: 10px;
   }
 
-  .spacer {
+  .brand span {
     display: none;
   }
 
   .nav {
-    flex: 1;
-    min-width: 0;
+    justify-self: stretch;
+    justify-content: flex-start;
     overflow-x: auto;
     scrollbar-width: none;
   }
@@ -599,19 +676,7 @@ body[data-layout="landing"] .toc {
     white-space: nowrap;
   }
 
-  .icon-btn {
-    padding: 0 8px;
-  }
-
-  #theme-toggle span:last-child {
-    display: none;
-  }
-
-  #lang-toggle span:last-child {
-    display: none;
-  }
-
-  #github-link {
-    display: none;
+  .topbar-actions {
+    gap: 6px;
   }
 }
