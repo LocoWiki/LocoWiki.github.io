@@ -209,7 +209,7 @@
     "readmydock": {
       "pageTitle": "LocoWiki · 页面迁移",
       "movedPrefix": "页面已迁移至",
-      "movedLink": "feishu-wiki.html"
+      "movedLink": "docs.html?path=__feishu_wiki__"
     }
   },
   "en": {
@@ -422,7 +422,7 @@
     "readmydock": {
       "pageTitle": "LocoWiki · Page Moved",
       "movedPrefix": "This page has moved to",
-      "movedLink": "feishu-wiki.html"
+      "movedLink": "docs.html?path=__feishu_wiki__"
     }
   }
 }

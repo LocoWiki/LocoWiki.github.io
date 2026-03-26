@@ -8,7 +8,7 @@
 2. relay 将事件转发到 GitHub `repository_dispatch`（`feishu_wiki_sync`）
 3. 工作流 `.github/workflows/feishu-wiki-sync.yml` 执行
 4. 脚本 `scripts/update-feishu-sync-status.mjs` 更新 `assets/feishu-sync-status.json`
-5. 前台页面 `feishu-wiki.html` 读取并展示最近同步状态（旧地址 `readmydock.html` 可兼容跳转）
+5. 前台页面 `docs.html?path=__feishu_wiki__` 读取并展示最近同步状态（旧地址 `feishu-wiki.html` / `readmydock.html` 可兼容跳转）
 
 ## 2. 工作流与脚本
 
