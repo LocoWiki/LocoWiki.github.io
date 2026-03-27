@@ -386,9 +386,7 @@
   function getPreferredTheme() {
     const saved = normalizeTheme(localStorage.getItem(THEME_KEY));
     if (saved) return saved;
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return "light";
   }
 
   function getCurrentTheme() {

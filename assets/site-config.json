@@ -52,7 +52,7 @@
           { "title": "论文学习清单", "path": "reading-list/README.md" },
           { "title": "推荐网络项目", "path": "network-open-source/README.md" },
           { "title": "维护脚本", "path": "scripts/README.md" },
-          { "title": "飞书 Wiki", "path": "__feishu_wiki__" }
+          { "title": "【重要】飞书 Wiki", "path": "__feishu_wiki__" }
         ]
       }
     ],
