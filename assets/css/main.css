@@ -434,112 +434,6 @@ html[data-theme="dark"] .setting-chip[data-active="true"] {
   min-height: calc(100vh - var(--topbar-h));
 }
 
-body[data-layout="landing"] .layout {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-body[data-layout="docs"][data-doc-nav="collapsed"] .layout {
-  grid-template-columns: minmax(0, 1fr) var(--toc-w);
-}
-
-body[data-layout="docs"][data-doc-nav="collapsed"] .sidebar {
-  display: none;
-}
-
-.sidebar {
-  position: sticky;
-  top: calc(var(--topbar-h) + 14px);
-  align-self: start;
-  height: calc(100vh - var(--topbar-h) - 28px);
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-elev);
-  padding: 14px;
-}
-
-body[data-layout="landing"] .sidebar {
-  display: none;
-}
-
-.sidebar h3 {
-  margin: 10px 0 8px;
-  font-size: calc(12px * var(--ui-font-scale));
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-}
-
-.sidebar a {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 10px;
-  color: var(--text);
-  opacity: 0.9;
-  text-decoration: none;
-}
-
-.sidebar a:hover {
-  background: var(--hover);
-  text-decoration: none;
-}
-
-.sidebar a[data-active="true"] {
-  background: color-mix(in srgb, var(--link) 12%, var(--bg) 88%);
-  border: 1px solid color-mix(in srgb, var(--link) 22%, var(--border));
-  opacity: 1;
-}
-
-.content {
-  padding: 18px 0 40px;
-  min-width: 0;
-}
-
-.content h1,
-.content h2,
-.content h3,
-.content h4 {
-  scroll-margin-top: calc(var(--topbar-h) + 18px);
-}
-
-.toc {
-  position: sticky;
-  top: calc(var(--topbar-h) + 14px);
-  align-self: start;
-  height: calc(100vh - var(--topbar-h) - 28px);
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-elev);
-  padding: 14px;
-}
-
-body[data-layout="landing"] .toc {
-  display: none;
-}
-
-.toc .toc-title {
-  font-size: calc(12px * var(--ui-font-scale));
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-  margin: 0 0 8px;
-}
-
-.toc a {
-  display: block;
-  padding: 6px 8px;
-  border-radius: 10px;
-  color: var(--text);
-  opacity: 0.84;
-  text-decoration: none;
-}
-
-.toc a:hover {
-  background: var(--hover);
-  text-decoration: none;
-}
-
 .hero {
   padding: 34px 0 10px;
   display: grid;
@@ -905,3 +799,5 @@ body[data-layout="landing"] .toc {
     gap: 6px;
   }
 }
+
+/* Refactored shell and page-layer styles now live in assets/css/site-shell.css. */
