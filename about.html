@@ -7,6 +7,7 @@
     <title data-i18n="about.pageTitle">LocoWiki · 关于</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
   <body data-layout="docs">
@@ -16,35 +17,123 @@
       <aside id="site-sidebar"></aside>
 
       <main class="content">
-        <article class="md">
+        <section class="page-hero">
+          <nav class="doc-breadcrumbs" aria-label="Breadcrumb">
+            <a href="index.html">主页</a>
+            <span class="doc-breadcrumbs-sep">/</span>
+            <span>关于</span>
+          </nav>
           <h1 data-i18n="about.heading">关于本站</h1>
-          <p>
+          <div class="doc-page-meta">
+            <span class="doc-page-meta-item">2026/4/15</span>
+          </div>
+          <p class="page-lead">
             <span data-i18n="about.introPrefix">这是一个用于展示</span><a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer">LocoWiki</a><span data-i18n-html="about.introSuffix">资源仓库的静态站点，使用 GitHub Pages（<code>github.io</code>）托管。</span>
           </p>
+        </section>
 
-          <h2 data-i18n="about.designTitle">站点设计</h2>
-          <ul>
-            <li data-i18n="about.designItem1">首页：按模块快速入口（规则 / 分享 / 论文学习清单 / 推荐网络项目）。</li>
-            <li data-i18n="about.designItem2">文档页：通过浏览器实时拉取源仓库的 Markdown 并渲染成文档风格页面。</li>
-            <li data-i18n="about.designItem3">下载页：提供整仓 ZIP、克隆命令、以及按模块获取的入口。</li>
-            <li data-i18n="about.designItem4">飞书知识库：站内内嵌浏览知识库内容，并展示最近同步状态。</li>
-          </ul>
+        <section class="page-summary-grid" aria-label="About Highlights">
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="about.highlights.layersLabel">页面职责</span>
+            <strong class="metric-value" data-i18n="about.highlights.layersValue">3 层结构</strong>
+            <p data-i18n="about.highlights.layersDesc">首页、内容页、文档页分别处理导航、说明和持续阅读。</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="about.highlights.flowLabel">内容流</span>
+            <strong class="metric-value" data-i18n="about.highlights.flowValue">Docs First</strong>
+            <p data-i18n="about.highlights.flowDesc">资料入口最终都回收到仓库 Markdown 与 Wiki 文档流里。</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="about.highlights.sourceLabel">数据来源</span>
+            <strong class="metric-value" data-i18n="about.highlights.sourceValue">GitHub 单一源</strong>
+            <p data-i18n="about.highlights.sourceDesc">页面展示层和资料源分离，不会改变仓库原有内容组织。</p>
+          </article>
+        </section>
 
-          <h2 data-i18n="about.copyrightTitle">内容来源与版权</h2>
-          <p data-i18n="about.copyrightBody">
-            本站仅做“索引与展示”。仓库中收录的 PDF/PPT/外链等资料，其版权与署名权归原作者/原发布方所有。 如有侵权或不当公开，请在源仓库提交 Issue 以便及时处理。
-          </p>
+        <section id="contributors" class="section-shell">
+          <div class="section-head">
+            <p class="section-kicker">Contributors</p>
+            <h2 class="section-title" data-i18n="contributors.overviewTitle">贡献概览</h2>
+            <p class="section-desc" data-i18n="contributors.overviewDesc">这里展示的是仓库级贡献者数据，用来帮助你快速识别当前维护者和活跃贡献情况。</p>
+          </div>
+          <div id="contributors-meta" class="sync-meta" data-i18n="contributors.loadingMeta">正在加载贡献者数据…</div>
+          <article class="contributors-page surface-panel">
+            <h3 data-i18n="contributors.listTitle">Contributors</h3>
+            <p data-i18n="contributors.listHint">按贡献次数排序展示，点击卡片可跳转到对应 GitHub 主页。</p>
+            <div id="contributors-list" class="contributors-grid" aria-live="polite">
+              <div class="contributor-empty" data-i18n="contributors.loadingList">正在加载贡献者列表…</div>
+            </div>
+          </article>
+        </section>
 
-          <h2 data-i18n="about.faqTitle">常见问题</h2>
-          <ul>
-            <li>
-              <strong data-i18n="about.faqDocQ">文档加载失败？</strong>：<span data-i18n-html="about.faqDocA">文档页需要访问 <code>raw.githubusercontent.com</code>。若网络受限，请直接打开 GitHub 页面或使用镜像/代理。</span>
-            </li>
-            <li>
-              <strong data-i18n="about.faqDownloadQ">资源下载慢？</strong>：<span data-i18n-html="about.faqDownloadA">优先使用 <code>git clone</code>（或国内镜像），大文件建议启用 Git LFS。</span>
-            </li>
-          </ul>
-        </article>
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">Contribute</p>
+            <h2 class="section-title" data-i18n="contributors.guideTitle">如何参与维护</h2>
+            <p class="section-desc" data-i18n="contributors.guideDesc">如果你要继续参与，不一定非得先改代码；整理资料和指出结构问题同样重要。</p>
+          </div>
+          <div class="cards contributors-guide-grid">
+            <article class="card info-card">
+              <h3 data-i18n="contributors.guide.issueTitle">提 Issue</h3>
+              <p data-i18n="contributors.guide.issueDesc">当你发现失效链接、资料归类问题、页面结构缺陷或同步异常时，优先提 Issue。</p>
+              <a href="https://github.com/LocoWiki/LocoWiki/issues" target="_blank" rel="noopener noreferrer" data-i18n="contributors.guide.issueLink">打开 Issue</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="contributors.guide.prTitle">提交 PR</h3>
+              <p data-i18n="contributors.guide.prDesc">如果你已经修好文档、脚本或页面内容，可以直接提交 Pull Request 合并更改。</p>
+              <a href="https://github.com/LocoWiki/LocoWiki/compare" target="_blank" rel="noopener noreferrer" data-i18n="contributors.guide.prLink">准备 PR</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="contributors.guide.communityTitle">加入社群</h3>
+              <p data-i18n="contributors.guide.communityDesc">对资料征集、比赛规则、论文整理和维护计划有想法时，可以先在交流群里对齐。</p>
+              <a href="https://qm.qq.com/q/5uVf2sWJvq" target="_blank" rel="noopener noreferrer" data-i18n="contributors.guide.communityLink">加入交流群</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">Policy</p>
+            <h2 class="section-title" data-i18n="about.copyrightTitle">内容来源与版权</h2>
+          </div>
+          <div class="page-callout">
+            <p data-i18n="about.copyrightBody">本站仅做“索引与展示”。仓库中收录的 PDF/PPT/外链等资料，其版权与署名权归原作者/原发布方所有。 如有侵权或不当公开，请在源仓库提交 Issue 以便及时处理。</p>
+          </div>
+        </section>
+
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">FAQ</p>
+            <h2 class="section-title" data-i18n="about.faqTitle">常见问题</h2>
+            <p class="section-desc" data-i18n="about.faqDesc">当前最容易遇到的问题主要来自网络访问、下载方式和旧飞书内嵌路径的历史兼容。</p>
+          </div>
+          <div class="cards faq-grid">
+            <article class="card faq-card">
+              <h3 data-i18n="about.faqDocQ">文档加载失败？</h3>
+              <p data-i18n-html="about.faqDocA">文档页需要访问 <code>raw.githubusercontent.com</code>。若网络受限，请直接打开 GitHub 页面或使用镜像/代理。</p>
+            </article>
+            <article class="card faq-card">
+              <h3 data-i18n="about.faqDownloadQ">资源下载慢？</h3>
+              <p data-i18n-html="about.faqDownloadA">优先使用 <code>git clone</code>（或国内镜像），大文件建议启用 Git LFS。</p>
+            </article>
+            <article class="card faq-card">
+              <h3 data-i18n="about.faqWikiQ">为什么不再强调飞书内嵌？</h3>
+              <p data-i18n="about.faqWikiA">因为第三方内嵌受登录态、跨域策略和浏览器限制影响太大，现在统一以同步后的仓库文档作为站内阅读入口。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="page-cta surface-panel">
+          <div class="page-cta-copy">
+            <p class="page-kicker">Next</p>
+            <h2 data-i18n="about.ctaTitle">继续从文档入口进入</h2>
+            <p data-i18n="about.ctaDesc">如果你已经理解站点结构，下一步应该直接从文档流阅读，而不是在说明页里来回跳。</p>
+          </div>
+          <div class="page-cta-actions">
+            <a class="btn primary" href="quickstart.html?path=README.md" data-i18n="about.ctaDocs">打开文档中心</a>
+            <a class="btn" href="https://github.com/LocoWiki/LocoWiki/issues" target="_blank" rel="noopener noreferrer" data-i18n="about.ctaIssues">反馈结构问题</a>
+          </div>
+        </section>
       </main>
 
       <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
@@ -56,6 +145,7 @@
     <footer id="site-footer"></footer>
 
     <script src="assets/js/site.js" defer></script>
+    <script src="assets/js/contributors.js" defer></script>
     <script src="assets/js/page-toc.js" defer></script>
   </body>
 </html>

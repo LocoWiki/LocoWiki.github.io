@@ -28,46 +28,52 @@
   "nav": {
     "zh": [
       { "title": "首页", "href": "index.html" },
-      { "title": "文档", "href": "docs.html?path=README.md" },
+      { "title": "快速上手", "href": "quickstart.html?path=README.md" },
+      { "title": "文档", "href": "docs.html?path=wiki/【必读】LocoWiki介绍.md" },
       { "title": "资源下载", "href": "downloads.html" },
-      { "title": "贡献者", "href": "contributors.html" },
       { "title": "关于", "href": "about.html" }
     ],
     "en": [
       { "title": "Home", "href": "index.html" },
-      { "title": "Docs", "href": "docs.html?path=README.en.md" },
+      { "title": "Quick Start", "href": "quickstart.html?path=README.en.md" },
+      { "title": "Docs", "href": "docs.html?path=wiki/【必读】LocoWiki介绍.md" },
       { "title": "Downloads", "href": "downloads.html" },
-      { "title": "Contributors", "href": "contributors.html" },
       { "title": "About", "href": "about.html" }
     ]
   },
   "sidebar": {
     "zh": [
       {
-        "title": "文档快速导航",
+        "title": "快速上手",
         "items": [
           { "title": "总览", "path": "README.md" },
           { "title": "比赛规则", "path": "competition-rules/README.md" },
           { "title": "技术分享", "path": "technical-sharing/README.md" },
           { "title": "论文学习清单", "path": "reading-list/README.md" },
           { "title": "推荐网络项目", "path": "network-open-source/README.md" },
-          { "title": "维护脚本", "path": "scripts/README.md" },
-          { "title": "【重要】飞书 Wiki", "path": "__feishu_wiki__" }
+          { "title": "维护脚本", "path": "scripts/README.md" }
         ]
+      },
+      {
+        "title": "文档",
+        "items": [{ "title": "LocoWiki 知识库", "path": "wiki/【必读】LocoWiki介绍.md" }]
       }
     ],
     "en": [
       {
-        "title": "Docs Quick Navigation",
+        "title": "Quick Start",
         "items": [
           { "title": "Overview", "path": "README.en.md" },
           { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
           { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
           { "title": "Paper Study Hub", "path": "reading-list/README.en.md" },
           { "title": "Web Open-Source Projects", "path": "network-open-source/README.en.md" },
-          { "title": "Maintenance Scripts", "path": "scripts/README.en.md" },
-          { "title": "Feishu Wiki", "path": "__feishu_wiki__" }
+          { "title": "Maintenance Scripts", "path": "scripts/README.en.md" }
         ]
+      },
+      {
+        "title": "Documentation",
+        "items": [{ "title": "LocoWiki Wiki", "path": "wiki/【必读】LocoWiki介绍.md" }]
       }
     ]
   },
@@ -81,6 +87,8 @@
   },
   "integrations": {
     "feishuWiki": {
+      "entryDocPath": "wiki/【必读】LocoWiki介绍.md",
+      "manifestPath": "wiki/_manifest.json",
       "syncStatusUrl": "assets/feishu-sync-status.json",
       "dispatchEventType": "feishu_wiki_sync"
     }

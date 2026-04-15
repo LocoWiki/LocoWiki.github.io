@@ -15,7 +15,7 @@ LocoWiki 的静态展示站点仓库（GitHub Pages）。
 - 首页：`index.html`
 - 文档页：`docs.html?path=README.md`
 - 下载页：`downloads.html`
-- 飞书知识库：`docs.html?path=__feishu_wiki__`（兼容旧地址 `feishu-wiki.html` / `readmydock.html`）
+- 飞书知识库：`docs.html?path=__feishu_wiki__`（当前会映射到源仓库 `wiki/` 目录入口文档，兼容旧地址 `feishu-wiki.html` / `readmydock.html`）
 - 关于页：`about.html`
 
 ## 目录说明
@@ -37,13 +37,16 @@ LocoWiki 的静态展示站点仓库（GitHub Pages）。
 
 ## 飞书知识库同步
 
-前台仅展示“最近同步时间与简要说明”。
+飞书内容建议同步导出到源仓库 `wiki/` 目录，前台继续按 Markdown 文档方式渲染。
+
+建议同时在源仓库生成 `wiki/_manifest.json`，前端会优先读取它来渲染知识库文档导航；若缺失则退回站点内的静态入口。
 
 详细维护文档见：
 
 - `docs/feishu-sync.md`
 - `scripts/feishu-ws-relay/README.md`
 - `scripts/feishu-webhook-relay/README.md`
+- `scripts/generate-wiki-manifest.mjs`
 
 相关文件：
 
@@ -54,7 +57,7 @@ LocoWiki 的静态展示站点仓库（GitHub Pages）。
 ## 本地预览
 
 可在仓库根目录启动本地静态服务：
-
+ 1000 行小很多，
 ```bash
 python3 -m http.server 8080
 ```

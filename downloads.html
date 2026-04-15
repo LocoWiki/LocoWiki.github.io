@@ -7,6 +7,7 @@
     <title data-i18n="downloads.pageTitle">LocoWiki · 资源下载</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
   <body data-layout="docs">
@@ -16,32 +17,129 @@
       <aside id="site-sidebar"></aside>
 
       <main class="content">
-        <article class="md">
+        <section class="page-hero">
+          <nav class="doc-breadcrumbs" aria-label="Breadcrumb">
+            <a href="index.html">主页</a>
+            <span class="doc-breadcrumbs-sep">/</span>
+            <span>资源下载</span>
+          </nav>
           <h1 data-i18n="downloads.heading">资源下载与获取</h1>
-          <p>
+          <div class="doc-page-meta">
+            <span class="doc-page-meta-item">2026/4/15</span>
+          </div>
+          <p class="page-lead">
             <span data-i18n="downloads.introPrefix">本站不重复存储资源文件；所有 PDF / PPT / 脚本均来源于</span><a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer">LocoWiki 仓库</a><span data-i18n="downloads.introSuffix">。你可以按需：整仓下载、克隆、或在文档页直接点文件名下载。</span>
           </p>
+        </section>
 
+        <section class="page-summary-grid" aria-label="Download Highlights">
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="downloads.highlights.zipLabel">最快方式</span>
+            <strong class="metric-value" data-i18n="downloads.highlights.zipValue">ZIP 下载</strong>
+            <p data-i18n="downloads.highlights.zipDesc">适合快速浏览和离线查阅，不需要 Git 环境。</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="downloads.highlights.cloneLabel">持续同步</span>
+            <strong class="metric-value" data-i18n="downloads.highlights.cloneValue">Git Clone</strong>
+            <p data-i18n="downloads.highlights.cloneDesc">适合长期维护、增量拉取和参与贡献。</p>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label" data-i18n="downloads.highlights.docsLabel">站内获取</span>
+            <strong class="metric-value" data-i18n="downloads.highlights.docsValue">文档直达</strong>
+            <p data-i18n="downloads.highlights.docsDesc">大部分资源都能先在文档页定位，再决定下载或跳仓库。</p>
+          </article>
+        </section>
+
+        <section class="section-shell">
+          <div class="section-head">
+            <p class="section-kicker">Quick Access</p>
+            <h2 class="section-title" data-i18n="downloads.quickTitle">立即获取方式</h2>
+            <p class="section-desc" data-i18n="downloads.quickDesc">先决定你是要快速浏览、长期同步，还是只下载某个模块。</p>
+          </div>
           <div id="download-dynamic" class="loading" data-i18n="downloads.loadingEntry">正在生成下载入口…</div>
+        </section>
 
-          <h2 data-i18n="downloads.modulesTitle">按模块获取</h2>
-          <ul>
-            <li><a href="docs.html?path=competition-rules%2FREADME.md" data-i18n="downloads.modules.rules">比赛规则（PDF）</a></li>
-            <li><a href="docs.html?path=technical-sharing%2FREADME.md" data-i18n="downloads.modules.sharing">技术分享（PPT/PPTX）</a></li>
-            <li><a href="docs.html?path=reading-list%2FREADME.md" data-i18n="downloads.modules.paperHub">论文学习清单（索引 + 推荐论文 PDF）</a></li>
-            <li><a href="docs.html?path=network-open-source%2FREADME.md" data-i18n="downloads.modules.network">推荐网络项目（实物开源 + 框架开源）</a></li>
-            <li><a href="docs.html?path=scripts%2FREADME.md" data-i18n="downloads.modules.scripts">维护脚本</a></li>
-          </ul>
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">Collections</p>
+            <h2 class="section-title" data-i18n="downloads.modulesTitle">按模块获取</h2>
+            <p class="section-desc" data-i18n="downloads.modulesDesc">如果你只想拿某一类资料，直接从文档入口分区进入更快。</p>
+          </div>
+          <div class="cards download-module-grid">
+            <article class="card info-card">
+              <h3 data-i18n="downloads.modules.rules">比赛规则（PDF）</h3>
+              <p data-i18n="downloads.moduleCards.rulesDesc">比赛规则页会集中列出规则 PDF、版本差异和相关说明。</p>
+              <a href="quickstart.html?path=competition-rules%2FREADME.md" data-i18n="downloads.moduleCards.rulesLink">打开模块</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.modules.sharing">技术分享（PPT/PPTX）</h3>
+              <p data-i18n="downloads.moduleCards.sharingDesc">适合直接按队伍和主题查找分享资料，再决定是否下载原文件。</p>
+              <a href="quickstart.html?path=technical-sharing%2FREADME.md" data-i18n="downloads.moduleCards.sharingLink">打开模块</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.modules.paperHub">论文学习清单（索引 + 推荐论文 PDF）</h3>
+              <p data-i18n="downloads.moduleCards.paperDesc">先看索引，再按需要跳转本地 PDF 或公开论文来源。</p>
+              <a href="quickstart.html?path=reading-list%2FREADME.md" data-i18n="downloads.moduleCards.paperLink">打开模块</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.modules.network">推荐网络项目（实物开源 + 框架开源）</h3>
+              <p data-i18n="downloads.moduleCards.networkDesc">更多是项目入口与链接整理，适合二次筛选而不是整包下载。</p>
+              <a href="quickstart.html?path=network-open-source%2FREADME.md" data-i18n="downloads.moduleCards.networkLink">打开模块</a>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.modules.scripts">维护脚本</h3>
+              <p data-i18n="downloads.moduleCards.scriptsDesc">如果你在本地维护镜像或同步 Wiki，先看脚本说明再执行。</p>
+              <a href="quickstart.html?path=scripts%2FREADME.md" data-i18n="downloads.moduleCards.scriptsLink">打开模块</a>
+            </article>
+          </div>
+        </section>
 
-          <h2 data-i18n="downloads.paperFetchTitle">论文 PDF 批量抓取（可公开获取）</h2>
-          <p data-i18n="downloads.paperFetchDesc">如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
-          <pre><code>python3 scripts/fetch_open_access_pdfs.py --download</code></pre>
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">Workflow</p>
+            <h2 class="section-title" data-i18n="downloads.workflowTitle">本地维护建议</h2>
+            <p class="section-desc" data-i18n="downloads.workflowDesc">如果你不是一次性下载，而是准备持续跟仓库同步，建议按这个顺序处理。</p>
+          </div>
+          <div class="cards cards-3 download-workflow-grid">
+            <article class="card info-card">
+              <h3 data-i18n="downloads.workflow.cloneTitle">先克隆仓库</h3>
+              <p data-i18n="downloads.workflow.cloneDesc">把完整目录结构拉到本地，后续更新时只需要增量拉取。</p>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.workflow.refreshTitle">再处理同步脚本</h3>
+              <p data-i18n="downloads.workflow.refreshDesc">需要同步 Wiki 或批量抓取资料时，再进入脚本和自动化说明。</p>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.workflow.browseTitle">最后回到文档阅读</h3>
+              <p data-i18n="downloads.workflow.browseDesc">文档页负责检索和目录跳转，仓库目录负责原始文件管理，两者不要混用。</p>
+            </article>
+          </div>
+        </section>
 
-          <h2 data-i18n="downloads.largeFileTitle">大文件说明</h2>
-          <p data-i18n-html="downloads.largeFileDesc">
-            单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用 <code>git clone</code> 或镜像。
-          </p>
-        </article>
+        <section class="section-shell section-shell-compact">
+          <div class="section-head">
+            <p class="section-kicker">Policy</p>
+            <h2 class="section-title" data-i18n="downloads.policyTitle">大文件与批量抓取</h2>
+            <p class="section-desc" data-i18n="downloads.policyDesc">下载策略要区分“仓库原始文件”“公开可抓取内容”和“超大文件管理”三种情况。</p>
+          </div>
+          <div class="cards download-policy-grid">
+            <article class="card info-card">
+              <h3 data-i18n="downloads.largeFileTitle">大文件说明</h3>
+              <p data-i18n-html="downloads.largeFileDesc">
+                单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用 <code>git clone</code> 或镜像。
+              </p>
+            </article>
+            <article class="card info-card">
+              <h3 data-i18n="downloads.policy.mirrorTitle">镜像与公开来源</h3>
+              <p data-i18n="downloads.policy.mirrorDesc">论文和外部资源优先保留索引与合法来源；真正需要批量抓取时，再在本地执行脚本。</p>
+            </article>
+          </div>
+          <div class="page-callout">
+            <strong data-i18n="downloads.paperFetchTitle">论文 PDF 批量抓取（可公开获取）</strong>
+            <p data-i18n="downloads.paperFetchDesc">如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
+            <div class="code-panel"><code>python3 scripts/fetch_open_access_pdfs.py --download</code></div>
+          </div>
+        </section>
       </main>
 
       <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
