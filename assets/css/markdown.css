@@ -2,7 +2,7 @@
   min-width: 0;
   color: var(--text-soft);
   font-size: calc(16px * var(--doc-font-scale));
-  line-height: 1.9;
+  line-height: 1.85;
 }
 
 .md h1,
@@ -17,24 +17,24 @@
 
 .md h1 {
   margin: 0 0 16px;
-  font-size: clamp(24px, 2.4vw, 34px);
-  line-height: 1.16;
+  font-size: clamp(26px, 2.5vw, 36px);
+  line-height: 1.12;
   letter-spacing: -0.04em;
 }
 
 .md h2 {
-  margin: 34px 0 12px;
+  margin: 30px 0 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
-  font-size: clamp(20px, 2vw, 26px);
-  line-height: 1.26;
+  font-size: clamp(22px, 2.1vw, 28px);
+  line-height: 1.22;
   letter-spacing: -0.03em;
 }
 
 .md h3 {
-  margin: 24px 0 8px;
-  font-size: calc(17px * var(--doc-font-scale));
-  line-height: 1.42;
+  margin: 22px 0 8px;
+  font-size: calc(18px * var(--doc-font-scale));
+  line-height: 1.38;
   letter-spacing: -0.02em;
 }
 
@@ -50,7 +50,7 @@
 .md table,
 .md blockquote,
 .md pre {
-  margin: 14px 0;
+  margin: 12px 0;
 }
 
 .md ul,
@@ -80,7 +80,7 @@
 .md code {
   padding: 0.15em 0.42em;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--surface-muted);
   color: var(--text);
   font-family: var(--font-mono);
@@ -89,9 +89,9 @@
 
 .md pre {
   overflow: auto;
-  padding: 16px 18px;
+  padding: 14px 16px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--surface-muted);
   color: var(--text);
 }
@@ -104,9 +104,9 @@
 
 .md blockquote {
   padding: 14px 16px;
-  border-left: 4px solid var(--accent);
-  border-radius: 0 12px 12px 0;
-  background: var(--surface-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--surface-soft) 72%, var(--surface));
   color: var(--text-soft);
 }
 
@@ -132,7 +132,7 @@
 
 .md th,
 .md td {
-  padding: 12px 14px;
+  padding: 11px 13px;
   border: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
@@ -209,7 +209,7 @@
   height: auto;
   margin: 20px 0;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--surface);
 }
 

@@ -1,11 +1,15 @@
 {
   "site": {
     "title": "LocoWiki",
-    "tagline": "足式机器人资源整合仓库（ROBOCON / 科研 / 开发检索）",
     "defaultDoc": "README.md",
     "defaultDocByLang": {
       "zh": "README.md",
       "en": "README.en.md"
+    },
+    "defaultDocByShell": {
+      "quickstart": "README.md",
+      "docs": "wiki/【必读】LocoWiki介绍.md",
+      "developer": "site-docs/how-to-add-articles.md"
     }
   },
   "i18n": {
@@ -17,7 +21,8 @@
       "technical-sharing/README.md": "technical-sharing/README.en.md",
       "reading-list/README.md": "reading-list/README.en.md",
       "network-open-source/README.md": "network-open-source/README.en.md",
-      "scripts/README.md": "scripts/README.en.md"
+      "scripts/README.md": "scripts/README.en.md",
+      "site-docs/how-to-add-articles.md": "site-docs/how-to-add-articles.en.md"
     }
   },
   "sourceRepo": {
@@ -28,17 +33,19 @@
   "nav": {
     "zh": [
       { "title": "首页", "href": "index.html" },
-      { "title": "快速上手", "href": "quickstart.html?path=README.md" },
-      { "title": "文档", "href": "docs.html?path=wiki/【必读】LocoWiki介绍.md" },
+      { "title": "快速上手", "href": "quickstart.html" },
+      { "title": "专题文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
-      { "title": "关于", "href": "about.html" }
+      { "title": "关于", "href": "about.html" },
+      { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false }
     ],
     "en": [
       { "title": "Home", "href": "index.html" },
-      { "title": "Quick Start", "href": "quickstart.html?path=README.en.md" },
-      { "title": "Docs", "href": "docs.html?path=wiki/【必读】LocoWiki介绍.md" },
+      { "title": "Quick Start", "href": "quickstart.html" },
+      { "title": "Topic Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
-      { "title": "About", "href": "about.html" }
+      { "title": "About", "href": "about.html" },
+      { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false }
     ]
   },
   "sidebar": {
@@ -51,12 +58,20 @@
           { "title": "技术分享", "path": "technical-sharing/README.md" },
           { "title": "论文学习清单", "path": "reading-list/README.md" },
           { "title": "推荐网络项目", "path": "network-open-source/README.md" },
-          { "title": "维护脚本", "path": "scripts/README.md" }
+          { "title": "仓库脚本", "path": "scripts/README.md" }
         ]
       },
       {
-        "title": "文档",
-        "items": [{ "title": "LocoWiki 知识库", "path": "wiki/【必读】LocoWiki介绍.md" }]
+        "title": "专题文档",
+        "items": [
+          { "title": "LocoWiki 介绍", "path": "wiki/【必读】LocoWiki介绍.md" }
+        ]
+      },
+      {
+        "title": "开发文档",
+        "items": [
+          { "title": "如何新增文章", "path": "site-docs/how-to-add-articles.md" }
+        ]
       }
     ],
     "en": [
@@ -67,13 +82,21 @@
           { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
           { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
           { "title": "Paper Study Hub", "path": "reading-list/README.en.md" },
-          { "title": "Web Open-Source Projects", "path": "network-open-source/README.en.md" },
-          { "title": "Maintenance Scripts", "path": "scripts/README.en.md" }
+          { "title": "Recommended Projects", "path": "network-open-source/README.en.md" },
+          { "title": "Repository Scripts", "path": "scripts/README.en.md" }
         ]
       },
       {
-        "title": "Documentation",
-        "items": [{ "title": "LocoWiki Wiki", "path": "wiki/【必读】LocoWiki介绍.md" }]
+        "title": "Topic Docs",
+        "items": [
+          { "title": "LocoWiki Intro", "path": "wiki/【必读】LocoWiki介绍.md" }
+        ]
+      },
+      {
+        "title": "Developer Docs",
+        "items": [
+          { "title": "How to Add Articles", "path": "site-docs/how-to-add-articles.en.md" }
+        ]
       }
     ]
   },
@@ -82,15 +105,6 @@
     "issues": "https://github.com/LocoWiki/LocoWiki/issues",
     "discussions": "https://github.com/LocoWiki/LocoWiki/discussions",
     "qqGroup": "https://qm.qq.com/q/5uVf2sWJvq",
-    "qqGroupName": "Robo-LocoWiki运控交流群",
-    "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
-  },
-  "integrations": {
-    "feishuWiki": {
-      "entryDocPath": "wiki/【必读】LocoWiki介绍.md",
-      "manifestPath": "wiki/_manifest.json",
-      "syncStatusUrl": "assets/feishu-sync-status.json",
-      "dispatchEventType": "feishu_wiki_sync"
-    }
+    "qqGroupName": "Robo-LocoWiki 运控交流"
   }
 }
