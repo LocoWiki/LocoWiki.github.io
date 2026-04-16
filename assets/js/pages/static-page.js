@@ -1,5 +1,6 @@
 import { getPageData } from "../core/config.js";
 import { getCurrentLanguage } from "../core/preferences.js";
+import { renderPageFrameHead } from "../components/content-head.js";
 import { escapeAttr, escapeHtml, getLocalizedValue } from "../core/utils.js";
 import { renderContributorsSection } from "./contributors-section.js";
 import { renderDownloadsPanel } from "./downloads-panel.js";
@@ -13,61 +14,7 @@ function renderAction(action, lang) {
 }
 
 function renderHero(hero, lang) {
-  const breadcrumbs = Array.isArray(hero?.breadcrumbs)
-    ? `
-      <nav class="doc-breadcrumbs" aria-label="Breadcrumb">
-        ${hero.breadcrumbs
-          .map((item, index) => {
-            const label = getLocalizedValue(item?.label, lang);
-            const prefix = index === 0 ? "" : `<span class="doc-breadcrumbs-sep">/</span>`;
-            if (item?.href) return `${prefix}<a href="${escapeAttr(item.href)}">${escapeHtml(label)}</a>`;
-            return `${prefix}<span>${escapeHtml(label)}</span>`;
-          })
-          .join("")}
-      </nav>
-    `
-    : "";
-
-  const media = hero?.media
-    ? `
-      <div class="hero-banner-flat">
-        <img src="${escapeAttr(hero.media.src)}" alt="${escapeAttr(getLocalizedValue(hero.media.alt, lang))}" loading="eager" decoding="async" />
-      </div>
-    `
-    : "";
-
-  const actions = Array.isArray(hero?.actions) && hero.actions.length
-    ? `<div class="hero-actions">${hero.actions.map((action) => renderAction(action, lang)).join("")}</div>`
-    : "";
-
-  const title = hero?.title ? escapeHtml(getLocalizedValue(hero.title, lang)) : hero?.titleHtml ? getLocalizedValue(hero.titleHtml, lang) : "";
-  const lead = hero?.leadHtml ? getLocalizedValue(hero.leadHtml, lang) : escapeHtml(getLocalizedValue(hero?.lead, lang));
-  const heroCopy = `
-    ${hero?.kicker ? `<p class="hero-kicker">${escapeHtml(getLocalizedValue(hero.kicker, lang))}</p>` : ""}
-    <h1 class="home-hero-title">${title}</h1>
-    <p class="page-lead">${lead}</p>
-    ${actions}
-  `;
-
-  if (hero?.media) {
-    return `
-      <section class="page-hero home-hero">
-        <div class="home-hero-split">
-          ${media}
-          <div class="home-hero-copy">${breadcrumbs}${heroCopy}</div>
-        </div>
-      </section>
-    `;
-  }
-
-  return `
-    <section class="page-hero">
-      ${breadcrumbs}
-      <h1>${title}</h1>
-      ${hero?.meta ? `<div class="doc-page-meta"><span class="doc-page-meta-item">${escapeHtml(getLocalizedValue(hero.meta, lang))}</span></div>` : ""}
-      <p class="page-lead">${lead}</p>
-    </section>
-  `;
+  return renderPageFrameHead(hero, lang);
 }
 
 function renderMetrics(metrics, lang) {
@@ -123,39 +70,31 @@ function renderCards(cards, lang) {
     .join("");
 }
 
-function renderFaq(items, lang) {
+function renderSectionHead(section, lang) {
+  const kicker = section?.kicker ? `<p class="section-kicker">${escapeHtml(getLocalizedValue(section.kicker, lang))}</p>` : "";
+  const title = getLocalizedValue(section?.title, lang);
+  const titleMarkup = title ? `<h2 class="section-title"${section?.id ? ` id="${escapeAttr(section.id)}"` : ""}>${escapeHtml(title)}</h2>` : "";
+  const desc = section?.desc ? `<p class="section-desc">${escapeHtml(getLocalizedValue(section.desc, lang))}</p>` : "";
+  if (!kicker && !titleMarkup && !desc) return "";
   return `
-    <div class="cards faq-grid">
-      ${items
-        .map(
-          (item) => `
-            <article class="card faq-card">
-              <h3>${escapeHtml(getLocalizedValue(item?.question, lang))}</h3>
-              <p>${getLocalizedValue(item?.answerHtml, lang)}</p>
-            </article>
-          `
-        )
-        .join("")}
+    <div class="section-head">
+      ${kicker}
+      ${titleMarkup}
+      ${desc}
     </div>
   `;
 }
 
 function renderSection(section, lang) {
-  const titleId = section?.id ? ` id="${escapeAttr(section.id)}"` : "";
-  const head = `
-    <div class="section-head">
-      ${section?.kicker ? `<p class="section-kicker">${escapeHtml(getLocalizedValue(section.kicker, lang))}</p>` : ""}
-      <h2 class="section-title"${titleId}>${escapeHtml(getLocalizedValue(section?.title, lang))}</h2>
-      ${section?.desc ? `<p class="section-desc">${escapeHtml(getLocalizedValue(section.desc, lang))}</p>` : ""}
-    </div>
-  `;
+  const head = renderSectionHead(section, lang);
+  const sectionId = !section?.title && section?.id ? ` id="${escapeAttr(section.id)}"` : "";
 
   if (section?.type === "contributors") {
     return `
-      <section class="section-shell">
+      <section class="section-shell"${sectionId}>
         ${head}
         <div id="contributors-meta" class="sync-meta">${escapeHtml(lang === "en" ? "Loading contributor data..." : "正在加载贡献者数据…")}</div>
-        <article class="contributors-page surface-panel">
+        <article class="contributors-page surface-panel" data-toc-ignore>
           <h3>${escapeHtml(lang === "en" ? "Contributors" : "贡献者")}</h3>
           <p id="contributors-list-hint"></p>
           <div id="contributors-list" class="contributors-grid" aria-live="polite">
@@ -168,25 +107,16 @@ function renderSection(section, lang) {
 
   if (section?.type === "downloadDynamic") {
     return `
-      <section class="section-shell">
+      <section class="section-shell"${sectionId}>
         ${head}
         <div id="download-dynamic" class="loading">${escapeHtml(lang === "en" ? "Generating download entries..." : "正在生成下载入口…")}</div>
       </section>
     `;
   }
 
-  if (Array.isArray(section?.faq)) {
-    return `
-      <section class="section-shell section-shell-compact">
-        ${head}
-        ${renderFaq(section.faq, lang)}
-      </section>
-    `;
-  }
-
   if (section?.callout && !section?.cards) {
     return `
-      <section class="section-shell section-shell-compact">
+      <section class="section-shell section-shell-compact"${sectionId}>
         ${head}
         <div class="page-callout"><p>${escapeHtml(getLocalizedValue(section.callout, lang))}</p></div>
       </section>
@@ -194,26 +124,10 @@ function renderSection(section, lang) {
   }
 
   return `
-    <section class="section-shell section-shell-compact">
+    <section class="section-shell section-shell-compact"${sectionId}>
       ${head}
       ${Array.isArray(section?.cards) ? `<div class="cards ${escapeAttr(section.cardsClass || section.gridClass || "")}">${renderCards(section.cards, lang)}</div>` : ""}
       ${section?.callout && section?.cards ? `<div class="page-callout"><p>${escapeHtml(getLocalizedValue(section.callout, lang))}</p></div>` : ""}
-    </section>
-  `;
-}
-
-function renderCta(cta, lang) {
-  if (!cta) return "";
-  return `
-    <section class="page-cta surface-panel">
-      <div class="page-cta-copy">
-        ${cta?.kicker ? `<p class="page-kicker">${escapeHtml(getLocalizedValue(cta.kicker, lang))}</p>` : ""}
-        <h2>${escapeHtml(getLocalizedValue(cta?.title, lang))}</h2>
-        <p>${escapeHtml(getLocalizedValue(cta?.desc, lang))}</p>
-      </div>
-      <div class="page-cta-actions">
-        ${(cta?.actions || []).map((action) => renderAction(action, lang)).join("")}
-      </div>
     </section>
   `;
 }
@@ -233,7 +147,6 @@ export async function renderStaticPage(pageId) {
       ${renderMetrics(page.metrics, lang)}
       ${renderCalloutBlock(page.callout, lang)}
       ${(page.sections || []).map((section) => renderSection(section, lang)).join("")}
-      ${renderCta(page.cta, lang)}
     </article>
   `;
 

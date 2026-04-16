@@ -10,12 +10,12 @@
         "en": "LocoWiki / Robotics Knowledge Hub"
       },
       "titleHtml": {
-        "zh": "<span class=\"hero-title-brand\">LocoWiki</span><span class=\"hero-title-copy\">为运控学习与资料整理重构的文档入口</span>",
-        "en": "<span class=\"hero-title-brand\">LocoWiki</span><span class=\"hero-title-copy\">A rebuilt docs-first entry for robotics learning and curation</span>"
+        "zh": "<span class=\"hero-title-brand\">LocoWiki</span><span class=\"hero-title-copy\">——更适合开发者宝宝体质的运控wiki</span>",
+        "en": "<span class=\"hero-title-brand\">LocoWiki</span><span class=\"hero-title-copy\">A motion-control wiki built for developer brains</span>"
       },
       "lead": {
-        "zh": "这个站点现在把公共壳、页面内容和文档阅读流拆开了。首页只负责导航，文档页负责持续阅读，页面文案则集中在 JSON 里维护，后续新增文本和卡片不需要再手改整页 HTML。",
-        "en": "This site now separates the shared shell, page content, and doc reading flow. The homepage is only for navigation, docs pages are for long-form reading, and editable copy now lives in JSON instead of hardcoded HTML."
+        "zh": "机器人运控学习整合仓库：面向 ROBOCON 备赛、科研学习与开发检索，汇总规则文档、技术分享、论文学习清单与推荐网络项目等核心资料。",
+        "en": "A robotics motion-control learning repository for RoboCon preparation, research study, and engineering lookup, collecting rule documents, technical sharing, paper reading lists, and recommended online projects."
       },
       "media": {
         "src": "assets/img/LOGO-LocoWiki-cut.svg",
@@ -54,58 +54,6 @@
             "en": "GitHub Repository"
           },
           "external": true
-        }
-      ]
-    },
-    "metrics": [
-      {
-        "label": {
-          "zh": "4 个核心资料分区",
-          "en": "4 core collections"
-        },
-        "value": {
-          "zh": "规则、分享、论文、开源项目",
-          "en": "Rules, sharing, papers, and open-source projects"
-        }
-      },
-      {
-        "label": {
-          "zh": "页面内容数据化",
-          "en": "Data-driven page copy"
-        },
-        "value": {
-          "zh": "首页、关于、下载页统一从 JSON 渲染",
-          "en": "Home, about, and downloads now render from JSON"
-        }
-      },
-      {
-        "label": {
-          "zh": "公共壳模块化",
-          "en": "Modular site shell"
-        },
-        "value": {
-          "zh": "配置、壳层、文档渲染和页面模块各自独立",
-          "en": "Config, shell, docs, and page modules are now separated"
-        }
-      }
-    ],
-    "callout": {
-      "title": {
-        "zh": "当前推荐使用路径",
-        "en": "Recommended flow"
-      },
-      "items": [
-        {
-          "zh": "先从快速上手页进入，确认仓库主分区和文档结构。",
-          "en": "Start from Quick Start to understand the repository structure."
-        },
-        {
-          "zh": "需要持续阅读时进入文档页，通过左侧导航和右侧目录深入浏览。",
-          "en": "Switch to docs pages for deep reading with sidebar and page outline."
-        },
-        {
-          "zh": "要新增首页或说明页文案时，直接维护 assets/content/pages.json。",
-          "en": "To add or update landing-page copy, edit assets/content/pages.json directly."
         }
       ]
     },
@@ -200,63 +148,6 @@
               "en": "Open Module"
             },
             "href": "quickstart.html?path=network-open-source%2FREADME.md"
-          }
-        ]
-      },
-      {
-        "kicker": {
-          "zh": "Editing Flow",
-          "en": "Editing Flow"
-        },
-        "title": {
-          "zh": "现在怎么扩展页面内容",
-          "en": "How page content is extended now"
-        },
-        "desc": {
-          "zh": "这次重构把页面文案从 HTML 里抽出来，后续维护重点是内容数据，而不是重复改模板。",
-          "en": "The rebuild moves copy out of raw HTML, so maintenance now focuses on content data instead of repeated template edits."
-        },
-        "gridClass": "pathway-grid",
-        "cards": [
-          {
-            "title": {
-              "zh": "公共壳层",
-              "en": "Shared Shell"
-            },
-            "desc": {
-              "zh": "导航、页脚、搜索和设置面板统一由模块渲染。",
-              "en": "Navigation, footer, search, and settings are rendered by shared modules."
-            }
-          },
-          {
-            "title": {
-              "zh": "页面内容 JSON",
-              "en": "Page JSON"
-            },
-            "desc": {
-              "zh": "首页、关于、下载页的正文都集中在 assets/content/pages.json。",
-              "en": "Landing-page copy now lives in assets/content/pages.json."
-            }
-          },
-          {
-            "title": {
-              "zh": "文档页独立",
-              "en": "Independent Docs"
-            },
-            "desc": {
-              "zh": "Markdown 拉取、链接改写、目录同步和翻页逻辑独立维护。",
-              "en": "Markdown fetching, link rewriting, TOC sync, and paging are maintained separately."
-            }
-          },
-          {
-            "title": {
-              "zh": "旧同步链路已移除",
-              "en": "Legacy sync removed"
-            },
-            "desc": {
-              "zh": "站点不再依赖飞书同步状态、relay 或兼容页逻辑。",
-              "en": "The site no longer depends on Feishu sync status, relays, or compatibility pages."
-            }
           }
         ]
       },
@@ -368,7 +259,7 @@
               "zh": "查看贡献者",
               "en": "View Contributors"
             },
-            "href": "about.html#contributors"
+            "href": "contributors.html"
           },
           {
             "title": {
@@ -420,228 +311,52 @@
         "en": "2026/4/16"
       },
       "leadHtml": {
-        "zh": "这是一个用于展示 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点。当前版本重点不是换皮，而是把页面壳层、文案数据和文档阅读逻辑拆开，降低后续继续维护的成本。",
-        "en": "This static site presents the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository. This revision is not just a visual refresh. Its main goal is to separate the shared shell, page data, and doc-reading logic so future maintenance stays cheaper."
+        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、专题文档阅读和资源入口。",
+        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, docs reading, and resource entry points."
       }
     },
-    "metrics": [
-      {
-        "label": {
-          "zh": "页面职责",
-          "en": "Page Roles"
+    "sections": []
+  },
+  "contributors": {
+    "pageTitle": {
+      "zh": "LocoWiki · 贡献者",
+      "en": "LocoWiki · Contributors"
+    },
+    "hero": {
+      "breadcrumbs": [
+        {
+          "label": {
+            "zh": "主页",
+            "en": "Home"
+          },
+          "href": "index.html"
         },
-        "value": {
-          "zh": "首页、内容页、文档页各自独立",
-          "en": "Landing, page, and docs layers are now separated"
-        },
-        "desc": {
-          "zh": "避免一个脚本同时承担壳层渲染、静态页面、文档拉取和兼容逻辑。",
-          "en": "No single script now owns the shell, landing pages, docs fetching, and compatibility flows all at once."
+        {
+          "label": {
+            "zh": "贡献者",
+            "en": "Contributors"
+          }
         }
+      ],
+      "title": {
+        "zh": "贡献者",
+        "en": "Contributors"
       },
-      {
-        "label": {
-          "zh": "内容维护",
-          "en": "Content Maintenance"
-        },
-        "value": {
-          "zh": "文案集中到 JSON",
-          "en": "Copy is centralized in JSON"
-        },
-        "desc": {
-          "zh": "新增文本、卡片或说明区块时，不需要再改整页 HTML。",
-          "en": "Adding new text, cards, or sections no longer requires hand-editing full HTML pages."
-        }
+      "meta": {
+        "zh": "2026/4/16",
+        "en": "2026/4/16"
       },
-      {
-        "label": {
-          "zh": "已清理能力",
-          "en": "Removed Surface Area"
-        },
-        "value": {
-          "zh": "飞书同步链路与字体切换已移除",
-          "en": "Feishu sync and font toggles are gone"
-        },
-        "desc": {
-          "zh": "减少站点壳层里的历史耦合点，让后续演进更清晰。",
-          "en": "The shell now has fewer historical branches and is easier to evolve."
-        }
+      "leadHtml": {
+        "zh": "这里展示 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 当前维护者与活跃贡献者，数据直接来自 GitHub Contributors。",
+        "en": "This page shows the current maintainers and active contributors of <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a>, using GitHub Contributors data directly."
       }
-    ],
+    },
     "sections": [
       {
         "id": "contributors",
-        "kicker": {
-          "zh": "Contributors",
-          "en": "Contributors"
-        },
-        "title": {
-          "zh": "贡献概览",
-          "en": "Contribution Overview"
-        },
-        "desc": {
-          "zh": "这里直接读取 GitHub Contributors 数据，用来展示当前维护者和活跃贡献者。",
-          "en": "This section reads GitHub Contributors data directly to show maintainers and active contributors."
-        },
         "type": "contributors"
-      },
-      {
-        "kicker": {
-          "zh": "Contribute",
-          "en": "Contribute"
-        },
-        "title": {
-          "zh": "如何参与维护",
-          "en": "How to contribute"
-        },
-        "desc": {
-          "zh": "整理资料、修链接、补说明和指出结构问题，同样是有效贡献。",
-          "en": "Resource curation, link fixes, copy updates, and structural feedback are all valid contributions."
-        },
-        "cards": [
-          {
-            "title": {
-              "zh": "提 Issue",
-              "en": "Open an Issue"
-            },
-            "desc": {
-              "zh": "发现失效链接、分类问题或页面缺陷时，优先提 Issue。",
-              "en": "Use Issues first for broken links, classification mistakes, or page defects."
-            },
-            "linkLabel": {
-              "zh": "打开 Issue",
-              "en": "Open Issues"
-            },
-            "href": "https://github.com/LocoWiki/LocoWiki/issues",
-            "external": true
-          },
-          {
-            "title": {
-              "zh": "提 PR",
-              "en": "Send a PR"
-            },
-            "desc": {
-              "zh": "如果你已经完成修复，可以直接提交 Pull Request。",
-              "en": "If you already fixed something, submit a pull request directly."
-            },
-            "linkLabel": {
-              "zh": "准备 PR",
-              "en": "Prepare PR"
-            },
-            "href": "https://github.com/LocoWiki/LocoWiki/compare",
-            "external": true
-          },
-          {
-            "title": {
-              "zh": "加入社群",
-              "en": "Join the Community"
-            },
-            "desc": {
-              "zh": "资料征集、比赛笔记和后续维护计划可以先在群内对齐。",
-              "en": "Align on resource curation, competition notes, and maintenance plans in the community chat."
-            },
-            "linkLabel": {
-              "zh": "加入交流群",
-              "en": "Join Group"
-            },
-            "href": "https://qm.qq.com/q/5uVf2sWJvq",
-            "external": true
-          }
-        ]
-      },
-      {
-        "kicker": {
-          "zh": "Policy",
-          "en": "Policy"
-        },
-        "title": {
-          "zh": "内容来源与版权",
-          "en": "Content Source and Copyright"
-        },
-        "callout": {
-          "zh": "本站只做索引与展示。仓库中收录的 PDF、PPT、外链等资料，其版权与署名权归原作者或原发布方所有。如有侵权或不当公开，请在源仓库提交 Issue 以便及时处理。",
-          "en": "This site acts as an index and presentation layer only. Copyright and attribution for PDFs, slides, and external links remain with their original authors or publishers. If you find infringement or improper disclosure, please file an issue in the source repository."
-        }
-      },
-      {
-        "kicker": {
-          "zh": "FAQ",
-          "en": "FAQ"
-        },
-        "title": {
-          "zh": "常见问题",
-          "en": "Frequently Asked Questions"
-        },
-        "desc": {
-          "zh": "这里保留真正和站点使用相关的问题，不再展示第三方同步链路的说明。",
-          "en": "This FAQ only keeps questions that matter to using the site. Third-party sync instructions are gone."
-        },
-        "faq": [
-          {
-            "question": {
-              "zh": "文档加载失败？",
-              "en": "Docs failed to load?"
-            },
-            "answerHtml": {
-              "zh": "文档页需要访问 <code>raw.githubusercontent.com</code>。若网络受限，请直接打开 GitHub 页面或使用镜像/代理。",
-              "en": "Docs pages need access to <code>raw.githubusercontent.com</code>. If your network is restricted, open GitHub directly or use a mirror/proxy."
-            }
-          },
-          {
-            "question": {
-              "zh": "以后怎么新增页面文案？",
-              "en": "How do I add more page copy later?"
-            },
-            "answerHtml": {
-              "zh": "优先维护 <code>assets/content/pages.json</code>。只有在需要新增通用组件时，才去改页面渲染模块。",
-              "en": "Update <code>assets/content/pages.json</code> first. Only touch page render modules when you need a new reusable block type."
-            }
-          },
-          {
-            "question": {
-              "zh": "为什么把页面和文档脚本拆开？",
-              "en": "Why separate pages from docs scripts?"
-            },
-            "answerHtml": {
-              "zh": "因为静态说明页和 Markdown 文档页的生命周期完全不同。分离后更容易维护，也更容易定位问题。",
-              "en": "Because static landing pages and Markdown docs have very different lifecycles. Separating them makes maintenance and debugging much easier."
-            }
-          }
-        ]
       }
-    ],
-    "cta": {
-      "kicker": {
-        "zh": "Next",
-        "en": "Next"
-      },
-      "title": {
-        "zh": "继续从文档入口进入",
-        "en": "Continue into the docs flow"
-      },
-      "desc": {
-        "zh": "如果你已经理解页面结构，下一步应该直接进入文档阅读流，而不是停留在说明页里。",
-        "en": "Once you understand the page structure, the next step should be reading through the docs flow instead of staying on explanation pages."
-      },
-      "actions": [
-        {
-          "variant": "primary",
-          "href": "quickstart.html",
-          "label": {
-            "zh": "打开快速上手",
-            "en": "Open Quick Start"
-          }
-        },
-        {
-          "href": "https://github.com/LocoWiki/LocoWiki/issues",
-          "label": {
-            "zh": "反馈结构问题",
-            "en": "Report Structure Issues"
-          },
-          "external": true
-        }
-      ]
-    }
+    ]
   },
   "downloads": {
     "pageTitle": {
@@ -750,6 +465,7 @@
           "zh": "如果你只需要某一类资料，先走文档入口通常比整仓下载更高效。",
           "en": "If you only need one collection, starting from docs is usually more efficient than downloading the full repository."
         },
+        "cardsClass": "cards-3",
         "cards": [
           {
             "title": {
@@ -888,6 +604,7 @@
           "zh": "下载策略要区分仓库原始文件、公开可获取内容，以及超大文件的管理方式。",
           "en": "Download strategy should distinguish between repository assets, open-access content, and oversized file handling."
         },
+        "cardsClass": "cards-3",
         "cards": [
           {
             "title": {

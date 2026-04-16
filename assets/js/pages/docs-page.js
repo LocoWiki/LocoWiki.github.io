@@ -2,6 +2,7 @@ import { getSiteConfig } from "../core/config.js";
 import { getDefaultDocPathForShell, getDocPageHref, getDocShellName, mapDocPathToLanguage } from "../core/docs-routing.js";
 import { t } from "../core/i18n.js";
 import { getCurrentLanguage } from "../core/preferences.js";
+import { renderDocsFrameHead } from "../components/content-head.js";
 import { cssEscape, dirname, encodePath, escapeAttr, escapeHtml, isDangerousHref, isExternalHref, normalizePath, resolveRelativePath, safeDecode, splitHash, stripLeadingSlash } from "../core/utils.js";
 
 const state = {
@@ -204,33 +205,32 @@ function renderDocMeta(metaEl, docPath, urls, options = {}) {
   const context = getSidebarContext(docPath);
   const title = options.title || context.title || docPath;
   const date = formatDocDate(options.lastModified);
-  metaEl.innerHTML = `
-    <div class="doc-meta-breadcrumbs">
-      <a href="index.html">${escapeHtml(t("header.homeTitle", { fallback: "Home" }))}</a>
-      <span class="doc-breadcrumbs-sep">/</span>
-      <a href="${escapeAttr(context.shellHref)}">${escapeHtml(context.shellTitle)}</a>
-      <span class="doc-breadcrumbs-sep">/</span>
-      <span>${escapeHtml(title)}</span>
-    </div>
-    <div class="doc-meta-title-row">
-      <h1>${escapeHtml(title)}</h1>
-    </div>
-    <div class="doc-meta-line">
-      ${date ? `<span class="doc-meta-inline"><span>${escapeHtml(date)}</span></span>` : ""}
-      <span class="doc-meta-inline doc-meta-inline-path">
-        <span>${escapeHtml(t("docs.metaPath", { fallback: "Path" }))}:</span>
-        <code>${escapeHtml(docPath)}</code>
-        ${
-          urls.edit
-            ? `<span class="doc-meta-sep">·</span>
-        <a class="doc-meta-link" href="${escapeAttr(urls.edit)}" target="_blank" rel="noopener noreferrer">${escapeHtml(
-          t("docs.editOnGitHub", { fallback: "Edit on GitHub" })
-        )}</a>`
-            : ""
+  metaEl.className = "doc-meta content-head content-head-doc";
+  metaEl.innerHTML = renderDocsFrameHead({
+    title,
+    breadcrumbs: [
+      {
+        label: { zh: "主页", en: "Home" },
+        href: "index.html"
+      },
+      {
+        label: {
+          zh: context.shellTitle,
+          en: context.shellTitle
+        },
+        href: context.shellHref
+      },
+      {
+        label: {
+          zh: title,
+          en: title
         }
-      </span>
-    </div>
-  `;
+      }
+    ],
+    date,
+    docPath,
+    editHref: urls.edit
+  });
 }
 
 function setSidebarActiveDoc(docPath) {

@@ -16,7 +16,7 @@ export async function renderDownloadsPanel() {
 
   root.className = "";
   root.innerHTML = `
-    <div class="cards download-entry-grid">
+    <div class="cards cards-3 download-entry-grid">
       <div class="card info-card">
         <span class="card-tag">${escapeHtml(t("downloads.zipTag", { fallback: "Fastest" }))}</span>
         <h3>${escapeHtml(t("downloads.zipTitle", { fallback: "Download ZIP" }))}</h3>

@@ -1,6 +1,7 @@
 import { getSiteConfig } from "../core/config.js";
 import { getDefaultDocPathForShell, getDocPageHref, getDocShellForPath, getDocShellName, mapDocPathToLanguage, resetDocAliasCache } from "../core/docs-routing.js";
 import { applyI18n, initI18n, t } from "../core/i18n.js";
+import { applyPageStandard } from "../core/page-standards.js";
 import { applyLanguage, applyTheme, cleanupLegacyPreferences, getCurrentLanguage, getCurrentTheme, getPreferredLanguage, getPreferredTheme } from "../core/preferences.js";
 import { escapeAttr, escapeHtml, getLocalizedList, getLocalizedValue, normalizePathname } from "../core/utils.js";
 
@@ -46,6 +47,7 @@ function getSearchIndex(config, lang) {
     title: getLocalizedValue(item?.title, lang),
     meta: getLocalizedValue(config?.site?.title, lang, "LocoWiki"),
     href: getLocalizedValue(item?.href, lang),
+    keywords: getLocalizedValue(item?.href, lang),
     kind: "page"
   }));
 
@@ -57,12 +59,120 @@ function getSearchIndex(config, lang) {
         title: getLocalizedValue(item?.title, lang),
         meta: groupTitle,
         href: getDocPageHref(path, config, lang),
+        keywords: path,
         kind: "doc"
       };
     });
   });
 
   return { pages, docs };
+}
+
+function normalizeSearchText(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[_/.-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function compactSearchText(value) {
+  return normalizeSearchText(value).replace(/\s+/g, "");
+}
+
+function tokenizeSearchQuery(query) {
+  return normalizeSearchText(query)
+    .split(" ")
+    .map((token) => token.trim())
+    .filter(Boolean);
+}
+
+function getSubsequenceScore(query, target) {
+  if (!query || !target) return 0;
+  let pointer = 0;
+  let firstIndex = -1;
+  let lastIndex = -1;
+
+  for (const char of query) {
+    const found = target.indexOf(char, pointer);
+    if (found === -1) return 0;
+    if (firstIndex === -1) firstIndex = found;
+    lastIndex = found;
+    pointer = found + 1;
+  }
+
+  const span = lastIndex - firstIndex + 1;
+  return Math.max(8, 28 - Math.max(0, span - query.length));
+}
+
+function scoreSearchItem(rawQuery, item) {
+  const query = normalizeSearchText(rawQuery);
+  if (!query) return 1;
+
+  const title = normalizeSearchText(item?.title);
+  const meta = normalizeSearchText(item?.meta);
+  const keywords = normalizeSearchText(item?.keywords);
+  const combined = [title, meta, keywords].filter(Boolean).join(" ");
+  const compactQuery = compactSearchText(query);
+  const compactTitle = compactSearchText(title);
+  const compactCombined = compactSearchText(combined);
+  const tokens = tokenizeSearchQuery(query);
+  let score = 0;
+  let matched = false;
+
+  if (title === query) {
+    score += 240;
+    matched = true;
+  } else if (title.startsWith(query)) {
+    score += 190;
+    matched = true;
+  } else if (title.includes(query)) {
+    score += 150 - Math.min(title.indexOf(query), 40);
+    matched = true;
+  } else if (combined.includes(query)) {
+    score += 100 - Math.min(combined.indexOf(query), 40);
+    matched = true;
+  }
+
+  for (const token of tokens) {
+    if (title.includes(token)) {
+      score += 36;
+      matched = true;
+      continue;
+    }
+    if (meta.includes(token) || keywords.includes(token)) {
+      score += 20;
+      matched = true;
+      continue;
+    }
+
+    const fuzzyScore = Math.max(getSubsequenceScore(compactSearchText(token), compactTitle), getSubsequenceScore(compactSearchText(token), compactCombined));
+    if (fuzzyScore > 0) {
+      score += fuzzyScore;
+      matched = true;
+    }
+  }
+
+  if (!matched) {
+    const fuzzyScore = Math.max(getSubsequenceScore(compactQuery, compactTitle), getSubsequenceScore(compactQuery, compactCombined));
+    if (fuzzyScore === 0) return 0;
+    score += fuzzyScore;
+  }
+
+  if (title.startsWith(tokens[0] || "")) score += 12;
+  if (item?.kind === "page") score += 2;
+  return score;
+}
+
+function sortSearchResults(items, query, lang) {
+  if (!query) return items;
+  const locale = lang === "en" ? "en" : "zh-Hans-CN";
+  return items
+    .map((item) => ({ ...item, score: scoreSearchItem(query, item) }))
+    .filter((item) => item.score > 0)
+    .sort((left, right) => right.score - left.score || left.title.localeCompare(right.title, locale))
+    .slice(0, 8);
 }
 
 function isHrefActive(href) {
@@ -88,6 +198,7 @@ function getHrefKey(href) {
     if (path.endsWith("/downloads.html")) return "downloads";
     if (path.endsWith("/about.html")) return "about";
     if (path.endsWith("/developer-docs.html")) return "developer";
+    if (path.endsWith("/contributors.html")) return "contributors";
   } catch {
     return "";
   }
@@ -102,8 +213,8 @@ function getIconMarkup(name) {
     downloads: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="m7.5 11.5 4.5 4.5 4.5-4.5"/><path d="M4 19h16"/></svg>`,
     about: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><path d="M12 7h.01"/></svg>`,
     developer: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h8"/><path d="M8 12h8"/><path d="M8 18h5"/><path d="M5 3h14a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 0 1 2-2Z"/></svg>`,
-    repo: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v9A2.5 2.5 0 0 1 18.5 21h-13A2.5 2.5 0 0 1 3 18.5z"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>`,
-    language: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h8"/><path d="M8 3v4"/><path d="M5 9c1.2 3 3.4 5.8 6 8"/><path d="M8 9c1 2 2.6 4 5 6"/><path d="M14 5h6"/><path d="M17 5v14"/><path d="m14 14 3-6 3 6"/><path d="M15 12h4"/></svg>`,
+    contributors: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16.5 3.13a3.5 3.5 0 0 1 0 6.74"/></svg>`,
+    repo: `<svg class="icon-brand-github" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.45.11-3.02 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.03c.97 0 1.95.13 2.86.39 2.18-1.49 3.15-1.18 3.15-1.18.63 1.57.24 2.73.12 3.02.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.28 5.69.42.36.78 1.08.78 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.2.68.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>`,
     sun: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5"/><path d="M12 19.5V22"/><path d="m4.93 4.93 1.77 1.77"/><path d="m17.3 17.3 1.77 1.77"/><path d="M2 12h2.5"/><path d="M19.5 12H22"/><path d="m4.93 19.07 1.77-1.77"/><path d="m17.3 6.7 1.77-1.77"/></svg>`,
     moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z"/></svg>`
   };
@@ -183,7 +294,12 @@ function renderHeader(config, lang) {
           <span class="search-trigger-copy"><span class="search-trigger-text">${escapeHtml(searchLabel)}</span></span>
           <span class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></span>
         </button>
-        <button class="icon-btn icon-only language-toggle" id="language-toggle" type="button" data-next-language="${escapeAttr(nextLang)}" aria-label="${escapeAttr(languageLabel)}" title="${escapeAttr(languageLabel)}">${getIconMarkup("language")}</button>
+        <button class="icon-btn language-toggle" id="language-toggle" type="button" data-next-language="${escapeAttr(nextLang)}" aria-label="${escapeAttr(languageLabel)}" title="${escapeAttr(languageLabel)}">
+          <span class="language-toggle-copy" aria-hidden="true">
+            <span class="language-toggle-option"${currentLang === "zh" ? ` data-active="true"` : ""}>中</span>
+            <span class="language-toggle-option"${currentLang === "en" ? ` data-active="true"` : ""}>EN</span>
+          </span>
+        </button>
         <button class="icon-btn icon-only theme-toggle" id="theme-toggle" type="button" data-next-theme="${escapeAttr(nextTheme)}" data-theme="${escapeAttr(theme)}" aria-label="${escapeAttr(themeLabel)}" title="${escapeAttr(themeLabel)}">
           <span class="theme-icon" aria-hidden="true">
             <span class="theme-icon-sun">${getIconMarkup("sun")}</span>
@@ -297,13 +413,8 @@ function renderSearchResults(config) {
   if (!root || !input) return;
 
   const lang = getCurrentLanguage();
-  const query = input.value.trim().toLowerCase();
+  const query = input.value.trim();
   const index = getSearchIndex(config, lang);
-  const filter = (items) =>
-    items.filter((item) => {
-      if (!query) return true;
-      return `${item.title} ${item.meta}`.toLowerCase().includes(query);
-    });
 
   const renderGroup = (title, items) => {
     if (!items.length) return "";
@@ -326,8 +437,8 @@ function renderSearchResults(config) {
     `;
   };
 
-  const pageResults = filter(index.pages);
-  const docResults = filter(index.docs);
+  const pageResults = sortSearchResults(index.pages, query, lang);
+  const docResults = sortSearchResults(index.docs, query, lang);
   if (!pageResults.length && !docResults.length) {
     root.innerHTML = `<div class="search-empty">${escapeHtml(t("header.searchEmpty", { lang, fallback: "No matches found" }))}</div>`;
     return;
@@ -459,6 +570,7 @@ export async function initSiteShell() {
     document.documentElement.dataset.lang = getCurrentLanguage();
   }
 
+  applyPageStandard(currentConfig);
   rerenderShell();
   bindShellEvents();
   return currentConfig;

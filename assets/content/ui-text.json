@@ -76,6 +76,23 @@
       "apiHttpError": "GitHub API 返回 HTTP {status}",
       "apiFormatError": "GitHub API 返回数据格式异常"
     },
+    "downloads": {
+      "zipTag": "最快方式",
+      "zipTitle": "ZIP 下载",
+      "zipDesc": "适合快速浏览和离线查看。",
+      "zipLink": "下载 ZIP",
+      "cloneTag": "同步",
+      "cloneTitle": "克隆仓库",
+      "cloneDesc": "适合持续更新、拉取同步和参与贡献。",
+      "repoTag": "仓库",
+      "repoTitle": "GitHub 仓库",
+      "repoDesc": "查看目录结构、提交历史、Issue 和更新状态。",
+      "repoLink": "打开仓库",
+      "releaseTag": "发布",
+      "releaseTitle": "Releases",
+      "releaseDesc": "如果有打包资源，优先会放在 Releases。",
+      "releaseLink": "打开 Releases"
+    },
     "notFound": {
       "pageTitle": "404 · LocoWiki",
       "heading": "页面不存在（404）",
@@ -165,6 +182,23 @@
       "errorUnknown": "Unknown error",
       "apiHttpError": "GitHub API returned HTTP {status}",
       "apiFormatError": "Unexpected GitHub API response format"
+    },
+    "downloads": {
+      "zipTag": "Fastest",
+      "zipTitle": "Download ZIP",
+      "zipDesc": "Best for quick browsing and offline reading.",
+      "zipLink": "Download ZIP",
+      "cloneTag": "Sync",
+      "cloneTitle": "Clone Repository",
+      "cloneDesc": "Best for updates, pull workflows, and contributions.",
+      "repoTag": "Repository",
+      "repoTitle": "GitHub Repository",
+      "repoDesc": "Browse folder structure, history, issues, and updates.",
+      "repoLink": "Open Repository",
+      "releaseTag": "Release",
+      "releaseTitle": "Releases",
+      "releaseDesc": "Packaged resources should land in Releases first when available.",
+      "releaseLink": "Open Releases"
     },
     "notFound": {
       "pageTitle": "404 · LocoWiki",

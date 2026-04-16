@@ -2,6 +2,17 @@
 
 This document explains how article content is added in the current site structure, and which content belongs to this site repository versus the external content repository.
 
+Before adding anything, decide which content frame it belongs to:
+
+- landing / info page: `page`
+- reading document page: `docs`
+
+Full rules:
+
+```text
+site-docs/page-framework-standards.en.md
+```
+
 ## Two content types
 
 ### 1. Documentation articles
@@ -24,8 +35,11 @@ These appear under:
 - Home
 - Downloads
 - About
+- Contributors
 
 These pages do not use Markdown. They are maintained in `assets/content/pages.json`.
+
+They all belong to the `page` frame.
 
 ## Add a Quick Start or Topic Docs article
 
@@ -111,6 +125,8 @@ or
 
 Developer Docs is maintained in this site repository.
 
+Even though Developer Docs is internal content, it still belongs to the `docs` frame.
+
 ### Step 1: create a Markdown file locally
 
 Put the file under:
@@ -150,7 +166,7 @@ If the English version uses a different file, also add:
 "site-docs/how-to-add-pages.md": "site-docs/how-to-add-pages.en.md"
 ```
 
-## Update Home / About / Downloads page copy
+## Update Home / About / Contributors / Downloads page copy
 
 This is not article content, so no Markdown is involved.
 
@@ -165,6 +181,7 @@ This file controls:
 - Home hero
 - Home cards
 - About copy
+- Contributors copy
 - Downloads copy
 
 ## Minimal examples

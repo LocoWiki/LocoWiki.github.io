@@ -12,6 +12,29 @@
       "developer": "site-docs/how-to-add-articles.md"
     }
   },
+  "pageStandards": {
+    "frames": {
+      "page": {
+        "description": "Structured internal landing pages rendered from JSON blocks",
+        "requiredBlocks": ["hero", "sections"],
+        "optionalBlocks": ["metrics", "callout", "cta"]
+      },
+      "docs": {
+        "description": "Long-form reading pages rendered from Markdown with TOC and pager",
+        "requiredBlocks": ["meta", "content"],
+        "optionalBlocks": ["toc", "pager"]
+      }
+    },
+    "pages": {
+      "index.html": { "frame": "page", "source": "json" },
+      "about.html": { "frame": "page", "source": "json" },
+      "downloads.html": { "frame": "page", "source": "json" },
+      "contributors.html": { "frame": "page", "source": "json" },
+      "quickstart.html": { "frame": "docs", "source": "remote-markdown", "shell": "quickstart" },
+      "docs.html": { "frame": "docs", "source": "remote-markdown", "shell": "docs" },
+      "developer-docs.html": { "frame": "docs", "source": "local-markdown", "shell": "developer" }
+    }
+  },
   "i18n": {
     "defaultLanguage": "zh",
     "supportedLanguages": ["zh", "en"],
@@ -22,7 +45,8 @@
       "reading-list/README.md": "reading-list/README.en.md",
       "network-open-source/README.md": "network-open-source/README.en.md",
       "scripts/README.md": "scripts/README.en.md",
-      "site-docs/how-to-add-articles.md": "site-docs/how-to-add-articles.en.md"
+      "site-docs/how-to-add-articles.md": "site-docs/how-to-add-articles.en.md",
+      "site-docs/page-framework-standards.md": "site-docs/page-framework-standards.en.md"
     }
   },
   "sourceRepo": {
@@ -37,7 +61,8 @@
       { "title": "专题文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
       { "title": "关于", "href": "about.html" },
-      { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false }
+      { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false },
+      { "title": "贡献者", "href": "contributors.html", "showInHeader": false }
     ],
     "en": [
       { "title": "Home", "href": "index.html" },
@@ -45,7 +70,8 @@
       { "title": "Topic Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
       { "title": "About", "href": "about.html" },
-      { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false }
+      { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false },
+      { "title": "Contributors", "href": "contributors.html", "showInHeader": false }
     ]
   },
   "sidebar": {
@@ -70,7 +96,8 @@
       {
         "title": "开发文档",
         "items": [
-          { "title": "如何新增文章", "path": "site-docs/how-to-add-articles.md" }
+          { "title": "如何新增文章", "path": "site-docs/how-to-add-articles.md" },
+          { "title": "页面框架标准", "path": "site-docs/page-framework-standards.md" }
         ]
       }
     ],
@@ -95,7 +122,8 @@
       {
         "title": "Developer Docs",
         "items": [
-          { "title": "How to Add Articles", "path": "site-docs/how-to-add-articles.en.md" }
+          { "title": "How to Add Articles", "path": "site-docs/how-to-add-articles.en.md" },
+          { "title": "Page Frame Standards", "path": "site-docs/page-framework-standards.en.md" }
         ]
       }
     ]

@@ -3,13 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="refresh" content="0; url=about.html#contributors" />
+    <meta name="color-scheme" content="light dark" />
     <title>LocoWiki · 贡献者</title>
-    <script>
-      window.location.replace("about.html#contributors");
-    </script>
+    <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
+    <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
-  <body>
-    <p>贡献者内容已合并到 <a href="about.html#contributors">关于页</a>。</p>
+  <body data-layout="page" data-page-id="contributors">
+    <header id="site-header"></header>
+
+    <div class="layout">
+      <aside id="site-sidebar"></aside>
+
+      <main class="content">
+        <div id="page-root"></div>
+      </main>
+
+      <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
+        <div class="toc-title" data-i18n="common.tocTitle">本页目录</div>
+        <div id="toc-items"></div>
+      </aside>
+    </div>
+
+    <footer id="site-footer"></footer>
+    <script type="module" src="assets/js/entries/static-page.js"></script>
   </body>
 </html>

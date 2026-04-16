@@ -2,6 +2,17 @@
 
 这篇文档说明当前站点里“新增文章”要改哪些地方，以及哪些内容是在本仓库维护，哪些内容是在外部内容仓库维护。
 
+在继续之前，先确认你要新增的是哪种正文框架：
+
+- 说明页 / 落地页：`page`
+- 文档阅读页：`docs`
+
+完整规则见：
+
+```text
+site-docs/page-framework-standards.md
+```
+
 ## 先分清两类内容
 
 ### 1. 文档文章
@@ -24,8 +35,11 @@
 - 首页
 - 资源下载
 - 关于
+- 贡献者
 
 这部分不走 Markdown，而是直接维护在 `assets/content/pages.json`
+
+它们统一属于 `page` 框架。
 
 ## 新增一篇“快速上手”或“专题文档”文章
 
@@ -117,6 +131,8 @@ assets/site-config.json -> site.defaultDocByShell
 
 开发文档是专门给这个站点仓库自己用的，不依赖外部内容仓库。
 
+虽然开发文档是内部维护的，但它仍然属于 `docs` 框架。
+
 ### 步骤 1：在本仓库新增 Markdown
 
 把新文件放到：
@@ -156,7 +172,7 @@ assets/site-config.json
 "site-docs/how-to-add-pages.md": "site-docs/how-to-add-pages.en.md"
 ```
 
-## 修改首页、关于、下载页文案
+## 修改首页、关于、贡献者、下载页文案
 
 这类不是文章，不需要改 Markdown。
 
@@ -171,6 +187,7 @@ assets/content/pages.json
 - 首页 Hero
 - 首页卡片
 - 关于页说明
+- 贡献者页说明
 - 下载页说明
 
 ## 一个最小新增示例

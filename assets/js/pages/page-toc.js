@@ -5,7 +5,7 @@ let headingMeta = [];
 let rafToken = 0;
 
 function shouldIgnoreHeading(heading) {
-  return Boolean(heading.closest(".cards, .toc, .page-section-nav"));
+  return Boolean(heading.closest(".cards, .toc, .page-section-nav, [data-toc-ignore]"));
 }
 
 function pickHeadings(container) {
@@ -51,6 +51,10 @@ function renderSectionNav(metaList) {
   const root = document.querySelector("main.content");
   const hero = root?.querySelector(".page-hero");
   if (!root || !hero || document.body?.dataset.layout !== "page") return;
+  if (document.body?.dataset.pageId === "downloads") {
+    root.querySelector(".page-section-nav")?.remove();
+    return;
+  }
 
   let nav = root.querySelector(".page-section-nav");
   const sections = metaList.filter((meta) => meta.level === 0);
