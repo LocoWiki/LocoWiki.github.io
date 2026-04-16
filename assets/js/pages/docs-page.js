@@ -12,6 +12,8 @@ const state = {
   navigationBound: false
 };
 
+const FEISHU_DOCS_URL = "https://lain-database.feishu.cn/wiki/HwyJwB70niKbW7khmwlcbCH2nXb?from=from_copylink";
+
 function isLocalDocPath(path) {
   return String(path || "").trim().startsWith("site-docs/");
 }
@@ -185,7 +187,7 @@ function getSidebarContext(docPath) {
       href: "quickstart.html"
     },
     docs: {
-      title: lang === "en" ? "Feishu Sync Docs" : "飞书同步文档",
+      title: lang === "en" ? "Docs" : "文档",
       href: "docs.html"
     },
     developer: {
@@ -339,6 +341,25 @@ function renderError(contentEl, docPath, urls) {
   `;
 }
 
+function renderShellNotice() {
+  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  if (shell !== "docs") return "";
+
+  const lang = getCurrentLanguage();
+  const title = lang === "en" ? "Original Feishu Reading" : "飞书原文阅读";
+  const body =
+    lang === "en"
+      ? `For a better reading experience, open the original page on <a href="${escapeAttr(FEISHU_DOCS_URL)}" target="_blank" rel="noopener noreferrer">Feishu</a>.`
+      : `为获得更优阅读体验，请前往 <a href="${escapeAttr(FEISHU_DOCS_URL)}" target="_blank" rel="noopener noreferrer">飞书</a> 查看原文。`;
+
+  return `
+    <section class="page-callout">
+      <strong>${escapeHtml(title)}</strong>
+      <p>${body}</p>
+    </section>
+  `;
+}
+
 export async function renderDocsPage() {
   const elements = getDocElements();
   if (!elements) return;
@@ -370,7 +391,7 @@ export async function renderDocsPage() {
       lastModified: response.headers.get("last-modified") || ""
     });
     contentEl.className = "doc-content-live";
-    contentEl.innerHTML = stage.innerHTML;
+    contentEl.innerHTML = `${renderShellNotice()}${stage.innerHTML}`;
     renderDocToc(collectHeadings(contentEl));
     syncSidebarOutline(docPath, docTitle, collectSidebarHeadings(contentEl), config);
     renderDocPager(pagerEl, docPath, config);
