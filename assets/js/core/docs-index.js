@@ -2,19 +2,13 @@ import { getDocShellForPath } from "./docs-routing.js";
 import { getLocalizedList, getLocalizedValue, safeDecode } from "./utils.js";
 
 const REMOTE_TREE_PREFIX = "wiki/";
+const REMOTE_DOC_INDEX_URL = "assets/content/remote-docs-index.json";
 
 let remoteMarkdownPaths = null;
-let remoteTreePromise = null;
+let remoteIndexPromise = null;
 
 function isMarkdownPath(path) {
   return /\.md$/i.test(String(path || "").trim());
-}
-
-function getRemoteTreeUrl(config) {
-  const owner = config?.sourceRepo?.owner;
-  const repo = config?.sourceRepo?.repo;
-  const branch = config?.sourceRepo?.branch;
-  return `https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`;
 }
 
 function decodeSegment(value) {
@@ -140,13 +134,10 @@ function containsShellItem(item, shell) {
 }
 
 export async function preloadRemoteDocIndex(config) {
-  if (remoteMarkdownPaths || remoteTreePromise) return remoteTreePromise;
+  if (remoteMarkdownPaths || remoteIndexPromise) return remoteIndexPromise;
 
-  remoteTreePromise = fetch(getRemoteTreeUrl(config), {
-    cache: "no-store",
-    headers: {
-      Accept: "application/vnd.github+json"
-    }
+  remoteIndexPromise = fetch(REMOTE_DOC_INDEX_URL, {
+    cache: "no-store"
   })
     .then(async (response) => {
       if (!response.ok) {
@@ -155,19 +146,26 @@ export async function preloadRemoteDocIndex(config) {
       return response.json();
     })
     .then((payload) => {
-      const tree = Array.isArray(payload?.tree) ? payload.tree : [];
-      remoteMarkdownPaths = tree
-        .filter((entry) => entry?.type === "blob" && isMarkdownPath(entry?.path))
-        .map((entry) => String(entry.path));
+      const paths = Array.isArray(payload?.paths) ? payload.paths : [];
+      const sourceRepo = payload?.sourceRepo || {};
+      if (
+        config?.sourceRepo?.owner &&
+        config?.sourceRepo?.repo &&
+        config?.sourceRepo?.branch &&
+        (sourceRepo.owner !== config.sourceRepo.owner || sourceRepo.repo !== config.sourceRepo.repo || sourceRepo.branch !== config.sourceRepo.branch)
+      ) {
+        console.warn("Remote doc index sourceRepo does not match site-config sourceRepo.", { sourceRepo, expected: config.sourceRepo });
+      }
+      remoteMarkdownPaths = paths.filter((path) => isMarkdownPath(path)).map((path) => String(path));
       return remoteMarkdownPaths;
     })
     .catch((error) => {
-      console.warn("Failed to preload remote doc index, falling back to static sidebar config.", error);
+      console.warn("Failed to preload local remote-docs index, falling back to static sidebar config.", error);
       remoteMarkdownPaths = null;
       return null;
     });
 
-  return remoteTreePromise;
+  return remoteIndexPromise;
 }
 
 export function getResolvedSidebar(config, lang) {

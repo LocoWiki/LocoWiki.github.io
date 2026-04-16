@@ -91,8 +91,14 @@ assets/site-config.json
 
 如果是文档：
 
-- 只要文件放在外部仓库的 `wiki/` 目录下，站点会自动递归扫描并生成多级侧栏
-- 不需要再手工把每一篇 `wiki/...` 文档写进 `assets/site-config.json`
+- 需要刷新站点里的本地索引文件：`assets/content/remote-docs-index.json`
+- 执行：
+
+```bash
+node scripts/update-remote-doc-index.mjs
+```
+
+- 这个索引文件会驱动 `docs.html` 的多级侧栏，不再在运行时请求 GitHub API
 - 如果你想覆盖某一篇文档在侧栏里的显示标题，才需要在 `sidebar.zh` / `sidebar.en` 里保留同路径条目
 
 ### 步骤 3：如果有英文版，再补语言映射
@@ -211,7 +217,7 @@ assets/content/pages.json
 如果你要新增一篇“文档”文章，最小操作就是：
 
 1. 去外部内容仓库的 `wiki/` 下新建 `.md`
-2. 如果只需要默认文件名展示，什么都不用再改
+2. 在本站仓库执行 `node scripts/update-remote-doc-index.mjs`
 3. 如果需要自定义侧栏标题，再回到这个站点仓库补 `sidebar.zh / sidebar.en`
 
 ## 当前建议
@@ -226,7 +232,7 @@ assets/content/pages.json
 不要只看 Markdown 有没有渲染出来，至少再做下面这些检查：
 
 1. 在 `assets/site-config.json` 里确认中文和英文侧栏都挂上了
-   如果是 `wiki/` 下的文档，这一步改为确认路径位于 `wiki/` 目录，并按需要补标题覆盖
+   如果是 `wiki/` 下的文档，这一步改为确认路径位于 `wiki/` 目录、`assets/content/remote-docs-index.json` 已刷新，并按需要补标题覆盖
 2. 如果存在英文版，确认 `i18n.docPathAliases` 已补齐
 3. 本地打开 `developer-docs.html` 或 `docs.html`，确认能直达新文档
 4. 切换语言，确认不会跳回默认文档

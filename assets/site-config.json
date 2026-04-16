@@ -92,6 +92,10 @@
         "title": "文档",
         "items": [
           { "title": "【RC】足式机器人扫盲导论", "path": "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
+          { "title": "仿生足式机器人挑战赛", "path": "wiki/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md" },
+          { "title": "足式机器人部件选型与经验", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md" },
+          { "title": "足式机器人传统控制理论", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md" },
+          { "title": "足式机器人设计方案参考", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md" },
           { "title": "LocoWiki 介绍", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
       },
@@ -120,6 +124,10 @@
         "title": "Docs",
         "items": [
           { "title": "【RC】足式机器人扫盲导论", "path": "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
+          { "title": "Biomimetic Quadruped Challenge", "path": "wiki/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md" },
+          { "title": "Quadruped Parts Selection and Notes", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md" },
+          { "title": "Classic Quadruped Control Theory", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md" },
+          { "title": "Quadruped Design References", "path": "wiki/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md" },
           { "title": "LocoWiki Intro", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
       },

@@ -24,6 +24,7 @@ LocoWiki 的静态展示站点仓库，部署到 GitHub Pages。
 - `assets/content/`
   - `pages.json`：静态页面文案与区块数据
   - `ui-text.json`：公共 UI 文案
+  - `remote-docs-index.json`：外部文档仓库的本地索引快照，供 `docs.html` 侧栏使用
 - `assets/js/core/`
   - 配置、偏好、i18n、文档路径映射
 - `assets/js/components/`
@@ -46,6 +47,11 @@ LocoWiki 的静态展示站点仓库，部署到 GitHub Pages。
 如果是改导航、侧栏、默认文档路径：
 
 1. 编辑 `assets/site-config.json`
+
+如果是外部 `wiki/` 文档有新增、删除或改路径：
+
+1. 执行 `node scripts/update-remote-doc-index.mjs`
+2. 提交更新后的 `assets/content/remote-docs-index.json`
 
 如果是改页面归属标准、来源类型或框架类型：
 

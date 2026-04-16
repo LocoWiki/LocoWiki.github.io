@@ -89,8 +89,14 @@ Example:
 
 If it is a Docs article:
 
-- any Markdown file under `wiki/` is now discovered recursively and rendered as a nested sidebar tree
-- you no longer need to manually register every `wiki/...` path in `assets/site-config.json`
+- refresh the local index file used by the site: `assets/content/remote-docs-index.json`
+- run:
+
+```bash
+node scripts/update-remote-doc-index.mjs
+```
+
+- this local index drives the nested sidebar in `docs.html`, so the site no longer depends on the GitHub API at runtime
 - keep a matching sidebar entry only when you want to override the displayed title for a specific document
 
 ### Step 3: add language aliases if needed
@@ -207,7 +213,7 @@ To add one Quick Start article:
 To add one Docs article:
 
 1. Create the Markdown file under `wiki/` in the external content repository
-2. Stop there if the default filename-based sidebar title is acceptable
+2. Run `node scripts/update-remote-doc-index.mjs` in this site repository
 3. Only update `sidebar.zh` / `sidebar.en` when you need a custom sidebar label
 
 ## Minimum self-check before finishing
@@ -215,7 +221,7 @@ To add one Docs article:
 Do not stop after the Markdown renders. At minimum:
 
 1. confirm both Chinese and English sidebars are registered in `assets/site-config.json`
-   For Docs under `wiki/`, this instead means confirming the file is under `wiki/` and adding sidebar entries only when you need title overrides
+   For Docs under `wiki/`, this instead means confirming the file is under `wiki/`, `assets/content/remote-docs-index.json` has been refreshed, and adding sidebar entries only when you need title overrides
 2. add the `i18n.docPathAliases` mapping if an English file exists
 3. open `developer-docs.html` or `docs.html` locally and reach the new article directly
 4. switch language and confirm it does not jump back to the default doc

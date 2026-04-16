@@ -213,6 +213,21 @@
   background: var(--surface);
 }
 
+.md .katex {
+  font-size: 1.04em;
+}
+
+.md .katex-display {
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+}
+
+.md .katex-display > .katex {
+  min-width: fit-content;
+}
+
 .md .doc-meta {
   margin-bottom: 24px;
 }
