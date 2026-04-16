@@ -4,150 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title data-i18n="index.pageTitle">LocoWiki</title>
+    <title>LocoWiki</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
+    <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
-  <body data-layout="docs">
+  <body data-layout="home" data-page-id="home">
     <header id="site-header"></header>
 
     <div class="layout">
-      <aside id="site-sidebar"></aside>
-
       <main class="content">
-        <div class="hero">
-          <div class="hero-main">
-            <h1>LocoWiki</h1>
-            <p data-i18n="index.heroDesc">
-              机器人运控学习维基仓库：面向 ROBOCON 备赛、科研学习与开发检索，汇总规则文档、技术分享、论文学习清单与推荐网络项目等核心资料。
-            </p>
-            <div class="hero-actions">
-              <a class="btn primary" href="docs.html?path=README.md" data-i18n="index.heroRead">开始阅读</a>
-              <a class="btn" href="downloads.html" data-i18n="index.heroDownloads">资源下载</a>
-              <a class="btn" href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer"
-                data-i18n="index.heroGithub">GitHub 仓库</a
-              >
-              <a class="btn" href="docs.html?path=__feishu_wiki__" data-i18n="index.heroFeishu">飞书 Wiki</a>
-            </div>
-          </div>
-          <div class="hero-banner" role="img" aria-label="LocoWiki 横幅" data-i18n-aria-label="index.heroBannerAria">
-            <img src="assets/img/LOGO-LocoWiki-cut.svg" alt="LocoWiki 足式机器人资源整合仓库" data-i18n-alt="index.heroBannerAlt" loading="eager" decoding="async" />
-          </div>
-        </div>
-
-        <h2 class="section-title" data-i18n="index.modulesTitle">模块导航</h2>
-        <p class="section-desc" data-i18n="index.modulesDesc">快速进入规则、分享、论文学习清单与网络开源项目。</p>
-        <div class="cards" aria-label="模块导航" data-i18n-aria-label="index.modulesAria">
-          <div class="card">
-            <h3 data-i18n="index.modules.rulesTitle">📋 比赛规则</h3>
-            <p data-i18n="index.modules.rulesDesc">历届 ROBOCON 仿生足式机器人挑战赛（机器马术赛）官方规则 PDF 与修订版。</p>
-            <a href="docs.html?path=competition-rules%2FREADME.md" data-i18n="index.modules.rulesLink">打开</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.modules.sharingTitle">📢 技术分享</h3>
-            <p data-i18n="index.modules.sharingDesc">高校队伍复盘与方案交流（PPT/PPTX），适合备赛与工程实践快速检索。</p>
-            <a href="docs.html?path=technical-sharing%2FREADME.md" data-i18n="index.modules.sharingLink">打开</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.modules.paperTitle">📄 论文学习清单（含推荐论文 PDF）</h3>
-            <p data-i18n="index.modules.paperDesc">统一入口：按技术方向索引论文，并关联可公开获取的本地 PDF 与维护说明。</p>
-            <a href="docs.html?path=reading-list%2FREADME.md" data-i18n="index.modules.paperLink">打开</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.modules.networkTitle">🔗 推荐网络项目</h3>
-            <p data-i18n="index.modules.networkDesc">汇总实物开源与开发框架项目，覆盖 GitHub / Gitee / OSHWHub 等平台。</p>
-            <a href="docs.html?path=network-open-source%2FREADME.md" data-i18n="index.modules.networkLink">打开</a>
-          </div>
-        </div>
-
-        <h2 class="section-title" data-i18n="index.toolsTitle">常用工具站点</h2>
-        <p class="section-desc" data-i18n="index.toolsDesc">常用的机器人仿真、动力学与开发工具官网入口（新标签页打开）。</p>
-        <div class="cards cards-3" aria-label="常用工具站点" data-i18n-aria-label="index.toolsAria">
-          <div class="card">
-            <h3>MuJoCo</h3>
-            <p data-i18n="index.tools.mujocoDesc">高性能物理引擎（DeepMind），常用于接触动力学仿真与强化学习。</p>
-            <a href="https://mujoco.org/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.mujocoLink">打开官网</a>
-          </div>
-          <div class="card">
-            <h3>Webots</h3>
-            <p data-i18n="index.tools.webotsDesc">通用机器人仿真器（Cyberbotics），支持多传感器与 ROS 集成。</p>
-            <a href="https://cyberbotics.com/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.webotsLink">打开官网</a>
-          </div>
-          <div class="card">
-            <h3>Gazebo Sim</h3>
-            <p data-i18n="index.tools.gazeboDesc">ROS 生态常用仿真平台，适合传感器仿真与大规模场景。</p>
-            <a href="https://gazebosim.org/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.gazeboLink">打开</a>
-          </div>
-          <div class="card">
-            <h3>Isaac Sim</h3>
-            <p data-i18n="index.tools.isaacDesc">NVIDIA Omniverse 仿真平台，支持高保真传感器、合成数据与训练流程。</p>
-            <a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.isaacLink">打开</a>
-          </div>
-          <div class="card">
-            <h3>ROS 2 Docs</h3>
-            <p data-i18n="index.tools.ros2Desc">ROS 2 官方文档入口（安装、教程与 API 参考）。</p>
-            <a href="https://docs.ros.org/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.ros2Link">打开文档</a>
-          </div>
-          <div class="card">
-            <h3>MoveIt</h3>
-            <p data-i18n="index.tools.moveitDesc">机器人运动规划框架（ROS），涵盖规划、控制与可视化工具链。</p>
-            <a href="https://moveit.ros.org/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.moveitLink">打开</a>
-          </div>
-          <div class="card">
-            <h3>Drake</h3>
-            <p data-i18n="index.tools.drakeDesc">MIT Robotics 工具链：动力学、控制、轨迹优化与系统建模。</p>
-            <a href="https://drake.mit.edu/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.drakeLink">打开官网</a>
-          </div>
-          <div class="card">
-            <h3>Pinocchio</h3>
-            <p data-i18n="index.tools.pinocchioDesc">刚体动力学/雅可比/碰撞等核心组件，常用于控制与优化。</p>
-            <a href="https://stack-of-tasks.github.io/pinocchio/" target="_blank" rel="noopener noreferrer"
-              data-i18n="index.tools.pinocchioLink">打开</a
-            >
-          </div>
-          <div class="card">
-            <h3>PyBullet</h3>
-            <p data-i18n="index.tools.pybulletDesc">Bullet 物理引擎的 Python 接口，适合快速搭建接触仿真与原型验证。</p>
-            <a href="https://pybullet.org/wordpress/" target="_blank" rel="noopener noreferrer" data-i18n="index.tools.pybulletLink">打开官网</a>
-          </div>
-        </div>
-
-        <h2 class="section-title" data-i18n="index.linksTitle">外部链接</h2>
-        <p class="section-desc" data-i18n="index.linksDesc">知识库与贡献入口。</p>
-        <div class="cards" aria-label="外部链接" data-i18n-aria-label="index.linksAria">
-          <div class="card">
-            <h3 data-i18n="index.links.feishuTitle">🧠 飞书知识库</h3>
-            <p data-i18n="index.links.feishuDesc">站内查看飞书知识库（支持内嵌浏览与同步状态提示）。</p>
-            <a href="docs.html?path=__feishu_wiki__" data-i18n="index.links.feishuLink">打开知识库</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.links.contributorsTitle">🌟 贡献者</h3>
-            <p data-i18n="index.links.contributorsDesc">查看 LocoWiki 项目贡献者列表与贡献统计，感谢所有参与维护的伙伴。</p>
-            <a href="contributors.html" data-i18n="index.links.contributorsLink">查看贡献者</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.links.qqTitle">💬 QQ 交流群</h3>
-            <p data-i18n="index.links.qqDesc">点击链接加入群聊【Robo-LocoWiki运控交流群】。</p>
-            <a href="https://qm.qq.com/q/5uVf2sWJvq" target="_blank" rel="noopener noreferrer" data-i18n="index.links.qqLink">立即加入</a>
-          </div>
-          <div class="card">
-            <h3 data-i18n="index.links.feedbackTitle">🤝 贡献与反馈</h3>
-            <p data-i18n="index.links.feedbackDesc">欢迎提交 Issue / PR，补充资料外链、更新论文学习清单、维护网络开源项目索引。</p>
-            <a href="https://github.com/LocoWiki/LocoWiki/issues" target="_blank" rel="noopener noreferrer"
-              data-i18n="index.links.feedbackLink">去提 Issue</a
-            >
-          </div>
-        </div>
+        <div id="page-root"></div>
       </main>
-
-      <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
-        <div class="toc-title" data-i18n="common.tocTitle">本页目录</div>
-        <div id="toc-items"></div>
-      </aside>
     </div>
 
     <footer id="site-footer"></footer>
-    <script src="assets/js/site.js" defer></script>
-    <script src="assets/js/page-toc.js" defer></script>
+    <script type="module" src="assets/js/entries/static-page.js"></script>
   </body>
 </html>

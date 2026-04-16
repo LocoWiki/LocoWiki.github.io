@@ -1,131 +1,223 @@
 .md {
-  line-height: 1.75;
-  font-size: calc(16px * var(--doc-font-scale));
   min-width: 0;
+  color: var(--text-soft);
+  font-size: calc(16px * var(--doc-font-scale));
+  line-height: 1.85;
 }
 
 .md h1,
 .md h2,
 .md h3,
-.md h4 {
-  scroll-margin-top: calc(var(--topbar-h) + 18px);
+.md h4,
+.md h5,
+.md h6 {
+  color: var(--text);
+  scroll-margin-top: calc(var(--topbar-h) + 20px);
 }
 
 .md h1 {
-  margin: 0 0 14px;
-  font-size: 30px;
-  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+  font-size: clamp(26px, 2.5vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
 }
 
 .md h2 {
-  margin: 26px 0 10px;
-  font-size: 22px;
+  margin: 30px 0 12px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 6px;
+  font-size: clamp(22px, 2.1vw, 28px);
+  line-height: 1.22;
+  letter-spacing: -0.03em;
 }
 
 .md h3 {
-  margin: 20px 0 8px;
-  font-size: 18px;
+  margin: 22px 0 8px;
+  font-size: calc(18px * var(--doc-font-scale));
+  line-height: 1.38;
+  letter-spacing: -0.02em;
 }
 
-.md p {
-  margin: 10px 0;
+.md h4 {
+  margin: 18px 0 6px;
+  font-size: calc(15px * var(--doc-font-scale));
+  line-height: 1.5;
+}
+
+.md p,
+.md ul,
+.md ol,
+.md table,
+.md blockquote,
+.md pre {
+  margin: 12px 0;
+}
+
+.md ul,
+.md ol {
+  padding-left: 1.4em;
+}
+
+.md li + li {
+  margin-top: 6px;
+}
+
+.md a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+.md a:hover {
+  color: var(--accent-strong);
+}
+
+.md strong {
+  color: var(--text);
 }
 
 .md code {
-  font-family: var(--font-mono);
-  font-size: 0.95em;
-  padding: 0.15em 0.35em;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--bg-elev) 70%, var(--bg));
+  padding: 0.15em 0.42em;
   border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-muted);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
 }
 
 .md pre {
-  background: var(--code-bg);
-  color: var(--code-text);
-  border-radius: var(--radius);
-  padding: 12px;
   overflow: auto;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-muted);
+  color: var(--text);
 }
 
 .md pre code {
-  background: transparent;
-  border: none;
   padding: 0;
-  color: inherit;
+  border: 0;
+  background: transparent;
 }
 
 .md blockquote {
-  margin: 14px 0;
-  padding: 10px 12px;
-  border-left: 4px solid color-mix(in srgb, var(--link) 45%, var(--border));
-  background: color-mix(in srgb, var(--bg-elev) 80%, var(--bg));
-  border-radius: 12px;
-  color: color-mix(in srgb, var(--text) 88%, var(--muted));
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: color-mix(in srgb, var(--surface-soft) 72%, var(--surface));
+  color: var(--text-soft);
+}
+
+.md blockquote > :first-child {
+  margin-top: 0;
+}
+
+.md blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.md hr {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
 }
 
 .md table {
   width: 100%;
   border-collapse: collapse;
-  margin: 14px 0;
-  display: block;
-  overflow: auto;
+  table-layout: auto;
 }
 
 .md th,
 .md td {
+  padding: 11px 13px;
   border: 1px solid var(--border);
-  padding: 10px;
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .md th {
-  background: color-mix(in srgb, var(--bg-elev) 70%, var(--bg));
+  background: var(--surface-muted);
+  color: var(--text);
+  font-weight: 700;
 }
 
-.md img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--bg);
-}
-
-.md hr {
-  border: none;
-  border-top: 1px solid var(--border);
+.md .table-scroll-wrap {
   margin: 18px 0;
 }
 
-.md .doc-meta {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
+.md .table-scroll-hint {
+  margin: 0 0 8px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
-.md .doc-meta a {
-  font-weight: 600;
+.md .table-scroll-wrap[data-overflow="false"] .table-scroll-hint {
+  display: none;
 }
 
-.md .loading {
+.md .table-scroll-inner {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] table {
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] th,
+.md .table-scroll-wrap[data-overflow="true"] td {
+  min-width: 9rem;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] th:first-child,
+.md .table-scroll-wrap[data-overflow="true"] td:first-child {
+  min-width: 6rem;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] th:nth-child(2),
+.md .table-scroll-wrap[data-overflow="true"] td:nth-child(2) {
+  min-width: 11rem;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] th:nth-child(3),
+.md .table-scroll-wrap[data-overflow="true"] td:nth-child(3) {
+  min-width: 12rem;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] th:last-child,
+.md .table-scroll-wrap[data-overflow="true"] td:last-child {
+  min-width: 14rem;
+}
+
+.md .table-scroll-wrap[data-overflow="true"] td a {
+  white-space: nowrap;
+}
+
+.md img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
   border: 1px solid var(--border);
-  background: var(--bg-elev);
-  border-radius: var(--radius);
-  padding: 14px;
-  color: var(--muted);
+  border-radius: 12px;
+  background: var(--surface);
 }
 
+.md .doc-meta {
+  margin-bottom: 24px;
+}
+
+.md .loading,
 .md .error {
-  border: 1px solid color-mix(in srgb, #ef4444 35%, var(--border));
-  background: color-mix(in srgb, #ef4444 10%, var(--bg-elev));
-  border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px 18px;
 }

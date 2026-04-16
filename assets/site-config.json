@@ -1,11 +1,38 @@
 {
   "site": {
     "title": "LocoWiki",
-    "tagline": "足式机器人资源整合仓库（ROBOCON / 科研 / 开发检索）",
     "defaultDoc": "README.md",
     "defaultDocByLang": {
       "zh": "README.md",
       "en": "README.en.md"
+    },
+    "defaultDocByShell": {
+      "quickstart": "README.md",
+      "docs": "wiki/【必读】LocoWiki介绍.md",
+      "developer": "site-docs/how-to-add-articles.md"
+    }
+  },
+  "pageStandards": {
+    "frames": {
+      "page": {
+        "description": "Structured internal landing pages rendered from JSON blocks",
+        "requiredBlocks": ["hero", "sections"],
+        "optionalBlocks": ["metrics", "callout", "cta"]
+      },
+      "docs": {
+        "description": "Long-form reading pages rendered from Markdown with TOC and pager",
+        "requiredBlocks": ["meta", "content"],
+        "optionalBlocks": ["toc", "pager"]
+      }
+    },
+    "pages": {
+      "index.html": { "frame": "page", "source": "json" },
+      "about.html": { "frame": "page", "source": "json" },
+      "downloads.html": { "frame": "page", "source": "json" },
+      "contributors.html": { "frame": "page", "source": "json" },
+      "quickstart.html": { "frame": "docs", "source": "remote-markdown", "shell": "quickstart" },
+      "docs.html": { "frame": "docs", "source": "remote-markdown", "shell": "docs" },
+      "developer-docs.html": { "frame": "docs", "source": "local-markdown", "shell": "developer" }
     }
   },
   "i18n": {
@@ -17,7 +44,10 @@
       "technical-sharing/README.md": "technical-sharing/README.en.md",
       "reading-list/README.md": "reading-list/README.en.md",
       "network-open-source/README.md": "network-open-source/README.en.md",
-      "scripts/README.md": "scripts/README.en.md"
+      "scripts/README.md": "scripts/README.en.md",
+      "site-docs/how-to-add-articles.md": "site-docs/how-to-add-articles.en.md",
+      "site-docs/page-framework-standards.md": "site-docs/page-framework-standards.en.md",
+      "site-docs/site-maintenance-checklist.md": "site-docs/site-maintenance-checklist.en.md"
     }
   },
   "sourceRepo": {
@@ -28,45 +58,75 @@
   "nav": {
     "zh": [
       { "title": "首页", "href": "index.html" },
-      { "title": "文档", "href": "docs.html?path=README.md" },
+      { "title": "快速上手", "href": "quickstart.html" },
+      { "title": "飞书同步文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
-      { "title": "贡献者", "href": "contributors.html" },
-      { "title": "关于", "href": "about.html" }
+      { "title": "关于", "href": "about.html" },
+      { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false },
+      { "title": "贡献者", "href": "contributors.html", "showInHeader": false }
     ],
     "en": [
       { "title": "Home", "href": "index.html" },
-      { "title": "Docs", "href": "docs.html?path=README.en.md" },
+      { "title": "Quick Start", "href": "quickstart.html" },
+      { "title": "Feishu Sync Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
-      { "title": "Contributors", "href": "contributors.html" },
-      { "title": "About", "href": "about.html" }
+      { "title": "About", "href": "about.html" },
+      { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false },
+      { "title": "Contributors", "href": "contributors.html", "showInHeader": false }
     ]
   },
   "sidebar": {
     "zh": [
       {
-        "title": "文档快速导航",
+        "title": "快速上手",
         "items": [
           { "title": "总览", "path": "README.md" },
           { "title": "比赛规则", "path": "competition-rules/README.md" },
           { "title": "技术分享", "path": "technical-sharing/README.md" },
           { "title": "论文学习清单", "path": "reading-list/README.md" },
           { "title": "推荐网络项目", "path": "network-open-source/README.md" },
-          { "title": "维护脚本", "path": "scripts/README.md" },
-          { "title": "【重要】飞书 Wiki", "path": "__feishu_wiki__" }
+          { "title": "仓库脚本", "path": "scripts/README.md" }
+        ]
+      },
+      {
+        "title": "飞书同步文档",
+        "items": [
+          { "title": "LocoWiki 介绍", "path": "wiki/【必读】LocoWiki介绍.md" }
+        ]
+      },
+      {
+        "title": "开发文档",
+        "items": [
+          { "title": "如何新增文章", "path": "site-docs/how-to-add-articles.md" },
+          { "title": "页面框架标准", "path": "site-docs/page-framework-standards.md" },
+          { "title": "站点维护清单", "path": "site-docs/site-maintenance-checklist.md" }
         ]
       }
     ],
     "en": [
       {
-        "title": "Docs Quick Navigation",
+        "title": "Quick Start",
         "items": [
           { "title": "Overview", "path": "README.en.md" },
           { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
           { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
           { "title": "Paper Study Hub", "path": "reading-list/README.en.md" },
-          { "title": "Web Open-Source Projects", "path": "network-open-source/README.en.md" },
-          { "title": "Maintenance Scripts", "path": "scripts/README.en.md" },
-          { "title": "Feishu Wiki", "path": "__feishu_wiki__" }
+          { "title": "Recommended Projects", "path": "network-open-source/README.en.md" },
+          { "title": "Repository Scripts", "path": "scripts/README.en.md" }
+        ]
+      },
+      {
+        "title": "Feishu Sync Docs",
+        "items": [
+          { "title": "LocoWiki Intro", "path": "wiki/【必读】LocoWiki介绍.md" }
+        ]
+      },
+      {
+        "title": "Developer Docs",
+        "items": [
+          { "title": "How to Add Articles", "path": "site-docs/how-to-add-articles.en.md" },
+          { "title": "Page Frame Standards", "path": "site-docs/page-framework-standards.en.md" },
+          { "title": "Site Maintenance Checklist", "path": "site-docs/site-maintenance-checklist.en.md" }
         ]
       }
     ]
@@ -76,13 +136,6 @@
     "issues": "https://github.com/LocoWiki/LocoWiki/issues",
     "discussions": "https://github.com/LocoWiki/LocoWiki/discussions",
     "qqGroup": "https://qm.qq.com/q/5uVf2sWJvq",
-    "qqGroupName": "Robo-LocoWiki运控交流群",
-    "feishu": "https://wcn9j5638vrr.feishu.cn/wiki/space/7570988375279517715?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home"
-  },
-  "integrations": {
-    "feishuWiki": {
-      "syncStatusUrl": "assets/feishu-sync-status.json",
-      "dispatchEventType": "feishu_wiki_sync"
-    }
+    "qqGroupName": "Robo-LocoWiki 运控交流"
   }
 }
