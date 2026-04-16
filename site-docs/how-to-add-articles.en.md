@@ -20,12 +20,12 @@ site-docs/page-framework-standards.en.md
 These appear under:
 
 - Quick Start
-- Feishu Sync Docs
+- Docs
 - Developer Docs
 
 Rules:
 
-- `Quick Start` and `Feishu Sync Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
+- `Quick Start` and `Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
 - `Developer Docs` reads local Markdown files from this repository under `site-docs/`
 
 ### 2. Static page copy
@@ -41,7 +41,7 @@ These pages do not use Markdown. They are maintained in `assets/content/pages.js
 
 They all belong to the `page` frame.
 
-## Add a Quick Start or Feishu Sync Docs article
+## Add a Quick Start or Docs article
 
 ### Step 1: create the Markdown file in the content repository
 
@@ -65,12 +65,12 @@ wiki/my-topic.md
 
 Routing rules:
 
-- Paths starting with `wiki/` go to `Feishu Sync Docs`
+- Paths starting with `wiki/` go to `Docs`
 - Other Markdown paths go to `Quick Start`
 
 ### Step 2: register it in the sidebar
 
-Edit:
+For a Quick Start article, edit:
 
 ```text
 assets/site-config.json
@@ -86,6 +86,12 @@ Example:
   "path": "competition-rules/new-topic.md"
 }
 ```
+
+If it is a Docs article:
+
+- any Markdown file under `wiki/` is now discovered recursively and rendered as a nested sidebar tree
+- you no longer need to manually register every `wiki/...` path in `assets/site-config.json`
+- keep a matching sidebar entry only when you want to override the displayed title for a specific document
 
 ### Step 3: add language aliases if needed
 
@@ -198,11 +204,18 @@ To add one Quick Start article:
 2. Update `assets/site-config.json`
 3. Add the new entry to `sidebar.zh` and `sidebar.en`
 
+To add one Docs article:
+
+1. Create the Markdown file under `wiki/` in the external content repository
+2. Stop there if the default filename-based sidebar title is acceptable
+3. Only update `sidebar.zh` / `sidebar.en` when you need a custom sidebar label
+
 ## Minimum self-check before finishing
 
 Do not stop after the Markdown renders. At minimum:
 
 1. confirm both Chinese and English sidebars are registered in `assets/site-config.json`
+   For Docs under `wiki/`, this instead means confirming the file is under `wiki/` and adding sidebar entries only when you need title overrides
 2. add the `i18n.docPathAliases` mapping if an English file exists
 3. open `developer-docs.html` or `docs.html` locally and reach the new article directly
 4. switch language and confirm it does not jump back to the default doc

@@ -52,7 +52,7 @@ Do not use it for:
 Applies to:
 
 - Quick Start
-- Feishu Sync Docs
+- Docs
 - Developer Docs
 
 Source:

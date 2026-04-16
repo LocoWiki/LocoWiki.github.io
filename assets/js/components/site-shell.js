@@ -1,5 +1,6 @@
 import { getPageData, getSiteConfig } from "../core/config.js";
-import { getDefaultDocPathForShell, getDocPageHref, getDocShellForPath, getDocShellName, mapDocPathToLanguage, resetDocAliasCache } from "../core/docs-routing.js";
+import { flattenSidebarDocItems, getResolvedSidebar, getSidebarGroupsForShell, preloadRemoteDocIndex } from "../core/docs-index.js";
+import { getDefaultDocPathForShell, getDocPageHref, getDocShellName, mapDocPathToLanguage, resetDocAliasCache } from "../core/docs-routing.js";
 import { applyI18n, initI18n, t } from "../core/i18n.js";
 import { applyPageStandard } from "../core/page-standards.js";
 import { applyLanguage, applyTheme, cleanupLegacyPreferences, getCurrentLanguage, getCurrentTheme, getPreferredLanguage, getPreferredTheme } from "../core/preferences.js";
@@ -31,20 +32,12 @@ function getHeaderNavItems(config, lang) {
 }
 
 function getSidebarGroups(config, lang) {
-  const shell = getCurrentShell();
-  return getLocalizedList(config?.sidebar, lang)
-    .map((group) => {
-      const items = getLocalizedList(group?.items, lang).filter((item) => {
-        const path = getLocalizedValue(item?.path, lang);
-        return path && getDocShellForPath(path) === shell;
-      });
-      return { ...group, items };
-    })
-    .filter((group) => group.items.length > 0);
+  return getSidebarGroupsForShell(config, lang, getCurrentShell());
 }
 
 function getSearchIndex(config, lang) {
   const staticPageKeywords = buildStaticPageKeywordMap(currentPageData, config, lang);
+  const resolvedSidebar = getResolvedSidebar(config, lang);
   const pages = [
     ...getNavItems(config, lang).map((item) => {
       const href = getLocalizedValue(item?.href, lang);
@@ -59,19 +52,13 @@ function getSearchIndex(config, lang) {
     ...getStaticPageSectionIndex(currentPageData, config, lang)
   ];
 
-  const docs = getLocalizedList(config?.sidebar, lang).flatMap((group) => {
-    const groupTitle = getLocalizedValue(group?.title, lang);
-    return getLocalizedList(group?.items, lang).map((item) => {
-      const path = getLocalizedValue(item?.path, lang);
-      return {
-        title: getLocalizedValue(item?.title, lang),
-        meta: groupTitle,
-        href: getDocPageHref(path, config, lang),
-        keywords: path,
-        kind: "doc"
-      };
-    });
-  });
+  const docs = flattenSidebarDocItems(resolvedSidebar).map((item) => ({
+    title: item.title,
+    meta: item.trail.join(" / "),
+    href: getDocPageHref(item.path, config, lang),
+    keywords: [item.path, ...item.trail].filter(Boolean).join(" "),
+    kind: "doc"
+  }));
 
   return { pages, docs };
 }
@@ -501,24 +488,7 @@ function renderSidebar(config, lang) {
     ${groups
       .map((group) => {
         const title = getLocalizedValue(group?.title, lang);
-        const items = getLocalizedList(group?.items, lang)
-          .filter((item) => {
-            const path = getLocalizedValue(item?.path, lang);
-            return path && getDocShellForPath(path) === getCurrentShell();
-          })
-          .map((item) => {
-            const path = getLocalizedValue(item?.path, lang);
-            const titleText = getLocalizedValue(item?.title, lang);
-            return `
-              <div class="sidebar-doc-item" data-doc-item data-doc-path="${escapeAttr(path)}" data-expanded="false">
-                <a data-doc-link href="${escapeAttr(getDocPageHref(path, config, lang))}" data-doc-path="${escapeAttr(path)}" data-doc-title="${escapeAttr(titleText)}">
-                  <span>${escapeHtml(titleText)}</span>
-                </a>
-                <div class="sidebar-subtree" data-sidebar-subtree hidden></div>
-              </div>
-            `;
-          })
-          .join("");
+        const items = renderSidebarTree(group?.items, config, lang);
 
         return `
           <section class="sidebar-group">
@@ -529,6 +499,27 @@ function renderSidebar(config, lang) {
       })
       .join("")}
   `;
+}
+
+function renderSidebarTree(items, config, lang, depth = 0) {
+  return (items || [])
+    .map((item) => {
+      if (!item) return "";
+      if (item.kind === "folder") {
+        return renderSidebarTree(item.items || [], config, lang, depth + 1);
+      }
+
+      if (!item.path || !item.title) return "";
+      return `
+        <div class="sidebar-doc-item" data-doc-item data-doc-path="${escapeAttr(item.path)}" data-expanded="false" style="--sidebar-depth:${depth}">
+          <a data-doc-link href="${escapeAttr(getDocPageHref(item.path, config, lang))}" data-doc-path="${escapeAttr(item.path)}" data-doc-title="${escapeAttr(item.title)}">
+            <span>${escapeHtml(item.title)}</span>
+          </a>
+          <div class="sidebar-subtree" data-sidebar-subtree hidden></div>
+        </div>
+      `;
+    })
+    .join("");
 }
 
 function renderFooter(config, lang) {
@@ -709,6 +700,7 @@ export async function initSiteShell() {
   const [config, pageData] = await Promise.all([getSiteConfig(), getPageData()]);
   currentConfig = config;
   currentPageData = pageData;
+  await preloadRemoteDocIndex(config);
   await initI18n();
   cleanupLegacyPreferences();
 

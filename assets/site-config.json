@@ -59,7 +59,7 @@
     "zh": [
       { "title": "首页", "href": "index.html" },
       { "title": "快速上手", "href": "quickstart.html" },
-      { "title": "飞书同步文档", "href": "docs.html" },
+      { "title": "文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
       { "title": "关于", "href": "about.html" },
       { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false },
@@ -68,7 +68,7 @@
     "en": [
       { "title": "Home", "href": "index.html" },
       { "title": "Quick Start", "href": "quickstart.html" },
-      { "title": "Feishu Sync Docs", "href": "docs.html" },
+      { "title": "Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
       { "title": "About", "href": "about.html" },
       { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false },
@@ -89,8 +89,9 @@
         ]
       },
       {
-        "title": "飞书同步文档",
+        "title": "文档",
         "items": [
+          { "title": "【RC】足式机器人扫盲导论", "path": "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
           { "title": "LocoWiki 介绍", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
       },
@@ -116,8 +117,9 @@
         ]
       },
       {
-        "title": "Feishu Sync Docs",
+        "title": "Docs",
         "items": [
+          { "title": "【RC】足式机器人扫盲导论", "path": "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
           { "title": "LocoWiki Intro", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
       },

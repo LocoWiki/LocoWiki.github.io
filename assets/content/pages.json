@@ -36,8 +36,8 @@
         {
           "href": "docs.html",
           "label": {
-            "zh": "飞书同步文档",
-            "en": "Feishu Sync Docs"
+            "zh": "文档",
+            "en": "Docs"
           }
         },
         {
@@ -394,12 +394,12 @@
         "cards": [
           {
             "title": {
-              "zh": "飞书同步文档",
-              "en": "Feishu Sync Docs"
+              "zh": "文档",
+              "en": "Docs"
             },
             "desc": {
-              "zh": "进入飞书同步文档阅读流，按 Markdown 结构持续阅读。",
-              "en": "Read the Feishu-synced docs stream through the Markdown shell."
+              "zh": "进入文档阅读流，按 Markdown 结构持续阅读。",
+              "en": "Read the docs stream through the Markdown shell."
             },
             "linkLabel": {
               "zh": "打开文档",
@@ -472,8 +472,8 @@
         "en": "2026/4/16"
       },
       "leadHtml": {
-        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、飞书同步文档阅读和资源入口。",
-        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, Feishu-synced docs reading, and resource entry points."
+        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、文档阅读和资源入口。",
+        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, docs reading, and resource entry points."
       }
     },
     "sections": []

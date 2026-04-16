@@ -20,12 +20,12 @@ site-docs/page-framework-standards.md
 这类内容会显示在：
 
 - 快速上手
-- 飞书同步文档
+- 文档
 - 开发文档
 
 其中：
 
-- `快速上手` 和 `飞书同步文档` 默认读取 `assets/site-config.json` 里 `sourceRepo` 指向的外部仓库
+- `快速上手` 和 `文档` 默认读取 `assets/site-config.json` 里 `sourceRepo` 指向的外部仓库
 - `开发文档` 读取当前站点仓库里的本地 Markdown 文件，也就是 `site-docs/` 目录
 
 ### 2. 静态页面文案
@@ -41,7 +41,7 @@ site-docs/page-framework-standards.md
 
 它们统一属于 `page` 框架。
 
-## 新增一篇“快速上手”或“飞书同步文档”文章
+## 新增一篇“快速上手”或“文档”文章
 
 ### 步骤 1：先在内容仓库里新增 Markdown 文件
 
@@ -67,12 +67,12 @@ wiki/my-topic.md
 
 规则是：
 
-- 路径以 `wiki/` 开头的，会被归到 `飞书同步文档`
+- 路径以 `wiki/` 开头的，会被归到 `文档`
 - 其他普通 Markdown 路径，默认会归到 `快速上手`
 
 ### 步骤 2：把它挂到侧边栏
 
-编辑：
+如果是“快速上手”文章，仍然需要编辑：
 
 ```text
 assets/site-config.json
@@ -89,7 +89,11 @@ assets/site-config.json
 }
 ```
 
-如果是飞书同步文档，就把 `path` 改成 `wiki/...`
+如果是文档：
+
+- 只要文件放在外部仓库的 `wiki/` 目录下，站点会自动递归扫描并生成多级侧栏
+- 不需要再手工把每一篇 `wiki/...` 文档写进 `assets/site-config.json`
+- 如果你想覆盖某一篇文档在侧栏里的显示标题，才需要在 `sidebar.zh` / `sidebar.en` 里保留同路径条目
 
 ### 步骤 3：如果有英文版，再补语言映射
 
@@ -204,6 +208,12 @@ assets/content/pages.json
 2. 回到这个站点仓库，编辑 `assets/site-config.json`
 3. 把新文章挂进 `sidebar.zh / sidebar.en`
 
+如果你要新增一篇“文档”文章，最小操作就是：
+
+1. 去外部内容仓库的 `wiki/` 下新建 `.md`
+2. 如果只需要默认文件名展示，什么都不用再改
+3. 如果需要自定义侧栏标题，再回到这个站点仓库补 `sidebar.zh / sidebar.en`
+
 ## 当前建议
 
 如果内容是：
@@ -216,6 +226,7 @@ assets/content/pages.json
 不要只看 Markdown 有没有渲染出来，至少再做下面这些检查：
 
 1. 在 `assets/site-config.json` 里确认中文和英文侧栏都挂上了
+   如果是 `wiki/` 下的文档，这一步改为确认路径位于 `wiki/` 目录，并按需要补标题覆盖
 2. 如果存在英文版，确认 `i18n.docPathAliases` 已补齐
 3. 本地打开 `developer-docs.html` 或 `docs.html`，确认能直达新文档
 4. 切换语言，确认不会跳回默认文档
