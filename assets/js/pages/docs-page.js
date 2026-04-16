@@ -18,6 +18,41 @@ function isLocalDocPath(path) {
   return String(path || "").trim().startsWith("site-docs/");
 }
 
+function createMathPlaceholder(id, block) {
+  return block ? `<div data-locowiki-math-block="${id}"></div>` : `<span data-locowiki-math-inline="${id}"></span>`;
+}
+
+function stashMarkdownMath(markdown) {
+  const stash = [];
+  let output = String(markdown || "");
+
+  const replacePattern = (pattern, block) => {
+    output = output.replace(pattern, (match) => {
+      const id = stash.push(match) - 1;
+      return createMathPlaceholder(id, block);
+    });
+  };
+
+  replacePattern(/\$\$[\s\S]+?\$\$/g, true);
+  replacePattern(/\\\[[\s\S]+?\\\]/g, true);
+  replacePattern(/\\\((?:\\.|[^\\\n]|\\(?!\)))*\\\)/g, false);
+  output = output.replace(/(^|[^\\$])(\$(?:\\.|[^$\\\n])+\$)/g, (match, prefix, math) => {
+    const id = stash.push(math) - 1;
+    return `${prefix}${createMathPlaceholder(id, false)}`;
+  });
+
+  return { markdown: output, stash };
+}
+
+function restoreMathPlaceholders(container, stash) {
+  container.querySelectorAll("[data-locowiki-math-block], [data-locowiki-math-inline]").forEach((element) => {
+    const rawId = element.getAttribute("data-locowiki-math-block") || element.getAttribute("data-locowiki-math-inline");
+    const id = Number.parseInt(rawId || "", 10);
+    if (!Number.isInteger(id) || !stash[id]) return;
+    element.replaceWith(document.createTextNode(stash[id]));
+  });
+}
+
 function getDocElements() {
   const docEl = document.getElementById("doc");
   if (!docEl) return null;
@@ -127,6 +162,21 @@ function rewriteLinksAndMedia(container, config, currentDocPath) {
     image.src = buildUrls(config, resolved).raw;
     image.loading = "lazy";
     image.decoding = "async";
+  });
+}
+
+function renderMath(container) {
+  if (typeof window.renderMathInElement !== "function") return;
+  window.renderMathInElement(container, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "$", right: "$", display: false }
+    ],
+    throwOnError: false,
+    strict: "ignore",
+    ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"]
   });
 }
 
@@ -380,8 +430,10 @@ export async function renderDocsPage() {
       window.marked.setOptions({ gfm: true, breaks: false, mangle: false });
     }
 
+    const prepared = stashMarkdownMath(markdown);
     const stage = document.createElement("div");
-    stage.innerHTML = typeof window.marked?.parse === "function" ? window.marked.parse(markdown) : markdown;
+    stage.innerHTML = typeof window.marked?.parse === "function" ? window.marked.parse(prepared.markdown) : prepared.markdown;
+    restoreMathPlaceholders(stage, prepared.stash);
     rewriteLinksAndMedia(stage, config, docPath);
     ensureHeadingIds(stage);
     const docTitle = consumeDocTitle(stage, getSidebarContext(docPath).title || docPath);
@@ -392,6 +444,7 @@ export async function renderDocsPage() {
     });
     contentEl.className = "doc-content-live";
     contentEl.innerHTML = `${renderShellNotice()}${stage.innerHTML}`;
+    renderMath(contentEl);
     renderDocToc(collectHeadings(contentEl));
     syncSidebarOutline(docPath, docTitle, collectSidebarHeadings(contentEl), config);
     renderDocPager(pagerEl, docPath, config);

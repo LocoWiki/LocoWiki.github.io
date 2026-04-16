@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-04-16T08:29:07.909Z",
+  "sourceRepo": {
+    "owner": "LocoWiki",
+    "repo": "LocoWiki",
+    "branch": "main"
+  },
+  "paths": [
+    "competition-rules/README.en.md",
+    "competition-rules/README.md",
+    "network-open-source/README.en.md",
+    "network-open-source/README.md",
+    "reading-list/README.en.md",
+    "reading-list/README.md",
+    "README.en.md",
+    "README.md",
+    "recommended-papers/README.en.md",
+    "recommended-papers/README.md",
+    "scripts/README.en.md",
+    "scripts/README.md",
+    "technical-sharing/README.en.md",
+    "technical-sharing/README.md",
+    "wiki/【必读】LocoWiki介绍.md",
+    "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md",
+    "wiki/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md",
+    "wiki/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md",
+    "wiki/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md",
+    "wiki/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md"
+  ]
+}
