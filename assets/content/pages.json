@@ -36,8 +36,8 @@
         {
           "href": "docs.html",
           "label": {
-            "zh": "专题文档",
-            "en": "Topic Docs"
+            "zh": "飞书同步文档",
+            "en": "Feishu Sync Docs"
           }
         },
         {
@@ -59,6 +59,7 @@
     },
     "sections": [
       {
+        "id": "home-modules",
         "kicker": {
           "zh": "Core Sections",
           "en": "Core Sections"
@@ -66,10 +67,6 @@
         "title": {
           "zh": "模块导航",
           "en": "Collections"
-        },
-        "desc": {
-          "zh": "按资料类型进入主仓库内容，保持首页只做导航，不承载长文解释。",
-          "en": "Jump into the main repository collections without turning the homepage into a long-form docs page."
         },
         "gridClass": "feature-grid",
         "cards": [
@@ -152,6 +149,7 @@
         ]
       },
       {
+        "id": "home-toolbox",
         "kicker": {
           "zh": "Toolbox",
           "en": "Toolbox"
@@ -159,10 +157,6 @@
         "title": {
           "zh": "常用工具站点",
           "en": "Common Tool Sites"
-        },
-        "desc": {
-          "zh": "保留高频机器人开发工具入口，仍然作为首页的快捷跳板。",
-          "en": "High-frequency robotics tooling links remain available as homepage shortcuts."
         },
         "gridClass": "toolbox-grid cards-3",
         "cards": [
@@ -213,10 +207,181 @@
             },
             "href": "https://gazebosim.org/",
             "external": true
+          },
+          {
+            "title": {
+              "zh": "Isaac Gym",
+              "en": "Isaac Gym"
+            },
+            "desc": {
+              "zh": "NVIDIA 早期强化学习仿真平台，适合大规模并行训练参考。",
+              "en": "NVIDIA's earlier RL simulation platform for large-scale parallel training workflows."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://developer.nvidia.com/isaac-gym",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "Isaac Lab",
+              "en": "Isaac Lab"
+            },
+            "desc": {
+              "zh": "面向机器人学习与仿真的 Isaac Sim 任务框架与文档入口。",
+              "en": "Isaac Sim task framework and docs entry for robotics learning and simulation."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://isaac-sim.github.io/IsaacLab/main/index.html",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "Isaac Lab 中文",
+              "en": "Isaac Lab CN"
+            },
+            "desc": {
+              "zh": "Isaac Lab 中文镜像文档，便于快速查阅安装与用法。",
+              "en": "Chinese mirror docs for Isaac Lab installation and usage lookup."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://docs.robotsfan.com/isaaclab/",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "RobotsFan Viewer",
+              "en": "RobotsFan Viewer"
+            },
+            "desc": {
+              "zh": "在线模型与场景查看器，适合快速预览机器人资源。",
+              "en": "Online model and scene viewer for quickly previewing robot assets."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://viewer.robotsfan.com/",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "D-Robotics URDF",
+              "en": "D-Robotics URDF"
+            },
+            "desc": {
+              "zh": "URDF 在线可视化与调试工具，适合检查模型结构。",
+              "en": "Online URDF visualization and debugging tool for checking model structure."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://urdf.d-robotics.cc/",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "ROS",
+              "en": "ROS"
+            },
+            "desc": {
+              "zh": "机器人软件生态主入口，适合查发行版、社区与基础资料。",
+              "en": "Main ROS ecosystem entry for distributions, community, and foundational resources."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://www.ros.org/",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "ArduPilot",
+              "en": "ArduPilot"
+            },
+            "desc": {
+              "zh": "常用开源自动驾驶仪与控制栈项目，适合无人系统开发参考。",
+              "en": "Popular open-source autopilot and control stack for unmanned systems."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://ardupilot.org/",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "AgiBot X1 PDG",
+              "en": "AgiBot X1 PDG"
+            },
+            "desc": {
+              "zh": "智元 X1 平台开发文档入口，便于查设备与接口说明。",
+              "en": "AgiBot X1 platform docs for hardware and interface references."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://www.agibot.com.cn/DOCS/OS/X1-PDG",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "Unitree RL Gym",
+              "en": "Unitree RL Gym"
+            },
+            "desc": {
+              "zh": "宇树强化学习训练仓库，适合查 locomotion 任务与环境配置。",
+              "en": "Unitree reinforcement learning repo for locomotion tasks and environment setup."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://github.com/unitreerobotics/unitree_rl_gym",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "Unitree RL Lab",
+              "en": "Unitree RL Lab"
+            },
+            "desc": {
+              "zh": "宇树 RL 实验仓库，适合追踪更新中的训练与部署方案。",
+              "en": "Unitree RL lab repo for newer training and deployment experiments."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://github.com/unitreerobotics/unitree_rl_lab",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "持续更新中",
+              "en": "More Tools Soon"
+            },
+            "desc": {
+              "zh": "这一组高频开发工具入口会继续补充，优先收录常用仿真、训练与机器人软件资料。",
+              "en": "This high-frequency tooling list will keep expanding, prioritizing simulation, training, and robotics software references."
+            }
           }
         ]
       },
       {
+        "id": "home-collaboration",
         "kicker": {
           "zh": "Collaboration",
           "en": "Collaboration"
@@ -225,20 +390,16 @@
           "zh": "外部入口",
           "en": "External Entry Points"
         },
-        "desc": {
-          "zh": "保留真正有用的协作入口，不再混入同步状态和第三方嵌入说明。",
-          "en": "Keep the collaboration links that matter, without surfacing sync status or third-party embed details."
-        },
         "gridClass": "collaboration-grid",
         "cards": [
           {
             "title": {
-              "zh": "专题文档",
-              "en": "Topic Docs"
+              "zh": "飞书同步文档",
+              "en": "Feishu Sync Docs"
             },
             "desc": {
-              "zh": "进入 wiki 文档流，按 Markdown 结构持续阅读。",
-              "en": "Read the wiki content through the Markdown docs flow."
+              "zh": "进入飞书同步文档阅读流，按 Markdown 结构持续阅读。",
+              "en": "Read the Feishu-synced docs stream through the Markdown shell."
             },
             "linkLabel": {
               "zh": "打开文档",
@@ -311,8 +472,8 @@
         "en": "2026/4/16"
       },
       "leadHtml": {
-        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、专题文档阅读和资源入口。",
-        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, docs reading, and resource entry points."
+        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、飞书同步文档阅读和资源入口。",
+        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, Feishu-synced docs reading, and resource entry points."
       }
     },
     "sections": []
@@ -438,6 +599,7 @@
     ],
     "sections": [
       {
+        "id": "downloads-access",
         "kicker": {
           "zh": "Quick Access",
           "en": "Quick Access"
@@ -453,6 +615,7 @@
         "type": "downloadDynamic"
       },
       {
+        "id": "downloads-modules",
         "kicker": {
           "zh": "Collections",
           "en": "Collections"
@@ -545,6 +708,7 @@
         ]
       },
       {
+        "id": "downloads-workflow",
         "kicker": {
           "zh": "Workflow",
           "en": "Workflow"
@@ -592,6 +756,7 @@
         ]
       },
       {
+        "id": "downloads-policy",
         "kicker": {
           "zh": "Policy",
           "en": "Policy"

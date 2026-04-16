@@ -52,7 +52,7 @@
 适用页面：
 
 - 快速上手
-- 专题文档
+- 飞书同步文档
 - 开发文档
 
 数据来源：
@@ -134,3 +134,65 @@ assets/site-config.json -> pageStandards
 3. 不要混写第三种正文框架
 4. 如果只是新增 `page` 区块类型，再改 `assets/js/pages/static-page.js`
 5. 如果只是新增 `docs` 文章，不要改框架层
+
+## 6. 当前工程里的强约束
+
+这一节不是抽象建议，而是按当前仓库落地：
+
+- `*.html` 只保留壳，不承载正文内容
+- `page` 类页面正文统一来自 `assets/content/pages.json`
+- `docs` 类页面正文统一来自外部 Markdown 仓库或本地 `site-docs/`
+- 导航、侧栏、默认文档、文档语言映射统一来自 `assets/site-config.json`
+- 站点级交互统一收敛在 `assets/js/components/site-shell.js`
+
+如果一个需求需要同时改壳层 HTML、JSON 正文、组件逻辑，通常说明分层已经开始混乱，应该先回头检查归属。
+
+## 7. 新增需求时的判断顺序
+
+先按下面顺序判断，不要上来就改代码：
+
+1. 这是内容问题，还是框架问题？
+2. 如果只是内容问题，能不能只改 JSON 或 Markdown？
+3. 如果必须改框架，是 `page` 渲染链路还是 `docs` 渲染链路？
+4. 改完以后，中英文、主题切换、搜索、目录会不会被带坏？
+
+只有第 2 步答案是否定的，才应该进入 JS 和 CSS 层。
+
+## 8. 每类页面的最小改动面
+
+### `page` 页面
+
+允许的最小改动面：
+
+- 文案：`assets/content/pages.json`
+- 新区块渲染：`assets/js/pages/static-page.js`
+- 区块样式：`assets/css/site-shell.css`
+
+不应该改：
+
+- `docs-page.js`
+- `docs-routing.js`
+
+### `docs` 页面
+
+允许的最小改动面：
+
+- 文档正文：外部仓库 Markdown 或 `site-docs/`
+- 文档目录与路由：`assets/site-config.json`
+- 文档壳交互：`assets/js/pages/docs-page.js`
+
+不应该改：
+
+- `assets/content/pages.json`
+
+除非你同时在做站点信息架构调整。
+
+## 9. 改动后的最低验收
+
+无论改的是 `page` 还是 `docs`，至少验：
+
+1. 当前页面能打开
+2. 顶部导航高亮正常
+3. 中英文切换不跳错页
+4. 亮暗切换后没有样式残留
+5. 站内搜索还能返回合理结果

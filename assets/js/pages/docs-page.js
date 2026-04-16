@@ -185,7 +185,7 @@ function getSidebarContext(docPath) {
       href: "quickstart.html"
     },
     docs: {
-      title: lang === "en" ? "Topic Docs" : "专题文档",
+      title: lang === "en" ? "Feishu Sync Docs" : "飞书同步文档",
       href: "docs.html"
     },
     developer: {

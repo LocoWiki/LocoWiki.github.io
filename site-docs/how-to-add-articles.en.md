@@ -20,12 +20,12 @@ site-docs/page-framework-standards.en.md
 These appear under:
 
 - Quick Start
-- Topic Docs
+- Feishu Sync Docs
 - Developer Docs
 
 Rules:
 
-- `Quick Start` and `Topic Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
+- `Quick Start` and `Feishu Sync Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
 - `Developer Docs` reads local Markdown files from this repository under `site-docs/`
 
 ### 2. Static page copy
@@ -41,7 +41,7 @@ These pages do not use Markdown. They are maintained in `assets/content/pages.js
 
 They all belong to the `page` frame.
 
-## Add a Quick Start or Topic Docs article
+## Add a Quick Start or Feishu Sync Docs article
 
 ### Step 1: create the Markdown file in the content repository
 
@@ -65,7 +65,7 @@ wiki/my-topic.md
 
 Routing rules:
 
-- Paths starting with `wiki/` go to `Topic Docs`
+- Paths starting with `wiki/` go to `Feishu Sync Docs`
 - Other Markdown paths go to `Quick Start`
 
 ### Step 2: register it in the sidebar
@@ -197,3 +197,37 @@ To add one Quick Start article:
 1. Create the Markdown file in the external content repository
 2. Update `assets/site-config.json`
 3. Add the new entry to `sidebar.zh` and `sidebar.en`
+
+## Minimum self-check before finishing
+
+Do not stop after the Markdown renders. At minimum:
+
+1. confirm both Chinese and English sidebars are registered in `assets/site-config.json`
+2. add the `i18n.docPathAliases` mapping if an English file exists
+3. open `developer-docs.html` or `docs.html` locally and reach the new article directly
+4. switch language and confirm it does not jump back to the default doc
+5. confirm the right-side TOC is generated from headings
+
+## When not to add a new article
+
+Do not create a Markdown article for these cases:
+
+- editing Home, Downloads, About, or Contributors page copy
+- adding one homepage or downloads card
+- editing button text, search hint text, or theme-toggle copy
+
+Those changes belong in:
+
+- `assets/content/pages.json`
+- `assets/content/ui-text.json`
+
+## Requirements for Developer Docs writing
+
+If the new article is a maintenance document, do not stop at general principles. It should state:
+
+- the exact file to edit
+- the files that should not be touched
+- how to verify the result
+- what counts as a regression
+
+Otherwise the document becomes abstract guidance instead of executable maintenance help.

@@ -55,6 +55,33 @@ body {
   overflow-x: hidden;
 }
 
+body,
+.topbar,
+.sidebar,
+.toc,
+.footer,
+.card,
+.metric-card,
+.page-callout,
+.surface-panel,
+.search-dialog,
+.search-input-wrap,
+.search-result,
+.code-panel,
+.icon-btn,
+.btn,
+.brand img,
+.nav a,
+.sidebar-home-link,
+.sidebar-doc-item a,
+.contributors-page {
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+
 body[data-layout="docs"] {
   --sidebar-w: 320px;
   --toc-w: 196px;
@@ -354,6 +381,20 @@ html[data-theme="dark"] .theme-icon-sun {
 html[data-theme="dark"] .theme-icon-moon {
   opacity: 1;
   transform: rotate(0deg) scale(1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-transition]::view-transition-old(root) {
+  z-index: 0;
+}
+
+html[data-theme-transition]::view-transition-new(root) {
+  z-index: 1;
 }
 
 .layout {
@@ -908,13 +949,13 @@ body[data-layout="home"] .feature-grid,
 body[data-layout="home"] .pathway-grid,
 body[data-layout="home"] .collaboration-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
-body[data-layout="home"] .toolbox-grid {
+body[data-layout="home"] .cards.toolbox-grid.cards-3 {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -924,7 +965,7 @@ body[data-layout="home"] .collaboration-grid > .card {
   min-width: 0;
 }
 
-body[data-layout="home"] .toolbox-grid > .card {
+body[data-layout="home"] .cards.toolbox-grid.cards-3 > .card {
   min-width: 0;
 }
 
@@ -1641,6 +1682,33 @@ body[data-page-id="downloads"] .code-panel code {
 
   .doc-pager {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .topbar,
+  .sidebar,
+  .toc,
+  .footer,
+  .card,
+  .metric-card,
+  .page-callout,
+  .surface-panel,
+  .search-dialog,
+  .search-input-wrap,
+  .search-result,
+  .code-panel,
+  .icon-btn,
+  .btn,
+  .brand img,
+  .nav a,
+  .sidebar-home-link,
+  .sidebar-doc-item a,
+  .contributors-page,
+  .theme-icon-sun,
+  .theme-icon-moon {
+    transition: none;
   }
 }
 

@@ -1,4 +1,4 @@
-import { getSiteConfig } from "../core/config.js";
+import { getPageData, getSiteConfig } from "../core/config.js";
 import { getDefaultDocPathForShell, getDocPageHref, getDocShellForPath, getDocShellName, mapDocPathToLanguage, resetDocAliasCache } from "../core/docs-routing.js";
 import { applyI18n, initI18n, t } from "../core/i18n.js";
 import { applyPageStandard } from "../core/page-standards.js";
@@ -7,6 +7,7 @@ import { escapeAttr, escapeHtml, getLocalizedList, getLocalizedValue, normalizeP
 
 let shellReady = false;
 let currentConfig = null;
+let currentPageData = null;
 let listenersBound = false;
 
 function isDocsLayout() {
@@ -43,13 +44,20 @@ function getSidebarGroups(config, lang) {
 }
 
 function getSearchIndex(config, lang) {
-  const pages = getNavItems(config, lang).map((item) => ({
-    title: getLocalizedValue(item?.title, lang),
-    meta: getLocalizedValue(config?.site?.title, lang, "LocoWiki"),
-    href: getLocalizedValue(item?.href, lang),
-    keywords: getLocalizedValue(item?.href, lang),
-    kind: "page"
-  }));
+  const staticPageKeywords = buildStaticPageKeywordMap(currentPageData, config, lang);
+  const pages = [
+    ...getNavItems(config, lang).map((item) => {
+      const href = getLocalizedValue(item?.href, lang);
+      return {
+        title: getLocalizedValue(item?.title, lang),
+        meta: getLocalizedValue(config?.site?.title, lang, "LocoWiki"),
+        href,
+        keywords: [getLocalizedValue(item?.href, lang), staticPageKeywords.get(href) || ""].filter(Boolean).join(" "),
+        kind: "page"
+      };
+    }),
+    ...getStaticPageSectionIndex(currentPageData, config, lang)
+  ];
 
   const docs = getLocalizedList(config?.sidebar, lang).flatMap((group) => {
     const groupTitle = getLocalizedValue(group?.title, lang);
@@ -66,6 +74,103 @@ function getSearchIndex(config, lang) {
   });
 
   return { pages, docs };
+}
+
+function stripHtml(value) {
+  return String(value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function getStaticPageHref(pageId) {
+  return pageId === "home" ? "index.html" : `${pageId}.html`;
+}
+
+function buildStaticPageKeywordMap(pageData, config, lang) {
+  const map = new Map();
+  Object.entries(pageData || {}).forEach(([pageId, page]) => {
+    const href = getStaticPageHref(pageId);
+    const keywords = [
+      getLocalizedValue(page?.hero?.title, lang),
+      getLocalizedValue(page?.hero?.lead, lang),
+      getLocalizedValue(page?.hero?.leadHtml, lang),
+      ...(Array.isArray(page?.sections)
+        ? page.sections.flatMap((section) => [
+            getLocalizedValue(section?.kicker, lang),
+            getLocalizedValue(section?.title, lang),
+            getLocalizedValue(section?.desc, lang),
+            ...(Array.isArray(section?.cards)
+              ? section.cards.flatMap((card) => [
+                  getLocalizedValue(card?.tag, lang),
+                  getLocalizedValue(card?.title, lang),
+                  getLocalizedValue(card?.desc, lang),
+                  getLocalizedValue(card?.descHtml, lang)
+                ])
+              : [])
+          ])
+        : [])
+    ]
+      .map((item) => stripHtml(item))
+      .filter(Boolean)
+      .join(" ");
+    if (keywords) map.set(href, keywords);
+  });
+  return map;
+}
+
+function getStaticPageSectionIndex(pageData, config, lang) {
+  const navMap = new Map(
+    getNavItems(config, lang)
+      .map((item) => [getLocalizedValue(item?.href, lang), getLocalizedValue(item?.title, lang)])
+      .filter((entry) => entry[0] && entry[1])
+  );
+
+  return Object.entries(pageData || {}).flatMap(([pageId, page]) => {
+    const href = getStaticPageHref(pageId);
+    const pageTitle = navMap.get(href) || getLocalizedValue(page?.pageTitle, lang, "LocoWiki");
+    return (page?.sections || []).flatMap((section) => {
+      const sectionTitle = getLocalizedValue(section?.title, lang);
+      const sectionHref = section?.id ? `${href}#${encodeURIComponent(section.id)}` : href;
+
+      if (Array.isArray(section?.cards) && section.cards.length) {
+        return section.cards
+          .map((card) => {
+            const title = getLocalizedValue(card?.title, lang);
+            if (!title) return null;
+            return {
+              title,
+              meta: [pageTitle, sectionTitle].filter(Boolean).join(" · "),
+              href: sectionHref,
+              keywords: [
+                getLocalizedValue(card?.tag, lang),
+                getLocalizedValue(card?.desc, lang),
+                getLocalizedValue(card?.descHtml, lang),
+                getLocalizedValue(card?.linkLabel, lang),
+                pageTitle,
+                sectionTitle
+              ]
+                .map((item) => stripHtml(item))
+                .filter(Boolean)
+                .join(" "),
+              kind: "page"
+            };
+          })
+          .filter(Boolean);
+      }
+
+      if (!sectionTitle && !section?.desc && !section?.callout) return [];
+      return [
+        {
+          title: sectionTitle || pageTitle,
+          meta: pageTitle,
+          href: sectionHref,
+          keywords: [getLocalizedValue(section?.desc, lang), getLocalizedValue(section?.callout, lang)]
+            .map((item) => stripHtml(item))
+            .filter(Boolean)
+            .join(" "),
+          kind: "page"
+        }
+      ];
+    });
+  });
 }
 
 function normalizeSearchText(value) {
@@ -232,6 +337,51 @@ function ensureBackToTopButton() {
   button.innerHTML = `<span class="back-to-top-icon" aria-hidden="true">↑</span>`;
   document.body.appendChild(button);
   return button;
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function runThemeTransition(nextTheme, trigger) {
+  const commit = () => {
+    applyTheme(nextTheme);
+    rerenderShell();
+  };
+
+  if (typeof document.startViewTransition !== "function" || prefersReducedMotion()) {
+    commit();
+    return;
+  }
+
+  const rect = trigger?.getBoundingClientRect?.();
+  const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth - 56;
+  const centerY = rect ? rect.top + rect.height / 2 : 56;
+  const endRadius = Math.hypot(Math.max(centerX, window.innerWidth - centerX), Math.max(centerY, window.innerHeight - centerY));
+  document.documentElement.dataset.themeTransition = nextTheme;
+
+  const transition = document.startViewTransition(() => {
+    commit();
+  });
+
+  transition.ready
+    .then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [`circle(0px at ${centerX}px ${centerY}px)`, `circle(${endRadius}px at ${centerX}px ${centerY}px)`]
+        },
+        {
+          duration: 480,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-new(root)"
+        }
+      );
+    })
+    .catch(() => {});
+
+  transition.finished.finally(() => {
+    delete document.documentElement.dataset.themeTransition;
+  });
 }
 
 function syncBackToTopVisibility() {
@@ -513,8 +663,7 @@ function bindShellEvents() {
     if (themeButton) {
       const value = themeButton.getAttribute("data-next-theme") || themeButton.getAttribute("data-set-theme");
       if (value && value !== getCurrentTheme()) {
-        applyTheme(value);
-        rerenderShell();
+        runThemeTransition(value, themeButton);
       }
       return;
     }
@@ -557,7 +706,9 @@ function bindShellEvents() {
 }
 
 export async function initSiteShell() {
-  currentConfig = await getSiteConfig();
+  const [config, pageData] = await Promise.all([getSiteConfig(), getPageData()]);
+  currentConfig = config;
+  currentPageData = pageData;
   await initI18n();
   cleanupLegacyPreferences();
 

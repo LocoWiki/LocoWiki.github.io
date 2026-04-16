@@ -46,7 +46,8 @@
       "network-open-source/README.md": "network-open-source/README.en.md",
       "scripts/README.md": "scripts/README.en.md",
       "site-docs/how-to-add-articles.md": "site-docs/how-to-add-articles.en.md",
-      "site-docs/page-framework-standards.md": "site-docs/page-framework-standards.en.md"
+      "site-docs/page-framework-standards.md": "site-docs/page-framework-standards.en.md",
+      "site-docs/site-maintenance-checklist.md": "site-docs/site-maintenance-checklist.en.md"
     }
   },
   "sourceRepo": {
@@ -58,7 +59,7 @@
     "zh": [
       { "title": "首页", "href": "index.html" },
       { "title": "快速上手", "href": "quickstart.html" },
-      { "title": "专题文档", "href": "docs.html" },
+      { "title": "飞书同步文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
       { "title": "关于", "href": "about.html" },
       { "title": "开发文档", "href": "developer-docs.html", "showInHeader": false },
@@ -67,7 +68,7 @@
     "en": [
       { "title": "Home", "href": "index.html" },
       { "title": "Quick Start", "href": "quickstart.html" },
-      { "title": "Topic Docs", "href": "docs.html" },
+      { "title": "Feishu Sync Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
       { "title": "About", "href": "about.html" },
       { "title": "Developer Docs", "href": "developer-docs.html", "showInHeader": false },
@@ -88,7 +89,7 @@
         ]
       },
       {
-        "title": "专题文档",
+        "title": "飞书同步文档",
         "items": [
           { "title": "LocoWiki 介绍", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
@@ -97,7 +98,8 @@
         "title": "开发文档",
         "items": [
           { "title": "如何新增文章", "path": "site-docs/how-to-add-articles.md" },
-          { "title": "页面框架标准", "path": "site-docs/page-framework-standards.md" }
+          { "title": "页面框架标准", "path": "site-docs/page-framework-standards.md" },
+          { "title": "站点维护清单", "path": "site-docs/site-maintenance-checklist.md" }
         ]
       }
     ],
@@ -114,7 +116,7 @@
         ]
       },
       {
-        "title": "Topic Docs",
+        "title": "Feishu Sync Docs",
         "items": [
           { "title": "LocoWiki Intro", "path": "wiki/【必读】LocoWiki介绍.md" }
         ]
@@ -123,7 +125,8 @@
         "title": "Developer Docs",
         "items": [
           { "title": "How to Add Articles", "path": "site-docs/how-to-add-articles.en.md" },
-          { "title": "Page Frame Standards", "path": "site-docs/page-framework-standards.en.md" }
+          { "title": "Page Frame Standards", "path": "site-docs/page-framework-standards.en.md" },
+          { "title": "Site Maintenance Checklist", "path": "site-docs/site-maintenance-checklist.en.md" }
         ]
       }
     ]

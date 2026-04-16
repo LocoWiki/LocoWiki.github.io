@@ -52,7 +52,7 @@ Do not use it for:
 Applies to:
 
 - Quick Start
-- Topic Docs
+- Feishu Sync Docs
 - Developer Docs
 
 Source:
@@ -134,3 +134,65 @@ When adding or refactoring a page:
 3. Do not introduce a third content frame
 4. If you only need a new `page` block type, change `assets/js/pages/static-page.js`
 5. If you only need a new `docs` article, do not change the frame layer
+
+## 6. Hard constraints in the current codebase
+
+This section is based on the repository as it exists now:
+
+- `*.html` files are shells only, not body-content containers
+- `page` body content comes from `assets/content/pages.json`
+- `docs` body content comes from the external Markdown repo or local `site-docs/`
+- navigation, sidebar, default docs, and language doc mapping are owned by `assets/site-config.json`
+- site-level interactions are centralized in `assets/js/components/site-shell.js`
+
+If a small request forces changes in shell HTML, JSON copy, and component logic at the same time, the ownership boundary is probably being broken.
+
+## 7. Decision order for new requirements
+
+Before changing code, check in this order:
+
+1. Is this a content problem or a frame problem?
+2. If it is content-only, can JSON or Markdown handle it alone?
+3. If frame work is needed, is it on the `page` render path or the `docs` render path?
+4. After the change, will language switching, theme switching, search, or TOC be affected?
+
+Only move into JS and CSS once step 2 is clearly not enough.
+
+## 8. Smallest allowed change surface by page type
+
+### `page` pages
+
+Smallest allowed change surface:
+
+- copy: `assets/content/pages.json`
+- new block rendering: `assets/js/pages/static-page.js`
+- block styling: `assets/css/site-shell.css`
+
+Should not require:
+
+- `docs-page.js`
+- `docs-routing.js`
+
+### `docs` pages
+
+Smallest allowed change surface:
+
+- article body: external repo Markdown or `site-docs/`
+- doc registry and routing: `assets/site-config.json`
+- docs-shell behavior: `assets/js/pages/docs-page.js`
+
+Should not require:
+
+- `assets/content/pages.json`
+
+unless the site information architecture itself is changing.
+
+## 9. Minimum acceptance after any change
+
+Whether the change touches `page` or `docs`, verify at least:
+
+1. the target page opens
+2. top navigation highlight still works
+3. language switching does not land on the wrong page
+4. theme switching leaves no stale styles behind
+5. site search still returns reasonable results
