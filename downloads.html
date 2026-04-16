@@ -4,44 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title data-i18n="downloads.pageTitle">LocoWiki · 资源下载</title>
+    <title>LocoWiki · 资源下载</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
-  <body data-layout="docs">
+  <body data-layout="page" data-page-id="downloads">
     <header id="site-header"></header>
 
     <div class="layout">
       <aside id="site-sidebar"></aside>
 
       <main class="content">
-        <article class="md">
-          <h1 data-i18n="downloads.heading">资源下载与获取</h1>
-          <p>
-            <span data-i18n="downloads.introPrefix">本站不重复存储资源文件；所有 PDF / PPT / 脚本均来源于</span><a href="https://github.com/LocoWiki/LocoWiki" target="_blank" rel="noopener noreferrer">LocoWiki 仓库</a><span data-i18n="downloads.introSuffix">。你可以按需：整仓下载、克隆、或在文档页直接点文件名下载。</span>
-          </p>
-
-          <div id="download-dynamic" class="loading" data-i18n="downloads.loadingEntry">正在生成下载入口…</div>
-
-          <h2 data-i18n="downloads.modulesTitle">按模块获取</h2>
-          <ul>
-            <li><a href="docs.html?path=competition-rules%2FREADME.md" data-i18n="downloads.modules.rules">比赛规则（PDF）</a></li>
-            <li><a href="docs.html?path=technical-sharing%2FREADME.md" data-i18n="downloads.modules.sharing">技术分享（PPT/PPTX）</a></li>
-            <li><a href="docs.html?path=reading-list%2FREADME.md" data-i18n="downloads.modules.paperHub">论文学习清单（索引 + 推荐论文 PDF）</a></li>
-            <li><a href="docs.html?path=network-open-source%2FREADME.md" data-i18n="downloads.modules.network">推荐网络项目（实物开源 + 框架开源）</a></li>
-            <li><a href="docs.html?path=scripts%2FREADME.md" data-i18n="downloads.modules.scripts">维护脚本</a></li>
-          </ul>
-
-          <h2 data-i18n="downloads.paperFetchTitle">论文 PDF 批量抓取（可公开获取）</h2>
-          <p data-i18n="downloads.paperFetchDesc">如果你在本地维护仓库，推荐用脚本批量下载（优先 arXiv / OpenReview 等开源来源）：</p>
-          <pre><code>python3 scripts/fetch_open_access_pdfs.py --download</code></pre>
-
-          <h2 data-i18n="downloads.largeFileTitle">大文件说明</h2>
-          <p data-i18n-html="downloads.largeFileDesc">
-            单文件超过约 100MB 时建议使用 Git LFS（或替换为合规外链）。若你发现下载速度慢，优先使用 <code>git clone</code> 或镜像。
-          </p>
-        </article>
+        <div id="page-root"></div>
       </main>
 
       <aside id="site-toc" class="toc" aria-label="目录" data-i18n-aria-label="common.tocAria">
@@ -51,9 +27,6 @@
     </div>
 
     <footer id="site-footer"></footer>
-
-    <script src="assets/js/site.js" defer></script>
-    <script src="assets/js/downloads.js" defer></script>
-    <script src="assets/js/page-toc.js" defer></script>
+    <script type="module" src="assets/js/entries/static-page.js"></script>
   </body>
 </html>

@@ -4,19 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title data-i18n="docs.pageTitle">LocoWiki · 文档</title>
+    <title>LocoWiki · 飞书同步文档</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
-  <body data-layout="docs">
+  <body data-layout="docs" data-doc-shell="docs">
     <header id="site-header"></header>
 
     <div class="layout">
       <aside id="site-sidebar"></aside>
 
       <main class="content">
-        <article id="doc" class="md">
+        <article id="doc" class="md doc-article">
           <div class="loading" data-i18n="docs.loadingDoc">正在加载文档…</div>
         </article>
       </main>
@@ -29,9 +30,7 @@
 
     <footer id="site-footer"></footer>
 
-    <script src="assets/js/site.js" defer></script>
     <script src="assets/vendor/marked.umd.js" defer></script>
-    <script src="assets/js/feishu-wiki.js" defer></script>
-    <script src="assets/js/docs.js" defer></script>
+    <script type="module" src="assets/js/entries/docs.js"></script>
   </body>
 </html>

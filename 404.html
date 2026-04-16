@@ -7,25 +7,27 @@
     <title data-i18n="notFound.pageTitle">404 · LocoWiki</title>
     <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/site-shell.css" />
     <link rel="stylesheet" href="assets/css/markdown.css" />
   </head>
-  <body data-layout="landing">
+  <body data-layout="page">
     <header id="site-header"></header>
 
     <main class="layout">
       <section class="content">
-        <article class="md">
+        <article class="state-shell surface-panel">
+          <p class="state-code" aria-hidden="true">404</p>
           <h1 data-i18n="notFound.heading">页面不存在（404）</h1>
           <p data-i18n="notFound.desc">你访问的页面不存在或已被移动。</p>
-          <p>
+          <div class="state-actions">
             <a class="btn primary" href="index.html" data-i18n="notFound.backHome">返回首页</a>
-            <a class="btn" href="docs.html?path=README.md" data-i18n="notFound.openDocs">打开文档</a>
-          </p>
+            <a class="btn" id="not-found-docs" href="quickstart.html" data-i18n="notFound.openDocs">打开文档</a>
+          </div>
         </article>
       </section>
     </main>
 
     <footer id="site-footer"></footer>
-    <script src="assets/js/site.js" defer></script>
+    <script type="module" src="assets/js/entries/not-found.js"></script>
   </body>
 </html>

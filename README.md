@@ -1,102 +1,68 @@
 # LocoWiki.github.io
 
-LocoWiki 的静态展示站点仓库（GitHub Pages）。
+LocoWiki 的静态展示站点仓库，部署到 GitHub Pages。
 
-本站用于聚合和展示足式机器人相关资料入口，前台聚焦“访客阅读体验”，维护说明集中在 `docs/`。
+这次重构后的目标很明确：
 
-## 项目定位
-
-- 面向对象：ROBOCON 备赛成员、机器人方向学习者、科研与工程实践者
-- 核心目标：提供统一入口，快速访问规则、技术分享、论文学习清单与网络开源项目
-- 展示方式：前台页面 + 动态拉取源仓库 Markdown（不在本站重复存储资料文件）
+- 公共壳层模块化：导航、页脚、搜索、设置和文档侧栏拆成独立模块
+- 页面内容数据化：首页、关于、贡献者、下载页文案集中在 `assets/content/pages.json`
+- 文档阅读独立化：Markdown 拉取、链接改写、目录同步和翻页逻辑独立维护
+- 页面框架标准化：站点只保留 `page` 和 `docs` 两种正文框架
+- 去掉历史耦合：移除飞书同步链路、状态文件、relay 脚本和字体切换逻辑
 
 ## 页面入口
 
 - 首页：`index.html`
-- 文档页：`docs.html?path=README.md`
+- 快速上手：`quickstart.html`
+- 专题文档：`docs.html`
 - 下载页：`downloads.html`
-- 飞书知识库：`docs.html?path=__feishu_wiki__`（兼容旧地址 `feishu-wiki.html` / `readmydock.html`）
 - 关于页：`about.html`
+- 贡献者页：`contributors.html`
 
-## 目录说明
+## 当前目录结构
 
-- `assets/`：样式、脚本、图片、站点配置、同步状态 JSON
-- `.github/workflows/`：自动化工作流（含飞书同步状态更新）
-- `scripts/`：同步与维护脚本（长连接 relay / webhook relay / 状态写入）
-- `docs/`：开发与维护文档（前台不展示技术细节）
+- `assets/content/`
+  - `pages.json`：静态页面文案与区块数据
+  - `ui-text.json`：公共 UI 文案
+- `assets/js/core/`
+  - 配置、偏好、i18n、文档路径映射
+- `assets/js/components/`
+  - 公共壳层组件
+- `assets/js/pages/`
+  - 静态页渲染、文档页渲染、目录和动态区块
+- `assets/js/entries/`
+  - 各 HTML 页入口脚本
+- `docs/`
+  - 前端维护文档
 
-## 文档加载机制
+## 后续怎么加新文本
 
-`docs.html` 会根据 `assets/site-config.json` 中的 `sourceRepo` 配置，实时拉取源仓库 Markdown 并渲染。
+如果只是改首页、关于页、贡献者页、下载页的文案或卡片：
 
-当前默认源仓库：
+1. 编辑 `assets/content/pages.json`
+2. 保持现有区块结构
+3. 只有在需要新增一种全新页面区块时，再修改 `assets/js/pages/static-page.js`
 
-- Owner: `LocoWiki`
-- Repo: `LocoWiki`
-- Branch: `main`
+如果是改导航、侧栏、默认文档路径：
 
-## 飞书知识库同步
+1. 编辑 `assets/site-config.json`
 
-前台仅展示“最近同步时间与简要说明”。
+如果是改页面归属标准、来源类型或框架类型：
 
-详细维护文档见：
+1. 编辑 `assets/site-config.json` 里的 `pageStandards`
 
-- `docs/feishu-sync.md`
-- `scripts/feishu-ws-relay/README.md`
-- `scripts/feishu-webhook-relay/README.md`
+如果是改公共按钮、设置面板、搜索等 UI 文案：
 
-相关文件：
-
-- 工作流：`.github/workflows/feishu-wiki-sync.yml`
-- 状态脚本：`scripts/update-feishu-sync-status.mjs`
-- 状态文件：`assets/feishu-sync-status.json`
+1. 编辑 `assets/content/ui-text.json`
 
 ## 本地预览
 
-可在仓库根目录启动本地静态服务：
-
 ```bash
-python3 -m http.server 8080
+python -m http.server 8080
 ```
 
-然后访问：`http://localhost:8080`
-
-## 文案治理约定
-
-- 前台页面只保留面向访客的信息
-- 维护/调试/部署说明统一写在 `docs/` 或 `scripts/*/README.md`
-- 历史命名 `Readmydock` 已在前台文案统一为“飞书知识库”
-
-## 引用资料与版权声明
-
-1. 内容来源
-- 本站展示内容主要来自源仓库 [LocoWiki](https://github.com/LocoWiki/LocoWiki) 及其索引。
-- 页面中的外部工具链接（如 MuJoCo、Webots、ROS 2 等）指向各官方站点。
-
-2. 版权归属
-- 仓库中收录或链接的论文、PPT、规则文档等资料，版权归原作者或原发布机构所有。
-- 本站仅做学习与检索索引，不主张第三方资料版权。
-
-3. 第三方组件
-- `assets/vendor/marked.umd.js` 来自 `marked` 项目（MIT License）。
-
-如有引用不当或侵权内容，请在仓库 Issue 提交说明，我们会及时处理。
+然后访问 `http://localhost:8080`。
 
 ## License
 
-本仓库代码遵循 [MIT License](LICENSE)。
-
-## Git message
-feat: 新特性
-fix: 修改问题
-refactor: 代码重构
-docs: 文档修改
-style: 代码格式修改, 注意不是 css 修改
-test: 测试用例修改
-chore: 其他修改, 比如构建流程, 依赖管理.
-scope: commit 影响的范围, 比如: route, component, utils, build...
-subject: commit 的概述, 建议符合 50/72 formatting
-body: commit 具体修改内容, 可以分为多行, 建议符合 50/72 formatting
-footer: 一些备注, 通常是 BREAKING CHANGE 或修复的 bug 的链接.
-
-使用格式：[类型]更新内容简述
+仓库代码遵循 [MIT License](LICENSE)。
