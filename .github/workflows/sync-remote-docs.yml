@@ -1,0 +1,32 @@
+name: Sync Remote Docs Index
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [wiki-updated]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Update remote docs index
+        run: node scripts/update-remote-doc-index.mjs
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- assets/content/remote-docs-index.json; then
+            echo "No changes to remote-docs-index.json"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add assets/content/remote-docs-index.json
+            git commit -m "[auto] sync remote docs index"
+            git push
+          fi

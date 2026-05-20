@@ -308,7 +308,8 @@ function getIconMarkup(name) {
     contributors: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/><path d="M16.5 3.13a3.5 3.5 0 0 1 0 6.74"/></svg>`,
     repo: `<svg class="icon-brand-github" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.69-3.88-1.54-3.88-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.03 1.75 2.69 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.45.11-3.02 0 0 .97-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.03c.97 0 1.95.13 2.86.39 2.18-1.49 3.15-1.18 3.15-1.18.63 1.57.24 2.73.12 3.02.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.28 5.69.42.36.78 1.08.78 2.18 0 1.57-.01 2.83-.01 3.22 0 .31.2.68.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>`,
     sun: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5"/><path d="M12 19.5V22"/><path d="m4.93 4.93 1.77 1.77"/><path d="m17.3 17.3 1.77 1.77"/><path d="M2 12h2.5"/><path d="M19.5 12H22"/><path d="m4.93 19.07 1.77-1.77"/><path d="m17.3 6.7 1.77-1.77"/></svg>`,
-    moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z"/></svg>`
+    moon: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z"/></svg>`,
+    search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 22 22"/></svg>`
   };
   return icons[name] || "";
 }
@@ -428,6 +429,7 @@ function renderHeader(config, lang) {
       <div class="topbar-actions">
         <a class="icon-btn icon-only" id="github-link" href="${escapeAttr(config?.links?.repo || "#")}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">${getIconMarkup("repo")}</a>
         <button class="icon-btn search-trigger" id="search-toggle" type="button" aria-label="${escapeAttr(searchLabel)}" title="${escapeAttr(searchLabel)}">
+          <span class="search-trigger-icon">${getIconMarkup("search")}</span>
           <span class="search-trigger-copy"><span class="search-trigger-text">${escapeHtml(searchLabel)}</span></span>
           <span class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></span>
         </button>
@@ -506,7 +508,14 @@ function renderSidebarTree(items, config, lang, depth = 0) {
     .map((item) => {
       if (!item) return "";
       if (item.kind === "folder") {
-        return renderSidebarTree(item.items || [], config, lang, depth + 1);
+        const children = renderSidebarTree(item.items || [], config, lang, depth + 1);
+        if (!children.trim()) return "";
+        return `
+          <details class="sidebar-folder" style="--sidebar-depth:${depth}" open>
+            <summary class="sidebar-folder-title">${escapeHtml(item.title)}</summary>
+            <div class="sidebar-folder-items">${children}</div>
+          </details>
+        `;
       }
 
       if (!item.path || !item.title) return "";
