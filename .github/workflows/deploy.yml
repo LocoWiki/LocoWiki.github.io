@@ -1,0 +1,38 @@
+name: Deploy to Alibaba Cloud ECS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.ECS_SSH_KEY }}
+          known_hosts: unnecessary
+          if_key_exists: replace
+
+      - name: Add host to known_hosts
+        run: ssh-keyscan -H 47.107.154.165 >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.vscode' \
+            --exclude='.codex' \
+            --exclude='.gitignore' \
+            --exclude='node_modules' \
+            --exclude='.wrangler' \
+            --exclude='test-results' \
+            ./ root@47.107.154.165:/var/www/locowiki/
+
+      - name: Reload Nginx
+        run: ssh root@47.107.154.165 "systemctl reload nginx"
