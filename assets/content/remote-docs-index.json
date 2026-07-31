@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T07:16:25.505Z",
+  "generatedAt": "2026-07-31T21:16:38.436Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -20,7 +20,6 @@
     "scripts/README.md",
     "technical-sharing/README.en.md",
     "technical-sharing/README.md",
-    "wiki/【必读】LocoWiki介绍.md",
     "wiki/【体系化进阶】Robotics Tutorial/00_项目导航/符号计算工具指南.md",
     "wiki/【体系化进阶】Robotics Tutorial/00_项目导航/项目总导航.md",
     "wiki/【体系化进阶】Robotics Tutorial/00_项目导航/README.md",
@@ -451,10 +450,11 @@
     "wiki/【体系化进阶】Robotics Tutorial/06_具身智能/RL运控/Ch28_网球击球控制与全身协调.md",
     "wiki/【体系化进阶】Robotics Tutorial/README.md",
     "wiki/【体系化进阶】Robotics Tutorial/SUMMARY.md",
-    "wiki/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md",
-    "wiki/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md",
-    "wiki/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md",
-    "wiki/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md",
-    "wiki/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md"
+    "wiki/Lain-database/【必读】LocoWiki介绍.md",
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md",
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md",
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md",
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md",
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md"
   ]
 }
