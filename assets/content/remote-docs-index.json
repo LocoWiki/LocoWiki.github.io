@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T21:16:38.436Z",
+  "generatedAt": "2026-08-04T18:14:21.964Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -455,6 +455,7 @@
     "wiki/Lain-database/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md",
     "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md",
     "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人传统控制理论/足式机器人传统控制理论.md",
-    "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md"
+    "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人设计方案参考/足式机器人设计方案参考.md",
+    "wiki/RC上位机：从入门到入土/RC上位机：从入门到入土（初版）.md"
   ]
 }
