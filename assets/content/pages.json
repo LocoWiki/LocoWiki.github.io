@@ -59,96 +59,6 @@
     },
     "sections": [
       {
-        "id": "home-modules",
-        "kicker": {
-          "zh": "Core Sections",
-          "en": "Core Sections"
-        },
-        "title": {
-          "zh": "模块导航",
-          "en": "Collections"
-        },
-        "gridClass": "feature-grid",
-        "cards": [
-          {
-            "tag": {
-              "zh": "赛事",
-              "en": "Competition"
-            },
-            "title": {
-              "zh": "比赛规则",
-              "en": "Competition Rules"
-            },
-            "desc": {
-              "zh": "收录历届 ROBOCON 仿生足式机器人挑战赛相关规则与修订版索引。",
-              "en": "Browse rules and revision records for RoboCon quadruped competitions."
-            },
-            "linkLabel": {
-              "zh": "打开模块",
-              "en": "Open Module"
-            },
-            "href": "docs.html?path=competition-rules%2FREADME.md"
-          },
-          {
-            "tag": {
-              "zh": "工程",
-              "en": "Engineering"
-            },
-            "title": {
-              "zh": "技术分享",
-              "en": "Technical Sharing"
-            },
-            "desc": {
-              "zh": "集中浏览高校队伍复盘与工程经验资料。",
-              "en": "Explore team retrospectives and engineering sharing materials."
-            },
-            "linkLabel": {
-              "zh": "打开模块",
-              "en": "Open Module"
-            },
-            "href": "docs.html?path=technical-sharing%2FREADME.md"
-          },
-          {
-            "tag": {
-              "zh": "研究",
-              "en": "Research"
-            },
-            "title": {
-              "zh": "论文学习清单",
-              "en": "Paper Study Hub"
-            },
-            "desc": {
-              "zh": "按主题索引论文与公开可获取资料，便于后续继续扩展。",
-              "en": "Use topic-based paper indexes and open-access references as a stable study hub."
-            },
-            "linkLabel": {
-              "zh": "打开模块",
-              "en": "Open Module"
-            },
-            "href": "quickstart.html?path=reading-list%2FREADME.md"
-          },
-          {
-            "tag": {
-              "zh": "生态",
-              "en": "Ecosystem"
-            },
-            "title": {
-              "zh": "推荐网络项目",
-              "en": "Recommended Projects"
-            },
-            "desc": {
-              "zh": "汇总开源硬件、框架与外部项目入口。",
-              "en": "Browse curated links for open hardware, frameworks, and external projects."
-            },
-            "linkLabel": {
-              "zh": "打开模块",
-              "en": "Open Module"
-            },
-            "href": "docs.html?path=network-open-source%2FREADME.md"
-          }
-        ]
-      },
-      {
         "id": "home-toolbox",
         "kicker": {
           "zh": "Toolbox",
@@ -394,6 +304,21 @@
         "cards": [
           {
             "title": {
+              "zh": "仓库总览",
+              "en": "Repo Overview"
+            },
+            "desc": {
+              "zh": "仓库结构、模块说明与协作方式，一站式了解 LocoWiki。",
+              "en": "Repository structure, module guide, and collaboration basics at a glance."
+            },
+            "linkLabel": {
+              "zh": "查看总览",
+              "en": "View Overview"
+            },
+            "href": "about.html"
+          },
+          {
+            "title": {
               "zh": "文档",
               "en": "Docs"
             },
@@ -441,42 +366,6 @@
         ]
       }
     ]
-  },
-  "about": {
-    "pageTitle": {
-      "zh": "LocoWiki · 关于",
-      "en": "LocoWiki · About"
-    },
-    "hero": {
-      "breadcrumbs": [
-        {
-          "label": {
-            "zh": "主页",
-            "en": "Home"
-          },
-          "href": "index.html"
-        },
-        {
-          "label": {
-            "zh": "关于",
-            "en": "About"
-          }
-        }
-      ],
-      "title": {
-        "zh": "关于本站",
-        "en": "About This Site"
-      },
-      "meta": {
-        "zh": "2026/4/16",
-        "en": "2026/4/16"
-      },
-      "leadHtml": {
-        "zh": "这是一个用于浏览 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> 资料仓库的静态站点，提供首页导航、文档阅读和资源入口。",
-        "en": "This static site is a lightweight entry for browsing the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki</a> repository, including landing navigation, docs reading, and resource entry points."
-      }
-    },
-    "sections": []
   },
   "contributors": {
     "pageTitle": {
