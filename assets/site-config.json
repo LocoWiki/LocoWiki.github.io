@@ -9,7 +9,8 @@
     "defaultDocByShell": {
       "quickstart": "reading-list/README.md",
       "docs": "wiki/Lain-database/【必读】LocoWiki介绍.md",
-      "developer": "site-docs/how-to-add-articles.md"
+      "developer": "site-docs/how-to-add-articles.md",
+      "about": "README.md"
     }
   },
   "pageStandards": {
@@ -27,7 +28,7 @@
     },
     "pages": {
       "index.html": { "frame": "page", "source": "json" },
-      "about.html": { "frame": "page", "source": "json" },
+      "about.html": { "frame": "docs", "source": "remote-markdown", "shell": "about" },
       "downloads.html": { "frame": "page", "source": "json" },
       "contributors.html": { "frame": "page", "source": "json" },
       "quickstart.html": { "frame": "docs", "source": "remote-markdown", "shell": "quickstart" },
@@ -80,7 +81,6 @@
       {
         "title": "论文清单",
         "items": [
-          { "title": "总览", "path": "README.md" },
           { "title": "论文学习清单", "path": "reading-list/README.md" }
         ]
       },
@@ -112,7 +112,6 @@
       {
         "title": "Paper Study Hub",
         "items": [
-          { "title": "Overview", "path": "README.en.md" },
           { "title": "Paper Study Hub", "path": "reading-list/README.en.md" }
         ]
       },

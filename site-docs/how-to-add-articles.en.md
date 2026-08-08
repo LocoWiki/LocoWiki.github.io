@@ -22,10 +22,11 @@ These appear under:
 - Paper Study Hub
 - Docs
 - Developer Docs
+- About (repo overview)
 
 Rules:
 
-- `Paper Study Hub` and `Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
+- `Paper Study Hub`, `Docs`, and `About` (defaults to the repository README overview) read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
 - `Developer Docs` reads local Markdown files from this repository under `site-docs/`
 
 ### 2. Static page copy
@@ -34,7 +35,6 @@ These appear under:
 
 - Home
 - Downloads
-- About
 - Contributors
 
 These pages do not use Markdown. They are maintained in `assets/content/pages.json`.
@@ -179,7 +179,7 @@ If the English version uses a different file, also add:
 "site-docs/how-to-add-pages.md": "site-docs/how-to-add-pages.en.md"
 ```
 
-## Update Home / About / Contributors / Downloads page copy
+## Update Home / Contributors / Downloads page copy
 
 This is not article content, so no Markdown is involved.
 
@@ -193,7 +193,6 @@ This file controls:
 
 - Home hero
 - Home cards
-- About copy
 - Contributors copy
 - Downloads copy
 
@@ -232,7 +231,7 @@ Do not stop after the Markdown renders. At minimum:
 
 Do not create a Markdown article for these cases:
 
-- editing Home, Downloads, About, or Contributors page copy
+- editing Home, Downloads, or Contributors page copy
 - adding one homepage or downloads card
 - editing button text, search hint text, or theme-toggle copy
 

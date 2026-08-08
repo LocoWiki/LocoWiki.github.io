@@ -18,6 +18,7 @@ export function getDocShellName(pathname = window.location.pathname) {
   if (/(^|\/)docs\.html$/i.test(value)) return "docs";
   if (/(^|\/)quickstart\.html$/i.test(value)) return "quickstart";
   if (/(^|\/)developer-docs\.html$/i.test(value)) return "developer";
+  if (/(^|\/)about\.html$/i.test(value)) return "about";
   return "";
 }
 

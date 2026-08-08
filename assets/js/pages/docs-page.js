@@ -243,6 +243,10 @@ function getSidebarContext(docPath) {
     developer: {
       title: lang === "en" ? "Developer Docs" : "开发文档",
       href: "developer-docs.html"
+    },
+    about: {
+      title: lang === "en" ? "About" : "关于本站",
+      href: "about.html"
     }
   };
   const currentShell = shellMap[shell] || shellMap.quickstart;

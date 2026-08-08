@@ -12,7 +12,6 @@ Do not choose a layout based on whether content is internal. Choose it based on 
 Applies to:
 
 - Home
-- About
 - Downloads
 - Contributors
 
@@ -54,6 +53,7 @@ Applies to:
 - Paper Study Hub
 - Docs
 - Developer Docs
+- About (repo overview)
 
 Source:
 
