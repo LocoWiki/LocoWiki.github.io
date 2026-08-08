@@ -391,9 +391,10 @@ function renderError(contentEl, docPath, urls) {
   `;
 }
 
-function renderShellNotice() {
+function renderShellNotice(docPath) {
   const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
   if (shell !== "docs") return "";
+  if (!String(docPath || "").trim().startsWith("wiki/Lain-database/")) return "";
 
   const lang = getCurrentLanguage();
   const title = lang === "en" ? "Original Feishu Reading" : "飞书原文阅读";
@@ -443,7 +444,7 @@ export async function renderDocsPage() {
       lastModified: response.headers.get("last-modified") || ""
     });
     contentEl.className = "doc-content-live";
-    contentEl.innerHTML = `${renderShellNotice()}${stage.innerHTML}`;
+    contentEl.innerHTML = `${renderShellNotice(docPath)}${stage.innerHTML}`;
     renderMath(contentEl);
     renderDocToc(collectHeadings(contentEl));
     syncSidebarOutline(docPath, docTitle, collectSidebarHeadings(contentEl), config);

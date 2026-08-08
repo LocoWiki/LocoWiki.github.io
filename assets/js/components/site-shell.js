@@ -511,7 +511,7 @@ function renderSidebarTree(items, config, lang, depth = 0) {
         const children = renderSidebarTree(item.items || [], config, lang, depth + 1);
         if (!children.trim()) return "";
         return `
-          <details class="sidebar-folder" style="--sidebar-depth:${depth}" open>
+          <details class="sidebar-folder" style="--sidebar-depth:${depth}">
             <summary class="sidebar-folder-title">${escapeHtml(item.title)}</summary>
             <div class="sidebar-folder-items">${children}</div>
           </details>
