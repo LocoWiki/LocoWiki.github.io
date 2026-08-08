@@ -1,4 +1,4 @@
-import { getDocShellForPath } from "./docs-routing.js";
+import { DOC_TOP_LEVEL_DIRS, getDocShellForPath } from "./docs-routing.js";
 import { getLocalizedList, getLocalizedValue, safeDecode } from "./utils.js";
 
 const REMOTE_TREE_PREFIX = "wiki/";
@@ -95,31 +95,43 @@ function buildRemoteDocsTree(paths, lang, overrides) {
   const root = createFolderNode("");
   const folderMap = new Map([["", root]]);
 
+  const pushPath = (path, relativePath) => {
+    const segments = relativePath.split("/").filter(Boolean);
+    if (!segments.length) return;
+
+    segments.pop();
+    let parent = root;
+    let folderKey = "";
+
+    segments.forEach((segment) => {
+      folderKey = folderKey ? `${folderKey}/${segment}` : segment;
+      let folder = folderMap.get(folderKey);
+      if (!folder) {
+        folder = createFolderNode(getFolderTitle(segment));
+        folderMap.set(folderKey, folder);
+        parent.items.push(folder);
+      }
+      parent = folder;
+    });
+
+    parent.items.push(createDocNode(path, overrides.titles.get(path) || getFallbackDocTitle(path)));
+  };
+
+  // Top-level module READMEs (competition-rules/, technical-sharing/, ...) render
+  // at the root of the docs tree; pick the language-appropriate file when a pair exists.
+  DOC_TOP_LEVEL_DIRS.forEach((dir) => {
+    const zhPath = `${dir}/README.md`;
+    const enPath = `${dir}/README.en.md`;
+    const zhExists = paths.includes(zhPath);
+    const enExists = paths.includes(enPath);
+    const chosen = lang === "en" ? (enExists ? enPath : zhPath) : (zhExists ? zhPath : enPath);
+    if (chosen && isMarkdownPath(chosen)) pushPath(chosen, chosen.slice(dir.length + 1));
+  });
+
   paths
     .filter((path) => path.startsWith(REMOTE_TREE_PREFIX) && isMarkdownPath(path))
     .forEach((path) => {
-      const relativePath = path.slice(REMOTE_TREE_PREFIX.length);
-      if (!relativePath) return;
-
-      const segments = relativePath.split("/").filter(Boolean);
-      if (!segments.length) return;
-
-      segments.pop();
-      let parent = root;
-      let folderKey = "";
-
-      segments.forEach((segment) => {
-        folderKey = folderKey ? `${folderKey}/${segment}` : segment;
-        let folder = folderMap.get(folderKey);
-        if (!folder) {
-          folder = createFolderNode(getFolderTitle(segment));
-          folderMap.set(folderKey, folder);
-          parent.items.push(folder);
-        }
-        parent = folder;
-      });
-
-      parent.items.push(createDocNode(path, overrides.titles.get(path) || getFallbackDocTitle(path)));
+      pushPath(path, path.slice(REMOTE_TREE_PREFIX.length));
     });
 
   sortTree(root.items, overrides.priority, locale);

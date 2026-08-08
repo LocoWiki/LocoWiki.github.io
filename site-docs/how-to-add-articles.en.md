@@ -19,13 +19,13 @@ site-docs/page-framework-standards.en.md
 
 These appear under:
 
-- Quick Start
+- Paper Study Hub
 - Docs
 - Developer Docs
 
 Rules:
 
-- `Quick Start` and `Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
+- `Paper Study Hub` and `Docs` read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
 - `Developer Docs` reads local Markdown files from this repository under `site-docs/`
 
 ### 2. Static page copy
@@ -41,7 +41,7 @@ These pages do not use Markdown. They are maintained in `assets/content/pages.js
 
 They all belong to the `page` frame.
 
-## Add a Quick Start or Docs article
+## Add a Paper Study Hub or Docs article
 
 ### Step 1: create the Markdown file in the content repository
 
@@ -66,11 +66,12 @@ wiki/my-topic.md
 Routing rules:
 
 - Paths starting with `wiki/` go to `Docs`
-- Other Markdown paths go to `Quick Start`
+- The four module dirs `competition-rules/`, `technical-sharing/`, `network-open-source/`, and `scripts/` render their `README.md` as top-level entries in `Docs`
+- Paths under `reading-list/` go to `Paper Study Hub`
 
 ### Step 2: register it in the sidebar
 
-For a Quick Start article, edit:
+For a Paper Study Hub article, edit:
 
 ```text
 assets/site-config.json
@@ -204,7 +205,7 @@ To add one Developer Docs article:
 2. Add it to the Developer Docs section in `assets/site-config.json`
 3. Add the English alias if needed
 
-To add one Quick Start article:
+To add one Paper Study Hub article:
 
 1. Create the Markdown file in the external content repository
 2. Update `assets/site-config.json`

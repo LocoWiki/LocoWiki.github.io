@@ -233,7 +233,7 @@ function getSidebarContext(docPath) {
   const lang = getCurrentLanguage();
   const shellMap = {
     quickstart: {
-      title: lang === "en" ? "Quick Start" : "快速上手",
+      title: lang === "en" ? "Paper Study Hub" : "论文清单",
       href: "quickstart.html"
     },
     docs: {

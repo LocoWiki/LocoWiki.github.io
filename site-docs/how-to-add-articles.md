@@ -19,13 +19,13 @@ site-docs/page-framework-standards.md
 
 这类内容会显示在：
 
-- 快速上手
+- 论文清单
 - 文档
 - 开发文档
 
 其中：
 
-- `快速上手` 和 `文档` 默认读取 `assets/site-config.json` 里 `sourceRepo` 指向的外部仓库
+- `论文清单` 和 `文档` 默认读取 `assets/site-config.json` 里 `sourceRepo` 指向的外部仓库
 - `开发文档` 读取当前站点仓库里的本地 Markdown 文件，也就是 `site-docs/` 目录
 
 ### 2. 静态页面文案
@@ -41,7 +41,7 @@ site-docs/page-framework-standards.md
 
 它们统一属于 `page` 框架。
 
-## 新增一篇“快速上手”或“文档”文章
+## 新增一篇“论文清单”或“文档”文章
 
 ### 步骤 1：先在内容仓库里新增 Markdown 文件
 
@@ -68,11 +68,12 @@ wiki/my-topic.md
 规则是：
 
 - 路径以 `wiki/` 开头的，会被归到 `文档`
-- 其他普通 Markdown 路径，默认会归到 `快速上手`
+- `competition-rules/`、`technical-sharing/`、`network-open-source/`、`scripts/` 这四个模块目录的 `README.md` 会作为顶层条目归到 `文档`
+- `reading-list/` 下的路径，会归到 `论文清单`
 
 ### 步骤 2：把它挂到侧边栏
 
-如果是“快速上手”文章，仍然需要编辑：
+如果是“论文清单”文章，仍然需要编辑：
 
 ```text
 assets/site-config.json
@@ -80,7 +81,7 @@ assets/site-config.json
 
 在 `sidebar.zh` 和 `sidebar.en` 里新增条目。
 
-例如新增一篇中文快速上手文章：
+例如新增一篇中文论文清单文章：
 
 ```json
 {
@@ -208,7 +209,7 @@ assets/content/pages.json
 2. 在 `assets/site-config.json` 的 `sidebar.zh` 开发文档分组里加一条
 3. 如果有英文版，再在 `sidebar.en` 和 `docPathAliases` 里补一条
 
-如果你要新增一篇“快速上手”文章，最小操作就是：
+如果你要新增一篇“论文清单”文章，最小操作就是：
 
 1. 去外部内容仓库新建 `.md`
 2. 回到这个站点仓库，编辑 `assets/site-config.json`

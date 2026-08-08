@@ -51,7 +51,7 @@ Do not use it for:
 
 Applies to:
 
-- Quick Start
+- Paper Study Hub
 - Docs
 - Developer Docs
 

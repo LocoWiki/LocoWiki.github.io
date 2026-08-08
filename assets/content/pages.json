@@ -87,7 +87,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=competition-rules%2FREADME.md"
+            "href": "docs.html?path=competition-rules%2FREADME.md"
           },
           {
             "tag": {
@@ -106,7 +106,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=technical-sharing%2FREADME.md"
+            "href": "docs.html?path=technical-sharing%2FREADME.md"
           },
           {
             "tag": {
@@ -144,7 +144,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=network-open-source%2FREADME.md"
+            "href": "docs.html?path=network-open-source%2FREADME.md"
           }
         ]
       },
@@ -643,7 +643,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=competition-rules%2FREADME.md"
+            "href": "docs.html?path=competition-rules%2FREADME.md"
           },
           {
             "title": {
@@ -658,7 +658,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=technical-sharing%2FREADME.md"
+            "href": "docs.html?path=technical-sharing%2FREADME.md"
           },
           {
             "title": {
@@ -688,7 +688,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=network-open-source%2FREADME.md"
+            "href": "docs.html?path=network-open-source%2FREADME.md"
           },
           {
             "title": {
@@ -703,7 +703,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=scripts%2FREADME.md"
+            "href": "docs.html?path=scripts%2FREADME.md"
           }
         ]
       },

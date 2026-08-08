@@ -2,11 +2,14 @@ import { getLocalizedList, getLocalizedValue } from "./utils.js";
 
 let reverseAliasesCache = null;
 
+export const DOC_TOP_LEVEL_DIRS = ["competition-rules", "technical-sharing", "network-open-source", "scripts"];
+
 export function getDocShellForPath(path) {
   const normalized = String(path || "").trim();
   if (!normalized) return "quickstart";
   if (normalized.startsWith("wiki/")) return "docs";
   if (normalized.startsWith("site-docs/")) return "developer";
+  if (DOC_TOP_LEVEL_DIRS.some((dir) => normalized.startsWith(`${dir}/`))) return "docs";
   return "quickstart";
 }
 

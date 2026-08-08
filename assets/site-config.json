@@ -7,7 +7,7 @@
       "en": "README.en.md"
     },
     "defaultDocByShell": {
-      "quickstart": "README.md",
+      "quickstart": "reading-list/README.md",
       "docs": "wiki/Lain-database/【必读】LocoWiki介绍.md",
       "developer": "site-docs/how-to-add-articles.md"
     }
@@ -58,7 +58,7 @@
   "nav": {
     "zh": [
       { "title": "首页", "href": "index.html" },
-      { "title": "快速上手", "href": "quickstart.html" },
+      { "title": "论文清单", "href": "quickstart.html" },
       { "title": "文档", "href": "docs.html" },
       { "title": "资源下载", "href": "downloads.html" },
       { "title": "关于", "href": "about.html" },
@@ -67,7 +67,7 @@
     ],
     "en": [
       { "title": "Home", "href": "index.html" },
-      { "title": "Quick Start", "href": "quickstart.html" },
+      { "title": "Paper Study Hub", "href": "quickstart.html" },
       { "title": "Docs", "href": "docs.html" },
       { "title": "Downloads", "href": "downloads.html" },
       { "title": "About", "href": "about.html" },
@@ -78,19 +78,19 @@
   "sidebar": {
     "zh": [
       {
-        "title": "快速上手",
+        "title": "论文清单",
         "items": [
           { "title": "总览", "path": "README.md" },
-          { "title": "比赛规则", "path": "competition-rules/README.md" },
-          { "title": "技术分享", "path": "technical-sharing/README.md" },
-          { "title": "论文学习清单", "path": "reading-list/README.md" },
-          { "title": "推荐网络项目", "path": "network-open-source/README.md" },
-          { "title": "仓库脚本", "path": "scripts/README.md" }
+          { "title": "论文学习清单", "path": "reading-list/README.md" }
         ]
       },
       {
         "title": "文档",
         "items": [
+          { "title": "比赛规则", "path": "competition-rules/README.md" },
+          { "title": "技术分享", "path": "technical-sharing/README.md" },
+          { "title": "推荐网络项目", "path": "network-open-source/README.md" },
+          { "title": "仓库脚本", "path": "scripts/README.md" },
           { "title": "【RC】足式机器人扫盲导论", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
           { "title": "仿生足式机器人挑战赛", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md" },
           { "title": "足式机器人部件选型与经验", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md" },
@@ -110,19 +110,19 @@
     ],
     "en": [
       {
-        "title": "Quick Start",
+        "title": "Paper Study Hub",
         "items": [
           { "title": "Overview", "path": "README.en.md" },
-          { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
-          { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
-          { "title": "Paper Study Hub", "path": "reading-list/README.en.md" },
-          { "title": "Recommended Projects", "path": "network-open-source/README.en.md" },
-          { "title": "Repository Scripts", "path": "scripts/README.en.md" }
+          { "title": "Paper Study Hub", "path": "reading-list/README.en.md" }
         ]
       },
       {
         "title": "Docs",
         "items": [
+          { "title": "Competition Rules", "path": "competition-rules/README.en.md" },
+          { "title": "Technical Sharing", "path": "technical-sharing/README.en.md" },
+          { "title": "Recommended Projects", "path": "network-open-source/README.en.md" },
+          { "title": "Repository Scripts", "path": "scripts/README.en.md" },
           { "title": "【RC】足式机器人扫盲导论", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md" },
           { "title": "Biomimetic Quadruped Challenge", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md" },
           { "title": "Quadruped Parts Selection and Notes", "path": "wiki/Lain-database/【RC】足式机器人扫盲导论/足式机器人部件选型与经验/足式机器人部件选型与经验.md" },
