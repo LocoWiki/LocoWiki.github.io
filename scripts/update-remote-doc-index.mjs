@@ -7,6 +7,21 @@ const repoRoot = path.resolve(__dirname, "..");
 const configPath = path.join(repoRoot, "assets/site-config.json");
 const outputPath = path.join(repoRoot, "assets/content/remote-docs-index.json");
 
+async function readExistingPaths() {
+  try {
+    const raw = await readFile(outputPath, "utf8");
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed?.paths) ? parsed.paths : null;
+  } catch {
+    return null;
+  }
+}
+
+function pathsEqual(left, right) {
+  if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) return false;
+  return left.every((value, index) => value === right[index]);
+}
+
 async function main() {
   const config = JSON.parse(await readFile(configPath, "utf8"));
   const sourceRepo = config?.sourceRepo;
@@ -30,6 +45,12 @@ async function main() {
     .filter((entry) => entry?.type === "blob" && /\.md$/i.test(entry?.path))
     .map((entry) => String(entry.path))
     .sort((left, right) => left.localeCompare(right, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
+
+  const existingPaths = await readExistingPaths();
+  if (pathsEqual(existingPaths, paths)) {
+    console.log(`No changes to ${path.relative(repoRoot, outputPath)} (${paths.length} paths).`);
+    return;
+  }
 
   const output = {
     generatedAt: new Date().toISOString(),
