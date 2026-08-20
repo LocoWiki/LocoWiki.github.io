@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T10:07:16.059Z",
+  "generatedAt": "2026-08-20T08:51:25.904Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -450,6 +450,7 @@
     "wiki/【体系化进阶】Robotics Tutorial/06_具身智能/RL运控/Ch28_网球击球控制与全身协调.md",
     "wiki/【体系化进阶】Robotics Tutorial/README.md",
     "wiki/【体系化进阶】Robotics Tutorial/SUMMARY.md",
+    "wiki/从robot_lab开始的Isaaclab教程/从robot_lab开始的Isaaclab教程.md",
     "wiki/Lain-database/【必读】LocoWiki介绍.md",
     "wiki/Lain-database/【RC】足式机器人扫盲导论/【RC】足式机器人扫盲导论.md",
     "wiki/Lain-database/【RC】足式机器人扫盲导论/仿生足式机器人挑战赛/仿生足式机器人挑战赛.md",
