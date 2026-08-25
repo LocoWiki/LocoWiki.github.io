@@ -1,8 +1,6 @@
 name: Sync Remote Docs Index
 
 on:
-  schedule:
-    - cron: "7,37 * * * *"
   workflow_dispatch:
   repository_dispatch:
     types: [wiki-updated]

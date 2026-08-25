@@ -26,11 +26,13 @@ docs/                       开发文档
 
 ## 内容更新
 
-文档内容请提交到 LocoWiki/LocoWiki 仓库。文档索引（`assets/content/remote-docs-index.json`）由 GitHub Actions 定时自动更新，也可手动更新：
+文档内容请提交到 LocoWiki/LocoWiki 仓库。Markdown 变更会通过 GitHub Actions 通知本仓库刷新文档索引；也可手动更新：
 
 ```bash
 node scripts/update-remote-doc-index.mjs
 ```
+
+跨仓库通知由内容仓库的 `LOCO_WIKI_SITE_DISPATCH_TOKEN` Secret 授权，并以 `wiki-updated` 事件触发本仓库的 `repository_dispatch` workflow。
 
 ## 部署
 
