@@ -79,7 +79,7 @@
     "downloads": {
       "zipTag": "最快方式",
       "zipTitle": "ZIP 下载",
-      "zipDesc": "适合快速浏览和离线查看。",
+      "zipDesc": "用于获取仓库指南和仍在维护的资源；论文 PDF 请访问其原始来源。",
       "zipLink": "下载 ZIP",
       "cloneTag": "同步",
       "cloneTitle": "克隆仓库",
@@ -186,7 +186,7 @@
     "downloads": {
       "zipTag": "Fastest",
       "zipTitle": "Download ZIP",
-      "zipDesc": "Best for quick browsing and offline reading.",
+      "zipDesc": "For repository guides and maintained resources; paper PDFs are available from their original sources.",
       "zipLink": "Download ZIP",
       "cloneTag": "Sync",
       "cloneTitle": "Clone Repository",

@@ -20,7 +20,7 @@ export async function renderDownloadsPanel() {
       <div class="card info-card">
         <span class="card-tag">${escapeHtml(t("downloads.zipTag", { fallback: "Fastest" }))}</span>
         <h3>${escapeHtml(t("downloads.zipTitle", { fallback: "Download ZIP" }))}</h3>
-        <p>${escapeHtml(t("downloads.zipDesc", { fallback: "Best for quick browsing and offline reading." }))}</p>
+        <p>${escapeHtml(t("downloads.zipDesc", { fallback: "Download repository guides and eligible resources. Paper PDFs are available only from their original sources." }))}</p>
         <a href="${zipUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("downloads.zipLink", { fallback: "Download ZIP" }))}</a>
       </div>
       <div class="card info-card">

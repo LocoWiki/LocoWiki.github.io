@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const configPath = path.join(repoRoot, "assets/site-config.json");
 const outputPath = path.join(repoRoot, "assets/content/remote-docs-index.json");
+const EXCLUDED_PATH_PREFIXES = ["recommended-papers/"];
 
 async function readExistingPaths() {
   try {
@@ -42,7 +43,12 @@ async function main() {
 
   const payload = await response.json();
   const paths = (Array.isArray(payload?.tree) ? payload.tree : [])
-    .filter((entry) => entry?.type === "blob" && /\.md$/i.test(entry?.path))
+    .filter(
+      (entry) =>
+        entry?.type === "blob" &&
+        /\.md$/i.test(entry?.path) &&
+        !EXCLUDED_PATH_PREFIXES.some((prefix) => String(entry.path).startsWith(prefix))
+    )
     .map((entry) => String(entry.path))
     .sort((left, right) => left.localeCompare(right, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
 

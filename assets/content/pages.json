@@ -438,8 +438,8 @@
         "en": "2026/4/16"
       },
       "leadHtml": {
-        "zh": "本站不重复存储资源文件。大部分 PDF、PPT 和外链都来自 <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki 仓库</a> 本体。你可以按需选择整仓下载、克隆同步，或者先在文档页定位后再获取原文件。",
-        "en": "This site does not duplicate repository assets. Most PDFs, slides, and external references come from the <a href=\"https://github.com/LocoWiki/LocoWiki\" target=\"_blank\" rel=\"noopener noreferrer\">LocoWiki repository</a> itself. You can download the full repository, clone it, or locate files from docs pages first."
+        "zh": "本站不镜像论文正文。论文清单仅维护索引与原始来源链接；请从文档页进入 arXiv、出版社或作者提供的页面。",
+        "en": "This site does not mirror paper PDFs. The reading list keeps indexes and original-source links only; use the docs pages to reach arXiv, publisher, or author-provided pages."
       }
     },
     "metrics": [
@@ -449,12 +449,12 @@
           "en": "Fastest Path"
         },
         "value": {
-          "zh": "ZIP 下载",
-          "en": "ZIP Download"
+          "zh": "原始来源",
+          "en": "Original Sources"
         },
         "desc": {
-          "zh": "适合快速浏览和离线查看，不需要 Git 环境。",
-          "en": "Best for quick browsing and offline reading without a Git setup."
+          "zh": "论文只保留 arXiv、出版社或作者提供的原始链接。",
+          "en": "Papers link only to arXiv, publisher, or author-provided sources."
         }
       },
       {
@@ -481,8 +481,8 @@
           "en": "Docs Entry"
         },
         "desc": {
-          "zh": "先从文档页定位资料，再决定是否下载原文件。",
-          "en": "Use docs pages to locate materials before downloading raw files."
+          "zh": "先从文档页定位资料，再访问对应的原始来源。",
+          "en": "Use docs pages to locate materials, then visit their original sources."
         }
       }
     ],
@@ -555,8 +555,8 @@
               "en": "Paper Study Hub"
             },
             "desc": {
-              "zh": "先看索引，再按需要跳转公开论文来源或本地文件。",
-              "en": "Start from the index, then jump to open-access paper sources or raw files as needed."
+              "zh": "先看索引，再跳转至论文的公开原始来源。",
+              "en": "Start from the index, then follow the paper's public original source."
             },
             "linkLabel": {
               "zh": "打开模块",
@@ -628,8 +628,8 @@
               "en": "Use docs for lookup"
             },
             "desc": {
-              "zh": "文档页负责目录与阅读，仓库目录负责原始文件管理。",
-              "en": "Docs pages are for navigation and reading, while the repository tree is for raw file management."
+              "zh": "文档页负责目录与阅读，论文条目统一跳转至原始来源。",
+              "en": "Docs pages are for navigation and reading; paper entries consistently link to original sources."
             }
           },
           {
@@ -655,8 +655,8 @@
           "en": "Large Files and Public Sources"
         },
         "desc": {
-          "zh": "下载策略要区分仓库原始文件、公开可获取内容，以及超大文件的管理方式。",
-          "en": "Download strategy should distinguish between repository assets, open-access content, and oversized file handling."
+          "zh": "资源策略需区分仓库维护文件、公开来源内容，以及超大文件的管理方式。",
+          "en": "Resource policy distinguishes repository-maintained files, public-source content, and oversized-file handling."
         },
         "cardsClass": "cards-3",
         "cards": [
@@ -666,8 +666,8 @@
               "en": "Large File Notes"
             },
             "descHtml": {
-              "zh": "单文件超过约 <code>100MB</code> 时建议使用 Git LFS，或者改为合规外链。如果下载过慢，优先用 <code>git clone</code> 或镜像。",
-              "en": "For files larger than about <code>100MB</code>, prefer Git LFS or compliant external hosting. If downloads are slow, use <code>git clone</code> or a mirror first."
+              "zh": "论文 PDF 不应进入仓库；大型且明确允许再分发的材料应使用 Git LFS 或合规外链。",
+              "en": "Paper PDFs must not enter the repository; large materials that are explicitly redistributable should use Git LFS or compliant external hosting."
             }
           },
           {
