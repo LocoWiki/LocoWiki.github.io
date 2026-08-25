@@ -6,7 +6,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const configPath = path.join(repoRoot, "assets/site-config.json");
 const outputPath = path.join(repoRoot, "assets/content/remote-docs-index.json");
-const EXCLUDED_PATH_PREFIXES = ["recommended-papers/"];
+// These are repository-management files, not website documentation.
+const EXCLUDED_PATH_PREFIXES = [".github/", "recommended-papers/"];
 
 async function readExistingPaths() {
   try {
