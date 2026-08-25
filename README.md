@@ -21,7 +21,7 @@ assets/
     components/             公共组件
     pages/                  页面渲染
     entries/                入口脚本
-docs/                       开发文档
+site-docs/                  站点维护与开发文档
 ```
 
 ## 内容更新
