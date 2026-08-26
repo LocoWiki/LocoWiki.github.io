@@ -58,6 +58,22 @@
     "repo": "LocoWiki",
     "branch": "main"
   },
+  "docFolderTitles": {
+    "open-source": {
+      "paper-reproductions": {
+        "zh": "论文与算法复现",
+        "en": "Paper and Algorithm Reproductions"
+      },
+      "development-tools": {
+        "zh": "开发工具与框架",
+        "en": "Development Tools and Frameworks"
+      },
+      "projects-and-competition": {
+        "zh": "项目与竞赛方案",
+        "en": "Projects and Competition Solutions"
+      }
+    }
+  },
   "comments": {
     "provider": "giscus",
     "enabled": true,

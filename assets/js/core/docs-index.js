@@ -40,6 +40,18 @@ function collectDocTitleOverrides(config, lang, collection) {
   return { titles, priority };
 }
 
+function collectFolderTitleOverrides(config, lang, collection) {
+  const titles = new Map();
+  const configuredTitles = config?.docFolderTitles?.[collection];
+  if (!configuredTitles || typeof configuredTitles !== "object") return titles;
+
+  Object.entries(configuredTitles).forEach(([path, title]) => {
+    const localizedTitle = getLocalizedValue(title, lang);
+    if (path && localizedTitle) titles.set(path, localizedTitle);
+  });
+  return titles;
+}
+
 function createFolderNode(title) {
   return { kind: "folder", title, items: [] };
 }
@@ -85,7 +97,7 @@ function getCollectionRelativePath(path, collection) {
   return path;
 }
 
-function buildRemoteDocsTree(paths, lang, overrides, collection) {
+function buildRemoteDocsTree(paths, lang, overrides, folderTitleOverrides, collection) {
   const locale = lang === "en" ? "en" : "zh-Hans-CN";
   const root = createFolderNode("");
   const folderMap = new Map([["", root]]);
@@ -101,7 +113,7 @@ function buildRemoteDocsTree(paths, lang, overrides, collection) {
       folderKey = folderKey ? `${folderKey}/${segment}` : segment;
       let folder = folderMap.get(folderKey);
       if (!folder) {
-        folder = createFolderNode(prettifyLabel(segment));
+        folder = createFolderNode(folderTitleOverrides.get(folderKey) || prettifyLabel(segment));
         folderMap.set(folderKey, folder);
         parent.items.push(folder);
       }
@@ -173,11 +185,12 @@ export function getResolvedSidebar(config, lang) {
 
       if (collection && Array.isArray(remoteMarkdownPaths)) {
         const collectionPaths = remoteMarkdownPaths.filter((path) => getDocCollectionForPath(path) === collection);
-        if (collectionPaths.length) {
+      if (collectionPaths.length) {
+          const titleOverrides = collectDocTitleOverrides(config, lang, collection);
           return {
             ...group,
             title,
-            items: buildRemoteDocsTree(collectionPaths, lang, collectDocTitleOverrides(config, lang, collection), collection)
+            items: buildRemoteDocsTree(collectionPaths, lang, titleOverrides, collectFolderTitleOverrides(config, lang, collection), collection)
           };
         }
       }

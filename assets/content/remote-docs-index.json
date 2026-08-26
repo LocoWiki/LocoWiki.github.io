@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26T09:20:54.081Z",
+  "generatedAt": "2026-08-26T10:38:49.858Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -462,27 +462,27 @@
       "reading-list/README.md"
     ],
     "open-source": [
-      "network-open-source/amp-go2.md",
-      "network-open-source/blender-mujoco-hfield.md",
-      "network-open-source/extreme-rgmt-reproduction.md",
-      "network-open-source/fuzhou-quadruped-robot-lab.md",
-      "network-open-source/go2-amp-stairs.md",
-      "network-open-source/go2-controllable-jump.md",
-      "network-open-source/go2-depth-parkour.md",
-      "network-open-source/go2-flip-data-collection.md",
-      "network-open-source/go2-plum-blossom-parkour.md",
-      "network-open-source/go2-trot-gait-control.md",
-      "network-open-source/himloco-go2w.md",
-      "network-open-source/humanoid-seven-axis-arm-control.md",
-      "network-open-source/leggedgym-ex.md",
-      "network-open-source/leggedskilldeploy.md",
-      "network-open-source/m20-dreamwaq-highplatform.md",
-      "network-open-source/nhu-himloco-quadruped.md",
-      "network-open-source/rc-wheelleg.md",
+      "network-open-source/development-tools/blender-mujoco-hfield.md",
+      "network-open-source/development-tools/go2-depth-parkour.md",
+      "network-open-source/development-tools/leggedgym-ex.md",
+      "network-open-source/development-tools/leggedskilldeploy.md",
+      "network-open-source/paper-reproductions/amp-go2.md",
+      "network-open-source/paper-reproductions/extreme-rgmt-reproduction.md",
+      "network-open-source/paper-reproductions/go2-amp-stairs.md",
+      "network-open-source/paper-reproductions/go2-controllable-jump.md",
+      "network-open-source/paper-reproductions/go2-flip-data-collection.md",
+      "network-open-source/paper-reproductions/go2-plum-blossom-parkour.md",
+      "network-open-source/paper-reproductions/go2-trot-gait-control.md",
+      "network-open-source/paper-reproductions/m20-dreamwaq-highplatform.md",
+      "network-open-source/paper-reproductions/smp-score-matching-motion-priors.md",
+      "network-open-source/projects-and-competition/fuzhou-quadruped-robot-lab.md",
+      "network-open-source/projects-and-competition/himloco-go2w.md",
+      "network-open-source/projects-and-competition/humanoid-seven-axis-arm-control.md",
+      "network-open-source/projects-and-competition/nhu-himloco-quadruped.md",
+      "network-open-source/projects-and-competition/rc-wheelleg.md",
+      "network-open-source/projects-and-competition/robogauge-go2-champion.md",
       "network-open-source/README.en.md",
-      "network-open-source/README.md",
-      "network-open-source/robogauge-go2-champion.md",
-      "network-open-source/smp-score-matching-motion-priors.md"
+      "network-open-source/README.md"
     ]
   }
 }
