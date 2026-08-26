@@ -13,27 +13,46 @@ Full rules:
 site-docs/page-framework-standards.en.md
 ```
 
-## Two content types
+## Repository responsibilities
 
-### 1. Documentation articles
+### Content repository: `LocoWiki/LocoWiki`
+
+- `wiki/`, `competition-rules/`, `technical-sharing/`, and `scripts/` → Docs
+- `reading-list/` → Papers
+- `network-open-source/` → Open Source
+
+### Website repository: `LocoWiki/LocoWiki.github.io`
+
+- `assets/content/pages.json` → Home, About, Downloads, and Contributors copy
+- `assets/content/ui-text.json` → shared UI copy
+- `assets/site-config.json` → routes, navigation, collection rules, and title overrides
+- `site-docs/` → website maintenance and development docs
+
+Do not copy robotics articles into the website repository, or website copy into the content repository.
+
+## Page content sources
+
+### 1. Remote knowledge articles
 
 These appear under:
 
-- Paper Study Hub
+- Papers
+- Open Source
 - Docs
-- Developer Docs
-- About (repo overview)
 
 Rules:
 
-- `Paper Study Hub`, `Docs`, and `About` (defaults to the repository README overview) read Markdown from the external repository configured in `assets/site-config.json -> sourceRepo`
-- `Developer Docs` reads local Markdown files from this repository under `site-docs/`
+- `Papers` reads `reading-list/`
+- `Open Source` reads `network-open-source/`
+- `Docs` reads `wiki/`, `competition-rules/`, `technical-sharing/`, and `scripts/`
+- `remote-docs-index.json` is generated automatically and must not be edited by hand
 
 ### 2. Static page copy
 
 These appear under:
 
 - Home
+- About
 - Downloads
 - Contributors
 
@@ -41,7 +60,7 @@ These pages do not use Markdown. They are maintained in `assets/content/pages.js
 
 They all belong to the `page` frame.
 
-## Add a Paper Study Hub or Docs article
+## Add a Papers, Open Source, or Docs article
 
 ### Step 1: create the Markdown file in the content repository
 
@@ -66,39 +85,20 @@ wiki/my-topic.md
 Routing rules:
 
 - Paths starting with `wiki/` go to `Docs`
-- The four module dirs `competition-rules/`, `technical-sharing/`, `network-open-source/`, and `scripts/` render their `README.md` as top-level entries in `Docs`
-- Paths under `reading-list/` go to `Paper Study Hub`
+- `competition-rules/`, `technical-sharing/`, and `scripts/` go to `Docs`
+- Paths under `reading-list/` go to `Papers`
+- Paths under `network-open-source/` go to `Open Source`
 
-### Step 2: register it in the sidebar
+### Step 2: refresh the remote index
 
-For a Paper Study Hub article, edit:
-
-```text
-assets/site-config.json
-```
-
-Add an item inside `sidebar.zh` and `sidebar.en`.
-
-Example:
-
-```json
-{
-  "title": "New Article Title",
-  "path": "competition-rules/new-topic.md"
-}
-```
-
-If it is a Docs article:
-
-- refresh the local index file used by the site: `assets/content/remote-docs-index.json`
-- run:
+Run:
 
 ```bash
 node scripts/update-remote-doc-index.mjs
 ```
 
-- this local index drives the nested sidebar in `docs.html`, so the site no longer depends on the GitHub API at runtime
-- keep a matching sidebar entry only when you want to override the displayed title for a specific document
+- `collections.docs`, `collections.papers`, and `collections.open-source` drive the three website collections.
+- Keep a matching sidebar entry only when you need a custom title or ordering.
 
 ### Step 3: add language aliases if needed
 
@@ -125,7 +125,7 @@ assets/site-config.json -> site.defaultDocByShell
 Example:
 
 ```json
-"quickstart": "competition-rules/new-topic.md"
+"papers": "reading-list/new-topic.md"
 ```
 
 or
@@ -179,7 +179,7 @@ If the English version uses a different file, also add:
 "site-docs/how-to-add-pages.md": "site-docs/how-to-add-pages.en.md"
 ```
 
-## Update Home / Contributors / Downloads page copy
+## Update Home / About / Contributors / Downloads page copy
 
 This is not article content, so no Markdown is involved.
 
@@ -193,6 +193,7 @@ This file controls:
 
 - Home hero
 - Home cards
+- About copy
 - Contributors copy
 - Downloads copy
 
@@ -204,11 +205,10 @@ To add one Developer Docs article:
 2. Add it to the Developer Docs section in `assets/site-config.json`
 3. Add the English alias if needed
 
-To add one Paper Study Hub article:
+To add one Papers or Open Source article:
 
 1. Create the Markdown file in the external content repository
-2. Update `assets/site-config.json`
-3. Add the new entry to `sidebar.zh` and `sidebar.en`
+2. Run `node scripts/update-remote-doc-index.mjs` in this site repository
 
 To add one Docs article:
 
@@ -220,8 +220,7 @@ To add one Docs article:
 
 Do not stop after the Markdown renders. At minimum:
 
-1. confirm both Chinese and English sidebars are registered in `assets/site-config.json`
-   For Docs under `wiki/`, this instead means confirming the file is under `wiki/`, `assets/content/remote-docs-index.json` has been refreshed, and adding sidebar entries only when you need title overrides
+1. confirm the file is placed under the collection directory it belongs to, and `assets/content/remote-docs-index.json` has been refreshed
 2. add the `i18n.docPathAliases` mapping if an English file exists
 3. open `developer-docs.html` or `docs.html` locally and reach the new article directly
 4. switch language and confirm it does not jump back to the default doc

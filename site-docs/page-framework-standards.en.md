@@ -12,6 +12,7 @@ Do not choose a layout based on whether content is internal. Choose it based on 
 Applies to:
 
 - Home
+- About
 - Downloads
 - Contributors
 
@@ -50,14 +51,14 @@ Do not use it for:
 
 Applies to:
 
-- Paper Study Hub
+- Papers
+- Open Source
 - Docs
 - Developer Docs
-- About (repo overview)
 
 Source:
 
-- External Markdown repository
+- External Markdown repository (`LocoWiki/LocoWiki`)
 - Local `site-docs/`
 
 Standard structure:
@@ -116,7 +117,7 @@ assets/site-config.json -> pageStandards
 Current mapping:
 
 - `index.html / about.html / downloads.html / contributors.html` => `page`
-- `quickstart.html / docs.html / developer-docs.html` => `docs`
+- `papers.html / quickstart.html / docs.html / open-source.html / developer-docs.html` => `docs`
 
 During shell initialization, the resolved standard is written to `body.dataset`:
 

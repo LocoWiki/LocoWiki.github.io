@@ -27,7 +27,7 @@
       "actions": [
         {
           "variant": "primary",
-          "href": "quickstart.html",
+          "href": "papers.html",
           "label": {
             "zh": "开始阅读",
             "en": "Start Reading"
@@ -408,6 +408,78 @@
       }
     ]
   },
+  "about": {
+    "pageTitle": {
+      "zh": "LocoWiki · 关于",
+      "en": "LocoWiki · About"
+    },
+    "hero": {
+      "breadcrumbs": [
+        {
+          "label": { "zh": "主页", "en": "Home" },
+          "href": "index.html"
+        },
+        {
+          "label": { "zh": "关于", "en": "About" }
+        }
+      ],
+      "title": {
+        "zh": "关于 LocoWiki",
+        "en": "About LocoWiki"
+      },
+      "meta": {
+        "zh": "站点说明",
+        "en": "Site overview"
+      },
+      "lead": {
+        "zh": "LocoWiki 是面向机器人运动控制学习、科研和工程开发的开放资料站。",
+        "en": "LocoWiki is an open resource hub for robot motion-control learning, research, and engineering development."
+      }
+    },
+    "sections": [
+      {
+        "id": "about-sources",
+        "kicker": { "zh": "内容来源", "en": "Content sources" },
+        "title": { "zh": "两个仓库，各自负责一件事", "en": "Two repositories, two clear responsibilities" },
+        "desc": {
+          "zh": "LocoWiki 内容仓库维护机器人知识资料；LocoWiki.github.io 维护网站程序、页面文案和站点工具。",
+          "en": "The LocoWiki repository maintains robotics knowledge; LocoWiki.github.io maintains the website, interface copy, and site tools."
+        },
+        "cardsClass": "cards-2",
+        "cards": [
+          {
+            "title": { "zh": "知识内容仓库", "en": "Knowledge repository" },
+            "desc": {
+              "zh": "负责文档、论文清单、开源项目、比赛规则和技术分享。",
+              "en": "Maintains docs, paper lists, open-source projects, competition rules, and technical sharing."
+            },
+            "linkLabel": { "zh": "打开内容仓库", "en": "Open content repository" },
+            "href": "https://github.com/LocoWiki/LocoWiki",
+            "external": true
+          },
+          {
+            "title": { "zh": "网站代码仓库", "en": "Website repository" },
+            "desc": {
+              "zh": "负责网站布局、导航、搜索、主题、下载页、贡献者页和开发文档。",
+              "en": "Maintains layout, navigation, search, themes, downloads, contributors, and developer docs."
+            },
+            "linkLabel": { "zh": "打开网站仓库", "en": "Open website repository" },
+            "href": "https://github.com/LocoWiki/LocoWiki.github.io",
+            "external": true
+          }
+        ]
+      },
+      {
+        "id": "about-contribute",
+        "kicker": { "zh": "参与贡献", "en": "Contribute" },
+        "title": { "zh": "资料放到正确的仓库", "en": "Put each contribution in the right repository" },
+        "desc": {
+          "zh": "机器人知识资料提交到内容仓库；网站功能、样式和维护说明提交到网站仓库。",
+          "en": "Submit robotics knowledge to the content repository, and website features, styles, or maintenance docs to the website repository."
+        }
+      }
+    ]
+  },
   "downloads": {
     "pageTitle": {
       "zh": "LocoWiki · 资源下载",
@@ -562,12 +634,12 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "quickstart.html?path=reading-list%2FREADME.md"
+            "href": "papers.html?path=reading-list%2FREADME.md"
           },
           {
             "title": {
-              "zh": "推荐网络项目",
-              "en": "Recommended Projects"
+              "zh": "开源项目",
+              "en": "Open Source Projects"
             },
             "desc": {
               "zh": "适合做项目发现与二次筛选，不建议把它当成整包下载入口。",
@@ -577,7 +649,7 @@
               "zh": "打开模块",
               "en": "Open Module"
             },
-            "href": "docs.html?path=network-open-source%2FREADME.md"
+            "href": "open-source.html?path=network-open-source%2FREADME.md"
           },
           {
             "title": {

@@ -16,7 +16,7 @@ function isDocsLayout() {
 }
 
 function getCurrentShell() {
-  return document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  return document.body?.dataset.docShell || getDocShellName() || "papers";
 }
 
 function getCurrentPath() {
@@ -285,7 +285,8 @@ function getHrefKey(href) {
     const url = new URL(href, window.location.href);
     const path = normalizePathname(url.pathname);
     if (path === "/" || path.endsWith("/index.html")) return "home";
-    if (path.endsWith("/quickstart.html")) return "quickstart";
+    if (path.endsWith("/quickstart.html") || path.endsWith("/papers.html")) return "papers";
+    if (path.endsWith("/open-source.html")) return "open-source";
     if (path.endsWith("/docs.html")) return "docs";
     if (path.endsWith("/downloads.html")) return "downloads";
     if (path.endsWith("/about.html")) return "about";
@@ -300,7 +301,9 @@ function getHrefKey(href) {
 function getIconMarkup(name) {
   const icons = {
     home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg>`,
+    papers: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z"/><path d="M8 20h11"/><path d="M8 8h7M8 12h7"/></svg>`,
     quickstart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 14h7l-1 6 10-14h-7z"/></svg>`,
+    "open-source": `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg>`,
     docs: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5V5a2 2 0 0 1 2-2h14v16"/><path d="M8 7h8"/><path d="M8 11h6"/></svg>`,
     downloads: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="m7.5 11.5 4.5 4.5 4.5-4.5"/><path d="M4 19h16"/></svg>`,
     about: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><path d="M12 7h.01"/></svg>`,
@@ -475,7 +478,7 @@ function renderSidebar(config, lang) {
   const sidebar = document.getElementById("site-sidebar");
   if (!sidebar) return;
 
-  const navItems = getNavItems(config, lang);
+  const navItems = getNavItems(config, lang).filter((item) => item?.showInSidebar === true);
   const groups = isDocsLayout() ? getSidebarGroups(config, lang) : [];
   const siteTitle = lang === "en" ? "Site" : "站点";
 

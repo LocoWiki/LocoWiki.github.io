@@ -12,6 +12,7 @@
 适用页面：
 
 - 首页
+- 关于
 - 资源下载
 - 贡献者
 
@@ -50,14 +51,14 @@
 
 适用页面：
 
-- 论文清单
+- 论文
+- 开源
 - 文档
 - 开发文档
-- 关于（仓库总览）
 
 数据来源：
 
-- 外部 Markdown 仓库
+- 外部 Markdown 仓库（内容仓库 `LocoWiki/LocoWiki`）
 - 本仓库 `site-docs/`
 
 标准结构：
@@ -116,7 +117,7 @@ assets/site-config.json -> pageStandards
 当前约定是：
 
 - `index.html / about.html / downloads.html / contributors.html` => `page`
-- `quickstart.html / docs.html / developer-docs.html` => `docs`
+- `papers.html / quickstart.html / docs.html / open-source.html / developer-docs.html` => `docs`
 
 初始化站点壳时会把标准写到 `body.dataset`：
 

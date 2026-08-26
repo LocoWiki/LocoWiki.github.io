@@ -1,7 +1,6 @@
-import { DOC_TOP_LEVEL_DIRS, getDocShellForPath } from "./docs-routing.js";
+import { getDocCollectionForPath, getDocShellForPath } from "./docs-routing.js";
 import { getLocalizedList, getLocalizedValue, safeDecode } from "./utils.js";
 
-const REMOTE_TREE_PREFIX = "wiki/";
 const REMOTE_DOC_INDEX_URL = "assets/content/remote-docs-index.json";
 
 let remoteMarkdownPaths = null;
@@ -11,30 +10,18 @@ function isMarkdownPath(path) {
   return /\.md$/i.test(String(path || "").trim());
 }
 
-function decodeSegment(value) {
-  return safeDecode(String(value || "").trim());
-}
-
 function prettifyLabel(value) {
-  return decodeSegment(value).replace(/[_-]+/g, " ").trim();
+  return safeDecode(String(value || "").trim()).replace(/[_-]+/g, " ").trim();
 }
 
 function getFallbackDocTitle(path) {
-  const segments = String(path || "")
-    .split("/")
-    .filter(Boolean);
+  const segments = String(path || "").split("/").filter(Boolean);
   const filename = segments[segments.length - 1] || "";
-  if (/^readme\.md$/i.test(filename) && segments.length > 1) {
-    return prettifyLabel(segments[segments.length - 2]);
-  }
+  if (/^readme\.md$/i.test(filename) && segments.length > 1) return prettifyLabel(segments[segments.length - 2]);
   return prettifyLabel(filename.replace(/\.md$/i, ""));
 }
 
-function getFolderTitle(segment) {
-  return prettifyLabel(segment);
-}
-
-function collectDocTitleOverrides(config, lang, shell) {
+function collectDocTitleOverrides(config, lang, collection) {
   const priority = new Map();
   const titles = new Map();
   let order = 0;
@@ -43,7 +30,8 @@ function collectDocTitleOverrides(config, lang, shell) {
     getLocalizedList(group?.items, lang).forEach((item) => {
       const path = getLocalizedValue(item?.path, lang);
       const title = getLocalizedValue(item?.title, lang);
-      if (!path || !title || getDocShellForPath(path) !== shell) return;
+      const itemCollection = group?.collection || getDocCollectionForPath(path);
+      if (!path || !title || itemCollection !== collection) return;
       titles.set(path, title);
       priority.set(path, order++);
     });
@@ -53,19 +41,11 @@ function collectDocTitleOverrides(config, lang, shell) {
 }
 
 function createFolderNode(title) {
-  return {
-    kind: "folder",
-    title,
-    items: []
-  };
+  return { kind: "folder", title, items: [] };
 }
 
 function createDocNode(path, title) {
-  return {
-    kind: "doc",
-    path,
-    title
-  };
+  return { kind: "doc", path, title };
 }
 
 function sortTree(items, priority, locale) {
@@ -73,66 +53,62 @@ function sortTree(items, priority, locale) {
     const leftPriority = left.kind === "doc" && priority.has(left.path) ? priority.get(left.path) : Number.POSITIVE_INFINITY;
     const rightPriority = right.kind === "doc" && priority.has(right.path) ? priority.get(right.path) : Number.POSITIVE_INFINITY;
     if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-
-    if (left.kind !== right.kind) {
-      return left.kind === "folder" ? -1 : 1;
-    }
+    if (left.kind !== right.kind) return left.kind === "folder" ? -1 : 1;
 
     const leftIsReadme = left.kind === "doc" && /(?:^|\/)README\.md$/i.test(left.path);
     const rightIsReadme = right.kind === "doc" && /(?:^|\/)README\.md$/i.test(right.path);
     if (leftIsReadme !== rightIsReadme) return leftIsReadme ? -1 : 1;
-
     return left.title.localeCompare(right.title, locale, { numeric: true, sensitivity: "base" });
   });
-
   items.forEach((item) => {
     if (item.kind === "folder") sortTree(item.items, priority, locale);
   });
 }
 
-function buildRemoteDocsTree(paths, lang, overrides) {
+function selectLocalizedPaths(paths, lang) {
+  const pathSet = new Set(paths);
+  return paths.filter((path) => {
+    if (/\.en\.md$/i.test(path)) {
+      return lang === "en" || !pathSet.has(path.replace(/\.en\.md$/i, ".md"));
+    }
+    return lang !== "en" || !pathSet.has(path.replace(/\.md$/i, ".en.md"));
+  });
+}
+
+function getCollectionRelativePath(path, collection) {
+  if (collection === "docs") {
+    if (path.startsWith("wiki/")) return path.slice("wiki/".length);
+    return path.slice(path.indexOf("/") + 1);
+  }
+  if (collection === "papers") return path.slice("reading-list/".length);
+  if (collection === "open-source") return path.slice("network-open-source/".length);
+  return path;
+}
+
+function buildRemoteDocsTree(paths, lang, overrides, collection) {
   const locale = lang === "en" ? "en" : "zh-Hans-CN";
   const root = createFolderNode("");
   const folderMap = new Map([["", root]]);
 
-  const pushPath = (path, relativePath) => {
-    const segments = relativePath.split("/").filter(Boolean);
+  selectLocalizedPaths(paths.filter(isMarkdownPath), lang).forEach((path) => {
+    const segments = getCollectionRelativePath(path, collection).split("/").filter(Boolean);
     if (!segments.length) return;
-
     segments.pop();
+
     let parent = root;
     let folderKey = "";
-
     segments.forEach((segment) => {
       folderKey = folderKey ? `${folderKey}/${segment}` : segment;
       let folder = folderMap.get(folderKey);
       if (!folder) {
-        folder = createFolderNode(getFolderTitle(segment));
+        folder = createFolderNode(prettifyLabel(segment));
         folderMap.set(folderKey, folder);
         parent.items.push(folder);
       }
       parent = folder;
     });
-
     parent.items.push(createDocNode(path, overrides.titles.get(path) || getFallbackDocTitle(path)));
-  };
-
-  // Top-level module READMEs (competition-rules/, technical-sharing/, ...) render
-  // at the root of the docs tree; pick the language-appropriate file when a pair exists.
-  DOC_TOP_LEVEL_DIRS.forEach((dir) => {
-    const zhPath = `${dir}/README.md`;
-    const enPath = `${dir}/README.en.md`;
-    const zhExists = paths.includes(zhPath);
-    const enExists = paths.includes(enPath);
-    const chosen = lang === "en" ? (enExists ? enPath : zhPath) : (zhExists ? zhPath : enPath);
-    if (chosen && isMarkdownPath(chosen)) pushPath(chosen, chosen.slice(dir.length + 1));
   });
-
-  paths
-    .filter((path) => path.startsWith(REMOTE_TREE_PREFIX) && isMarkdownPath(path))
-    .forEach((path) => {
-      pushPath(path, path.slice(REMOTE_TREE_PREFIX.length));
-    });
 
   sortTree(root.items, overrides.priority, locale);
   return root.items;
@@ -141,24 +117,26 @@ function buildRemoteDocsTree(paths, lang, overrides) {
 function containsShellItem(item, shell) {
   if (item?.kind === "doc") return getDocShellForPath(item.path) === shell;
   if (Array.isArray(item?.items)) return item.items.some((child) => containsShellItem(child, shell));
-  const path = item?.path;
-  return Boolean(path) && getDocShellForPath(path) === shell;
+  return Boolean(item?.path) && getDocShellForPath(item.path) === shell;
+}
+
+function readIndexedPaths(payload) {
+  const collections = payload?.collections;
+  if (collections && typeof collections === "object") {
+    return Object.values(collections).flatMap((paths) => (Array.isArray(paths) ? paths : []));
+  }
+  return Array.isArray(payload?.paths) ? payload.paths : [];
 }
 
 export async function preloadRemoteDocIndex(config) {
   if (remoteMarkdownPaths || remoteIndexPromise) return remoteIndexPromise;
 
-  remoteIndexPromise = fetch(REMOTE_DOC_INDEX_URL, {
-    cache: "no-store"
-  })
+  remoteIndexPromise = fetch(REMOTE_DOC_INDEX_URL, { cache: "no-store" })
     .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return response.json();
     })
     .then((payload) => {
-      const paths = Array.isArray(payload?.paths) ? payload.paths : [];
       const sourceRepo = payload?.sourceRepo || {};
       if (
         config?.sourceRepo?.owner &&
@@ -168,7 +146,7 @@ export async function preloadRemoteDocIndex(config) {
       ) {
         console.warn("Remote doc index sourceRepo does not match site-config sourceRepo.", { sourceRepo, expected: config.sourceRepo });
       }
-      remoteMarkdownPaths = paths.filter((path) => isMarkdownPath(path)).map((path) => String(path));
+      remoteMarkdownPaths = readIndexedPaths(payload).filter(isMarkdownPath).map(String);
       return remoteMarkdownPaths;
     })
     .catch((error) => {
@@ -185,14 +163,17 @@ export function getResolvedSidebar(config, lang) {
     .map((group) => {
       const title = getLocalizedValue(group?.title, lang);
       const items = getLocalizedList(group?.items, lang);
-      const shells = new Set(items.map((item) => getDocShellForPath(getLocalizedValue(item?.path, lang))));
+      const collection = group?.collection || "";
 
-      if (shells.size === 1 && shells.has("docs") && Array.isArray(remoteMarkdownPaths) && remoteMarkdownPaths.length) {
-        return {
-          ...group,
-          title,
-          items: buildRemoteDocsTree(remoteMarkdownPaths, lang, collectDocTitleOverrides(config, lang, "docs"))
-        };
+      if (collection && Array.isArray(remoteMarkdownPaths)) {
+        const collectionPaths = remoteMarkdownPaths.filter((path) => getDocCollectionForPath(path) === collection);
+        if (collectionPaths.length) {
+          return {
+            ...group,
+            title,
+            items: buildRemoteDocsTree(collectionPaths, lang, collectDocTitleOverrides(config, lang, collection), collection)
+          };
+        }
       }
 
       return {
@@ -210,10 +191,7 @@ export function getResolvedSidebar(config, lang) {
 
 export function getSidebarGroupsForShell(config, lang, shell) {
   return getResolvedSidebar(config, lang)
-    .map((group) => ({
-      ...group,
-      items: group.items.filter((item) => containsShellItem(item, shell))
-    }))
+    .map((group) => ({ ...group, items: group.items.filter((item) => containsShellItem(item, shell)) }))
     .filter((group) => group.items.length > 0);
 }
 
@@ -228,17 +206,10 @@ export function flattenSidebarDocItems(groups) {
         return;
       }
       if (!item.path || !item.title) return;
-      flattened.push({
-        title: item.title,
-        path: item.path,
-        trail
-      });
+      flattened.push({ title: item.title, path: item.path, trail });
     });
   }
 
-  groups.forEach((group) => {
-    walk(group.items || [], [group.title].filter(Boolean));
-  });
-
+  groups.forEach((group) => walk(group.items || [], [group.title].filter(Boolean)));
   return flattened;
 }

@@ -13,27 +13,46 @@
 site-docs/page-framework-standards.md
 ```
 
-## 先分清两类内容
+## 先分清两个仓库的职责
 
-### 1. 文档文章
+### 内容仓库：`LocoWiki/LocoWiki`
+
+- `wiki/`、`competition-rules/`、`technical-sharing/`、`scripts/` → 文档
+- `reading-list/` → 论文
+- `network-open-source/` → 开源
+
+### 网站仓库：`LocoWiki/LocoWiki.github.io`
+
+- `assets/content/pages.json` → 首页、关于、资源下载、贡献者页面
+- `assets/content/ui-text.json` → 公共 UI 文案
+- `assets/site-config.json` → 路由、导航、栏目规则和标题覆盖
+- `site-docs/` → 网站维护与开发文档
+
+不要把机器人知识文章复制到网站仓库，也不要把网站产品文案写入内容仓库。
+
+## 先分清页面来源
+
+### 1. 远程知识文章
 
 这类内容会显示在：
 
-- 论文清单
+- 论文
+- 开源
 - 文档
-- 开发文档
-- 关于（仓库总览）
 
 其中：
 
-- `论文清单`、`文档` 和 `关于`（默认显示仓库 README 总览）读取 `assets/site-config.json` 里 `sourceRepo` 指向的外部仓库
-- `开发文档` 读取当前站点仓库里的本地 Markdown 文件，也就是 `site-docs/` 目录
+- `论文` 读取 `reading-list/`
+- `开源` 读取 `network-open-source/`
+- `文档` 读取 `wiki/`、`competition-rules/`、`technical-sharing/`、`scripts/`
+- `remote-docs-index.json` 是自动生成的索引缓存，不手工编辑
 
 ### 2. 静态页面文案
 
 这类内容会显示在：
 
 - 首页
+- 关于
 - 资源下载
 - 贡献者
 
@@ -41,7 +60,7 @@ site-docs/page-framework-standards.md
 
 它们统一属于 `page` 框架。
 
-## 新增一篇“论文清单”或“文档”文章
+## 新增一篇论文、开源或文档文章
 
 ### 步骤 1：先在内容仓库里新增 Markdown 文件
 
@@ -68,39 +87,20 @@ wiki/my-topic.md
 规则是：
 
 - 路径以 `wiki/` 开头的，会被归到 `文档`
-- `competition-rules/`、`technical-sharing/`、`network-open-source/`、`scripts/` 这四个模块目录的 `README.md` 会作为顶层条目归到 `文档`
-- `reading-list/` 下的路径，会归到 `论文清单`
+- `competition-rules/`、`technical-sharing/`、`scripts/` 会归到 `文档`
+- `reading-list/` 下的路径会归到 `论文`
+- `network-open-source/` 下的路径会归到 `开源`
 
-### 步骤 2：把它挂到侧边栏
+### 步骤 2：刷新远程索引
 
-如果是“论文清单”文章，仍然需要编辑：
-
-```text
-assets/site-config.json
-```
-
-在 `sidebar.zh` 和 `sidebar.en` 里新增条目。
-
-例如新增一篇中文论文清单文章：
-
-```json
-{
-  "title": "新的文章标题",
-  "path": "competition-rules/new-topic.md"
-}
-```
-
-如果是文档：
-
-- 需要刷新站点里的本地索引文件：`assets/content/remote-docs-index.json`
-- 执行：
+执行：
 
 ```bash
 node scripts/update-remote-doc-index.mjs
 ```
 
-- 这个索引文件会驱动 `docs.html` 的多级侧栏，不再在运行时请求 GitHub API
-- 如果你想覆盖某一篇文档在侧栏里的显示标题，才需要在 `sidebar.zh` / `sidebar.en` 里保留同路径条目
+- `collections.docs`、`collections.papers`、`collections.open-source` 分别驱动三个栏目。
+- 只有需要自定义侧栏标题或排序时，才在 `assets/site-config.json` 中保留条目。
 
 ### 步骤 3：如果有英文版，再补语言映射
 
@@ -129,7 +129,7 @@ assets/site-config.json -> site.defaultDocByShell
 例如：
 
 ```json
-"quickstart": "competition-rules/new-topic.md"
+"papers": "reading-list/new-topic.md"
 ```
 
 或者：
@@ -183,7 +183,7 @@ assets/site-config.json
 "site-docs/how-to-add-pages.md": "site-docs/how-to-add-pages.en.md"
 ```
 
-## 修改首页、贡献者、下载页文案
+## 修改首页、关于、贡献者、下载页文案
 
 这类不是文章，不需要改 Markdown。
 
@@ -197,6 +197,7 @@ assets/content/pages.json
 
 - 首页 Hero
 - 首页卡片
+- 关于页说明
 - 贡献者页说明
 - 下载页说明
 
@@ -208,11 +209,10 @@ assets/content/pages.json
 2. 在 `assets/site-config.json` 的 `sidebar.zh` 开发文档分组里加一条
 3. 如果有英文版，再在 `sidebar.en` 和 `docPathAliases` 里补一条
 
-如果你要新增一篇“论文清单”文章，最小操作就是：
+如果你要新增一篇论文或开源文章，最小操作就是：
 
 1. 去外部内容仓库新建 `.md`
-2. 回到这个站点仓库，编辑 `assets/site-config.json`
-3. 把新文章挂进 `sidebar.zh / sidebar.en`
+2. 回到这个站点仓库执行 `node scripts/update-remote-doc-index.mjs`
 
 如果你要新增一篇“文档”文章，最小操作就是：
 

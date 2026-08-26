@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   applyI18n(document, lang);
   const docsLink = document.getElementById("not-found-docs");
   if (docsLink) {
-    const defaultPath = getDefaultDocPathForShell(config, lang, "quickstart");
-    docsLink.href = getDocPageHref(defaultPath, config, lang, "quickstart");
+    const defaultPath = getDefaultDocPathForShell(config, lang, "papers");
+    docsLink.href = getDocPageHref(defaultPath, config, lang, "papers");
   }
 });

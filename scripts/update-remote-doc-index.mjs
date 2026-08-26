@@ -8,12 +8,16 @@ const configPath = path.join(repoRoot, "assets/site-config.json");
 const outputPath = path.join(repoRoot, "assets/content/remote-docs-index.json");
 // These are repository-management files, not website documentation.
 const EXCLUDED_PATH_PREFIXES = [".github/", "recommended-papers/"];
+const COLLECTION_PREFIXES = {
+  docs: ["wiki/", "competition-rules/", "technical-sharing/", "scripts/"],
+  papers: ["reading-list/"],
+  "open-source": ["network-open-source/"]
+};
 
-async function readExistingPaths() {
+async function readExistingIndex() {
   try {
     const raw = await readFile(outputPath, "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed?.paths) ? parsed.paths : null;
+    return JSON.parse(raw);
   } catch {
     return null;
   }
@@ -53,25 +57,37 @@ async function main() {
     .map((entry) => String(entry.path))
     .sort((left, right) => left.localeCompare(right, "zh-Hans-CN", { numeric: true, sensitivity: "base" }));
 
-  const existingPaths = await readExistingPaths();
-  if (pathsEqual(existingPaths, paths)) {
-    console.log(`No changes to ${path.relative(repoRoot, outputPath)} (${paths.length} paths).`);
+  const collections = Object.fromEntries(
+    Object.entries(COLLECTION_PREFIXES).map(([collection, prefixes]) => [
+      collection,
+      paths.filter((entryPath) => prefixes.some((prefix) => entryPath.startsWith(prefix)))
+    ])
+  );
+
+  const existingIndex = await readExistingIndex();
+  const collectionsUnchanged = Object.entries(collections).every(
+    ([collection, collectionPaths]) => pathsEqual(existingIndex?.collections?.[collection], collectionPaths)
+  );
+  const indexedPaths = Object.values(collections).flat();
+  if (existingIndex?.schemaVersion === 2 && collectionsUnchanged) {
+    console.log(`No changes to ${path.relative(repoRoot, outputPath)} (${indexedPaths.length} indexed paths).`);
     return;
   }
 
   const output = {
+    schemaVersion: 2,
     generatedAt: new Date().toISOString(),
     sourceRepo: {
       owner: sourceRepo.owner,
       repo: sourceRepo.repo,
       branch: sourceRepo.branch
     },
-    paths
+    collections
   };
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(output, null, 2)}\n`, "utf8");
-  console.log(`Updated ${path.relative(repoRoot, outputPath)} with ${paths.length} markdown paths.`);
+  console.log(`Updated ${path.relative(repoRoot, outputPath)} with ${indexedPaths.length} indexed Markdown paths.`);
 }
 
 main().catch((error) => {

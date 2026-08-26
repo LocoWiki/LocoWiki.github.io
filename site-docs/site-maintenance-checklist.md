@@ -65,7 +65,7 @@ assets/js/entries/docs.js
 分工是：
 
 - `docs-page.js`：文档拉取、渲染、目录、面包屑、侧栏树
-- `docs-routing.js`：`quickstart / docs / developer` 三类文档壳的路由规则
+- `docs-routing.js`：`papers / docs / open-source / developer` 文档壳的路由规则；`quickstart.html` 是论文页的兼容旧地址
 - `entries/docs.js`：文档页入口初始化，不要把页面逻辑塞回 HTML
 
 ## 2. 常见任务该怎么改
@@ -170,6 +170,9 @@ node --check assets/js/pages/static-page.js
 - `index.html`
 - `downloads.html`
 - `docs.html`
+- `papers.html`
+- `docs.html`
+- `open-source.html`
 - `developer-docs.html`
 
 最少检查这些动作：

@@ -1,6 +1,6 @@
 # LocoWiki.github.io
 
-LocoWiki 官网的源代码仓库。文档内容存放在 [LocoWiki/LocoWiki](https://github.com/LocoWiki/LocoWiki) 的 `wiki/` 目录，本仓库负责网站构建与部署。
+LocoWiki 官网的源代码仓库。机器人知识内容存放在 [LocoWiki/LocoWiki](https://github.com/LocoWiki/LocoWiki) 的约定目录，本仓库负责网站展示、检索与部署。
 
 线上地址：
 
@@ -15,7 +15,7 @@ assets/
   content/
     pages.json              静态页面文案
     ui-text.json            公共 UI 文案
-    remote-docs-index.json  文档索引快照
+    remote-docs-index.json  远程内容栏目索引快照
   js/
     core/                   核心逻辑（配置、i18n）
     components/             公共组件
@@ -26,7 +26,7 @@ site-docs/                  站点维护与开发文档
 
 ## 内容更新
 
-文档内容请提交到 LocoWiki/LocoWiki 仓库。Markdown 变更会通过 GitHub Actions 通知本仓库刷新文档索引；也可手动更新：
+机器人知识内容请提交到 LocoWiki/LocoWiki 仓库；网站文案和维护文档留在本仓库。Markdown 变更会通过 GitHub Actions 通知本仓库刷新栏目索引；也可手动更新：
 
 ```bash
 node scripts/update-remote-doc-index.mjs

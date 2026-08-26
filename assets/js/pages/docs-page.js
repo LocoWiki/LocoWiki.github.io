@@ -104,7 +104,7 @@ function buildUrls(config, path) {
 
 function getTargetDocPath(config) {
   const lang = getCurrentLanguage();
-  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
   const params = new URLSearchParams(window.location.search);
   const requested = params.get("path") || getDefaultDocPathForShell(config, lang, shell);
   return mapDocPathToLanguage(requested, lang, config);
@@ -232,16 +232,24 @@ function formatDocDate(rawValue) {
 function getSidebarContext(docPath) {
   const link = document.querySelector(`#site-sidebar a[data-doc-link][data-doc-path="${cssEscape(docPath)}"]`);
   const title = (link?.getAttribute("data-doc-title") || link?.textContent || docPath).trim();
-  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
   const lang = getCurrentLanguage();
   const shellMap = {
+    papers: {
+      title: lang === "en" ? "Papers" : "论文",
+      href: "papers.html"
+    },
     quickstart: {
-      title: lang === "en" ? "Paper Study Hub" : "论文清单",
-      href: "quickstart.html"
+      title: lang === "en" ? "Papers" : "论文",
+      href: "papers.html"
     },
     docs: {
       title: lang === "en" ? "Docs" : "文档",
       href: "docs.html"
+    },
+    "open-source": {
+      title: lang === "en" ? "Open Source" : "开源",
+      href: "open-source.html"
     },
     developer: {
       title: lang === "en" ? "Developer Docs" : "开发文档",
@@ -252,7 +260,7 @@ function getSidebarContext(docPath) {
       href: "about.html"
     }
   };
-  const currentShell = shellMap[shell] || shellMap.quickstart;
+  const currentShell = shellMap[shell] || shellMap.papers;
   return {
     title,
     shellTitle: currentShell.title,
@@ -399,7 +407,7 @@ function renderError(contentEl, docPath, urls) {
 }
 
 function renderShellNotice(docPath) {
-  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
   if (shell !== "docs") return "";
   if (!String(docPath || "").trim().startsWith("wiki/Lain-database/")) return "";
 
@@ -442,7 +450,7 @@ function syncGiscusTheme() {
 }
 
 function renderDocComments(commentsEl, config, docPath) {
-  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
   const comments = config?.comments;
   commentsEl.hidden = true;
   commentsEl.innerHTML = "";

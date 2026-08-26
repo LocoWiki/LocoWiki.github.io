@@ -65,7 +65,7 @@ assets/js/entries/docs.js
 Responsibilities:
 
 - `docs-page.js`: document fetch, render, TOC, breadcrumbs, sidebar tree
-- `docs-routing.js`: routing rules for `quickstart / docs / developer`
+- `docs-routing.js`: routing rules for `papers / docs / open-source / developer`; `quickstart.html` remains the legacy papers URL
 - `entries/docs.js`: docs-page bootstrap, not page logic in HTML
 
 ## 2. How to handle common tasks
@@ -170,6 +170,9 @@ At minimum, inspect:
 - `index.html`
 - `downloads.html`
 - `docs.html`
+- `papers.html`
+- `docs.html`
+- `open-source.html`
 - `developer-docs.html`
 
 Check at least:
