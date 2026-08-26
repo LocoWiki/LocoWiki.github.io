@@ -49,6 +49,7 @@
       "tipGitHub": "直接在 GitHub 上查看：",
       "prevPage": "上一页",
       "nextPage": "下一页",
+      "commentsTitle": "评论",
       "sectionTitle": "文档"
     },
     "contributors": {
@@ -156,6 +157,7 @@
       "tipGitHub": "View directly on GitHub:",
       "prevPage": "Previous",
       "nextPage": "Next",
+      "commentsTitle": "Comments",
       "sectionTitle": "Docs"
     },
     "contributors": {

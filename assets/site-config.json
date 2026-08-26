@@ -56,6 +56,22 @@
     "repo": "LocoWiki",
     "branch": "main"
   },
+  "comments": {
+    "provider": "giscus",
+    "enabled": true,
+    "repo": "LocoWiki/LocoWiki.github.io",
+    "repoId": "R_kgDORggNAw",
+    "category": "Documentation",
+    "categoryId": "",
+    "mapping": "specific",
+    "strict": "1",
+    "reactionsEnabled": "1",
+    "inputPosition": "top",
+    "lang": {
+      "zh": "zh-CN",
+      "en": "en"
+    }
+  },
   "nav": {
     "zh": [
       { "title": "首页", "href": "index.html" },

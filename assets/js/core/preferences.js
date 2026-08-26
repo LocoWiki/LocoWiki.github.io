@@ -29,6 +29,11 @@ export function applyTheme(theme) {
   const normalized = normalizeTheme(theme) || "light";
   document.documentElement.dataset.theme = normalized;
   localStorage.setItem(THEME_KEY, normalized);
+  window.dispatchEvent(
+    new CustomEvent("locowiki:themechange", {
+      detail: { theme: normalized }
+    })
+  );
   return normalized;
 }
 

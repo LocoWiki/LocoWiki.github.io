@@ -1,7 +1,7 @@
 import { getSiteConfig } from "../core/config.js";
 import { getDefaultDocPathForShell, getDocPageHref, getDocShellName, mapDocPathToLanguage } from "../core/docs-routing.js";
 import { t } from "../core/i18n.js";
-import { getCurrentLanguage } from "../core/preferences.js";
+import { getCurrentLanguage, getCurrentTheme } from "../core/preferences.js";
 import { renderDocsFrameHead } from "../components/content-head.js";
 import { cssEscape, dirname, encodePath, escapeAttr, escapeHtml, isDangerousHref, isExternalHref, normalizePath, resolveRelativePath, safeDecode, splitHash, stripLeadingSlash } from "../core/utils.js";
 
@@ -58,18 +58,21 @@ function getDocElements() {
   if (!docEl) return null;
   let metaEl = docEl.querySelector(".doc-meta");
   let contentEl = docEl.querySelector("#doc-content");
+  let commentsEl = docEl.querySelector("#doc-comments");
   let pagerEl = docEl.querySelector(".doc-pager");
-  if (metaEl && contentEl && pagerEl) return { docEl, metaEl, contentEl, pagerEl };
+  if (metaEl && contentEl && commentsEl && pagerEl) return { docEl, metaEl, contentEl, commentsEl, pagerEl };
 
   docEl.innerHTML = `
     <div class="doc-meta"></div>
     <div id="doc-content" class="doc-content-live"></div>
+    <section id="doc-comments" class="doc-comments" hidden></section>
     <nav class="doc-pager" hidden></nav>
   `;
   return {
     docEl,
     metaEl: docEl.querySelector(".doc-meta"),
     contentEl: docEl.querySelector("#doc-content"),
+    commentsEl: docEl.querySelector("#doc-comments"),
     pagerEl: docEl.querySelector(".doc-pager")
   };
 }
@@ -415,10 +418,73 @@ function renderShellNotice(docPath) {
   `;
 }
 
+function getGiscusTheme() {
+  return getCurrentTheme() === "dark" ? "dark" : "light";
+}
+
+function getCanonicalCommentTerm(docPath, config) {
+  return mapDocPathToLanguage(docPath, "zh", config);
+}
+
+function syncGiscusTheme() {
+  const iframe = document.querySelector("#doc-comments iframe.giscus-frame");
+  if (!iframe?.contentWindow) return;
+  iframe.contentWindow.postMessage(
+    {
+      giscus: {
+        setConfig: {
+          theme: getGiscusTheme()
+        }
+      }
+    },
+    "https://giscus.app"
+  );
+}
+
+function renderDocComments(commentsEl, config, docPath) {
+  const shell = document.body?.dataset.docShell || getDocShellName() || "quickstart";
+  const comments = config?.comments;
+  commentsEl.hidden = true;
+  commentsEl.innerHTML = "";
+
+  if (shell === "about" || comments?.provider !== "giscus" || comments.enabled !== true) return;
+  if (!comments.repo || !comments.repoId || !comments.category || !comments.categoryId) {
+    console.warn("Giscus is not configured yet: enable GitHub Discussions and set comments.categoryId in assets/site-config.json.");
+    return;
+  }
+
+  const lang = getCurrentLanguage();
+  const title = t("docs.commentsTitle", { lang, fallback: "Comments" });
+  const giscus = document.createElement("div");
+  giscus.className = "giscus";
+
+  const script = document.createElement("script");
+  script.src = "https://giscus.app/client.js";
+  script.async = true;
+  script.crossOrigin = "anonymous";
+  script.setAttribute("data-repo", comments.repo);
+  script.setAttribute("data-repo-id", comments.repoId);
+  script.setAttribute("data-category", comments.category);
+  script.setAttribute("data-category-id", comments.categoryId);
+  script.setAttribute("data-mapping", comments.mapping || "specific");
+  script.setAttribute("data-term", getCanonicalCommentTerm(docPath, config));
+  script.setAttribute("data-strict", comments.strict || "1");
+  script.setAttribute("data-reactions-enabled", comments.reactionsEnabled || "1");
+  script.setAttribute("data-input-position", comments.inputPosition || "top");
+  script.setAttribute("data-theme", getGiscusTheme());
+  script.setAttribute("data-lang", comments.lang?.[lang] || (lang === "en" ? "en" : "zh-CN"));
+  script.addEventListener("load", syncGiscusTheme, { once: true });
+
+  commentsEl.hidden = false;
+  commentsEl.innerHTML = `<h2 class="doc-comments-title">${escapeHtml(title)}</h2>`;
+  commentsEl.append(giscus);
+  giscus.append(script);
+}
+
 export async function renderDocsPage() {
   const elements = getDocElements();
   if (!elements) return;
-  const { metaEl, contentEl, pagerEl } = elements;
+  const { metaEl, contentEl, commentsEl, pagerEl } = elements;
   const config = await getSiteConfig();
   const docPath = getTargetDocPath(config);
   const urls = buildUrls(config, docPath);
@@ -452,6 +518,7 @@ export async function renderDocsPage() {
     renderMath(contentEl);
     renderDocToc(collectHeadings(contentEl));
     syncSidebarOutline(docPath, docTitle, collectSidebarHeadings(contentEl), config);
+    renderDocComments(commentsEl, config, docPath);
     renderDocPager(pagerEl, docPath, config);
     state.currentDocPath = docPath;
     state.currentDocTitle = docTitle;
@@ -461,6 +528,8 @@ export async function renderDocsPage() {
     renderDocMeta(metaEl, docPath, urls, { title: docPath });
     renderError(contentEl, docPath, urls);
     renderDocToc([]);
+    commentsEl.hidden = true;
+    commentsEl.innerHTML = "";
     renderDocPager(pagerEl, docPath, config);
   }
 }
@@ -497,6 +566,7 @@ export function initDocsNavigation() {
   });
 
   window.addEventListener("hashchange", () => scrollToHash());
+  window.addEventListener("locowiki:themechange", () => syncGiscusTheme());
   window.addEventListener("locowiki:languagechange", () => {
     renderDocsPage().catch((error) => console.error(error));
   });

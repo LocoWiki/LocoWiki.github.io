@@ -1372,6 +1372,24 @@ body[data-page-id="downloads"] .code-panel code {
   border-top: 1px solid var(--border);
 }
 
+.doc-comments {
+  margin-top: 42px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.doc-comments-title {
+  margin: 0 0 20px;
+  color: var(--text);
+  font-size: clamp(22px, 2.1vw, 28px);
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+.giscus {
+  min-height: 180px;
+}
+
 .doc-pager-link {
   display: grid;
   gap: 6px;
