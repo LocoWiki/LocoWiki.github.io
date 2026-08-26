@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-26T08:10:49.908Z",
+  "sourceRepo": {
+    "owner": "LocoWiki",
+    "repo": "LocoWiki"
+  },
+  "contributors": [
+    {
+      "login": "Lain-Ego0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/153184676?v=4",
+      "html_url": "https://github.com/Lain-Ego0",
+      "contributions": 66,
+      "type": "User"
+    },
+    {
+      "login": "github-actions[bot]",
+      "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+      "html_url": "https://github.com/apps/github-actions",
+      "contributions": 7,
+      "type": "Bot"
+    },
+    {
+      "login": "heartpain-kong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/238131283?v=4",
+      "html_url": "https://github.com/heartpain-kong",
+      "contributions": 3,
+      "type": "User"
+    },
+    {
+      "login": "tonitrain",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198196491?v=4",
+      "html_url": "https://github.com/tonitrain",
+      "contributions": 2,
+      "type": "User"
+    },
+    {
+      "login": "Lumivers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65070531?v=4",
+      "html_url": "https://github.com/Lumivers",
+      "contributions": 1,
+      "type": "User"
+    }
+  ]
+}

@@ -26,7 +26,7 @@ site-docs/                  站点维护与开发文档
 
 ## 内容更新
 
-机器人知识内容请提交到 LocoWiki/LocoWiki 仓库；网站文案和维护文档留在本仓库。Markdown 变更会通过 GitHub Actions 通知本仓库刷新栏目索引；也可手动更新：
+机器人知识内容请提交到 LocoWiki/LocoWiki 仓库；网站文案和维护文档留在本仓库。内容仓库主分支更新会通过 GitHub Actions 通知本仓库，同时刷新栏目索引和贡献者缓存；也可手动更新：
 
 ```bash
 node scripts/update-remote-doc-index.mjs

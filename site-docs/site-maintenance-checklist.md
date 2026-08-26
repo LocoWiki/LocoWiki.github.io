@@ -52,6 +52,16 @@ assets/content/ui-text.json
 - `site-shell.css`：壳层布局、导航、搜索、主题样式、全站卡片密度
 - `ui-text.json`：公共 UI 文案，不要把按钮文案散落到组件里
 
+### 更新贡献者数据
+
+贡献者页不在访问者浏览器中实时请求 GitHub API，而是读取：
+
+```text
+assets/content/contributors-cache.json
+```
+
+`.github/workflows/sync-remote-docs.yml` 在内容仓库主分支更新后更新缓存，也可以在 GitHub Actions 中手动运行。更新失败时保留上一次快照；浏览器还会保留一份本地缓存作为最后兜底。
+
 ### 改文档阅读流
 
 优先检查：

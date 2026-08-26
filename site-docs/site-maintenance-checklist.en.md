@@ -52,6 +52,16 @@ Responsibilities:
 - `site-shell.css`: shell layout, navigation, search, theme styling, shared card density
 - `ui-text.json`: shared UI copy, instead of scattering text in components
 
+### Update contributor data
+
+The Contributors page does not request the GitHub API in each visitor's browser. It reads:
+
+```text
+assets/content/contributors-cache.json
+```
+
+`.github/workflows/sync-remote-docs.yml` updates the cache after the content repository's main branch changes, and can also be run manually from GitHub Actions. A failed update keeps the previous snapshot; the browser also keeps a local copy as a final fallback.
+
 ### Update the docs reading flow
 
 Check:

@@ -120,6 +120,12 @@ function containsShellItem(item, shell) {
   return Boolean(item?.path) && getDocShellForPath(item.path) === shell;
 }
 
+const COLLECTION_SHELLS = {
+  docs: "docs",
+  papers: "papers",
+  "open-source": "open-source"
+};
+
 function readIndexedPaths(payload) {
   const collections = payload?.collections;
   if (collections && typeof collections === "object") {
@@ -191,6 +197,10 @@ export function getResolvedSidebar(config, lang) {
 
 export function getSidebarGroupsForShell(config, lang, shell) {
   return getResolvedSidebar(config, lang)
+    .filter((group) => {
+      if (group?.collection) return COLLECTION_SHELLS[group.collection] === shell;
+      return group.items.some((item) => containsShellItem(item, shell));
+    })
     .map((group) => ({ ...group, items: group.items.filter((item) => containsShellItem(item, shell)) }))
     .filter((group) => group.items.length > 0);
 }

@@ -61,7 +61,9 @@
         "totalContributors": "贡献者总数",
         "totalContributions": "累计贡献次数",
         "dataSource": "数据来源",
-        "dataSourceLink": "GitHub Contributors"
+        "dataSourceLink": "GitHub Contributors",
+        "updatedAt": "快照更新时间",
+        "cached": "已缓存"
       },
       "empty": "暂无贡献者数据。",
       "cardAria": "查看 {login} 的 GitHub 主页",
@@ -72,7 +74,7 @@
       "errorHintPrefix": "你可以直接访问",
       "errorHintLink": "GitHub Contributors 页面",
       "errorHintSuffix": "。",
-      "errorListTop": "当前无法读取 GitHub API。",
+      "errorListTop": "当前无法读取贡献者缓存。",
       "errorUnknown": "未知错误",
       "apiHttpError": "GitHub API 返回 HTTP {status}",
       "apiFormatError": "GitHub API 返回数据格式异常"
@@ -169,7 +171,9 @@
         "totalContributors": "Total Contributors",
         "totalContributions": "Total Contributions",
         "dataSource": "Data Source",
-        "dataSourceLink": "GitHub Contributors"
+        "dataSourceLink": "GitHub Contributors",
+        "updatedAt": "Snapshot Updated",
+        "cached": "Cached"
       },
       "empty": "No contributor data yet.",
       "cardAria": "View {login}'s GitHub profile",
@@ -180,7 +184,7 @@
       "errorHintPrefix": "You can directly visit",
       "errorHintLink": "the GitHub Contributors page",
       "errorHintSuffix": ".",
-      "errorListTop": "Unable to read the GitHub API right now.",
+      "errorListTop": "Unable to read the contributor cache right now.",
       "errorUnknown": "Unknown error",
       "apiHttpError": "GitHub API returned HTTP {status}",
       "apiFormatError": "Unexpected GitHub API response format"

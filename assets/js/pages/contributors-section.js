@@ -2,50 +2,58 @@ import { getSiteConfig } from "../core/config.js";
 import { t } from "../core/i18n.js";
 import { escapeAttr, escapeHtml } from "../core/utils.js";
 
-const API_ACCEPT = "application/vnd.github+json";
-const PAGE_SIZE = 100;
-const MAX_PAGES = 10;
+const CACHE_URL = "assets/content/contributors-cache.json";
+const STORAGE_KEY = "locowiki_contributors_cache_v1";
 
 let cachedContributors = null;
 let cachedContributorsUrl = "";
 let cachedErrorMessage = "";
+let cachedGeneratedAt = "";
 
 function formatCount(value) {
   const lang = document.documentElement.dataset.lang === "en" ? "en-US" : "zh-CN";
   return new Intl.NumberFormat(lang).format(Number.isFinite(value) ? value : 0);
 }
 
-function buildApiUrl(owner, repo, page) {
-  return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contributors?per_page=${PAGE_SIZE}&page=${page}`;
-}
-
 function buildPageUrl(owner, repo) {
   return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/graphs/contributors`;
 }
 
-async function fetchContributors(owner, repo) {
-  const all = [];
-  for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const response = await fetch(buildApiUrl(owner, repo, page), {
-      headers: { Accept: API_ACCEPT }
-    });
-    if (!response.ok) {
-      throw new Error(t("contributors.apiHttpError", { fallback: "GitHub API returned HTTP {status}", vars: { status: response.status } }));
-    }
-    const rows = await response.json();
-    if (!Array.isArray(rows)) {
-      throw new Error(t("contributors.apiFormatError", { fallback: "Unexpected GitHub API response format" }));
-    }
-    if (!rows.length) break;
-    all.push(...rows);
-    if (rows.length < PAGE_SIZE) break;
-  }
-  return all
-    .filter((row) => row && typeof row.login === "string" && typeof row.html_url === "string")
-    .sort((a, b) => (b.contributions || 0) - (a.contributions || 0));
+function formatUpdatedAt(value) {
+  const date = new Date(String(value || ""));
+  if (Number.isNaN(date.getTime())) return "";
+  const lang = document.documentElement.dataset.lang === "en" ? "en-US" : "zh-CN";
+  return new Intl.DateTimeFormat(lang, { dateStyle: "medium", timeStyle: "short" }).format(date);
 }
 
-function renderSummary(metaEl, contributors, contributorsUrl) {
+function readBrowserCache() {
+  try {
+    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if (Array.isArray(value?.contributors) && value.contributors.length) return value;
+  } catch {
+    // Ignore unavailable or malformed browser storage.
+  }
+  return null;
+}
+
+function writeBrowserCache(value) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+  } catch {
+    // Storage is an optional fallback, not a requirement for rendering.
+  }
+}
+
+async function fetchCachedContributors(owner, repo) {
+  const response = await fetch(CACHE_URL, { cache: "no-cache" });
+  if (!response.ok) throw new Error(`Contributor cache returned HTTP ${response.status}`);
+  const payload = await response.json();
+  if (!Array.isArray(payload?.contributors)) throw new Error("Contributor cache format is invalid");
+  if (payload?.sourceRepo?.owner !== owner || payload?.sourceRepo?.repo !== repo) throw new Error("Contributor cache source repository does not match");
+  return payload;
+}
+
+function renderSummary(metaEl, contributors, contributorsUrl, generatedAt) {
   const totalContributions = contributors.reduce((sum, item) => sum + (Number.isFinite(item.contributions) ? item.contributions : 0), 0);
   metaEl.className = "contributors-summary";
   metaEl.innerHTML = `
@@ -64,6 +72,10 @@ function renderSummary(metaEl, contributors, contributorsUrl) {
           t("contributors.summary.dataSourceLink", { fallback: "GitHub Contributors" })
         )}</a>
       </div>
+    </div>
+    <div class="contributors-summary-item">
+      <div class="contributors-summary-label">${escapeHtml(t("contributors.summary.updatedAt", { fallback: "Updated" }))}</div>
+      <div class="contributors-summary-value">${escapeHtml(formatUpdatedAt(generatedAt) || t("contributors.summary.cached", { fallback: "Cached snapshot" }))}</div>
     </div>
   `;
 }
@@ -128,13 +140,23 @@ export async function renderContributorsSection() {
   cachedContributorsUrl = contributorsUrl;
 
   try {
-    const contributors = await fetchContributors(owner, repo);
+    let payload;
+    try {
+      payload = await fetchCachedContributors(owner, repo);
+      writeBrowserCache(payload);
+    } catch (cacheError) {
+      payload = readBrowserCache();
+      if (!payload) throw cacheError;
+    }
+    const contributors = payload.contributors;
     cachedContributors = contributors;
+    cachedGeneratedAt = payload.generatedAt || "";
     cachedErrorMessage = "";
-    renderSummary(metaEl, contributors, contributorsUrl);
+    renderSummary(metaEl, contributors, contributorsUrl, cachedGeneratedAt);
     renderList(listEl, contributors);
   } catch (error) {
     cachedContributors = null;
+    cachedGeneratedAt = "";
     cachedErrorMessage = error instanceof Error ? error.message : String(error);
     renderError(metaEl, listEl, contributorsUrl, cachedErrorMessage);
   }
@@ -146,7 +168,7 @@ export function rerenderCachedContributors() {
   if (!metaEl || !listEl || !cachedContributorsUrl) return;
 
   if (Array.isArray(cachedContributors)) {
-    renderSummary(metaEl, cachedContributors, cachedContributorsUrl);
+    renderSummary(metaEl, cachedContributors, cachedContributorsUrl, cachedGeneratedAt);
     renderList(listEl, cachedContributors);
     return;
   }
