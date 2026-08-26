@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26T07:25:21.095Z",
+  "generatedAt": "2026-08-26T09:06:37.650Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -462,6 +462,12 @@
       "reading-list/README.md"
     ],
     "open-source": [
+      "network-open-source/blender-mujoco-hfield.md",
+      "network-open-source/extreme-rgmt-reproduction.md",
+      "network-open-source/fuzhou-quadruped-robot-lab.md",
+      "network-open-source/humanoid-seven-axis-arm-control.md",
+      "network-open-source/nhu-himloco-quadruped.md",
+      "network-open-source/rc-wheelleg.md",
       "network-open-source/README.en.md",
       "network-open-source/README.md"
     ]
