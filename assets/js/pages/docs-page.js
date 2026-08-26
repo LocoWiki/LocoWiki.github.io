@@ -22,9 +22,40 @@ function createMathPlaceholder(id, block) {
   return block ? `<div data-locowiki-math-block="${id}"></div>` : `<span data-locowiki-math-inline="${id}"></span>`;
 }
 
+function protectMarkdownCode(markdown) {
+  const protectedSegments = [];
+  let inFence = false;
+
+  const tokenFor = (value) => {
+    const id = protectedSegments.push(value) - 1;
+    return `\uE000${id}\uE001`;
+  };
+
+  const lines = String(markdown || "").split("\n");
+  const output = lines
+    .map((line) => {
+      const fence = /^\s*(`{3,}|~{3,})/.test(line);
+      if (inFence || fence) {
+        if (fence && inFence) inFence = false;
+        else if (fence) inFence = true;
+        return tokenFor(line);
+      }
+      return line.replace(/(`+)([\s\S]*?)\1/g, (match) => tokenFor(match));
+    })
+    .join("\n");
+
+  return {
+    markdown: output,
+    restore(value) {
+      return String(value || "").replace(/\uE000(\d+)\uE001/g, (match, rawId) => protectedSegments[Number(rawId)] ?? match);
+    }
+  };
+}
+
 function stashMarkdownMath(markdown) {
   const stash = [];
-  let output = String(markdown || "");
+  const protectedCode = protectMarkdownCode(markdown);
+  let output = protectedCode.markdown;
 
   const replacePattern = (pattern, block) => {
     output = output.replace(pattern, (match) => {
@@ -41,29 +72,31 @@ function stashMarkdownMath(markdown) {
     return `${prefix}${createMathPlaceholder(id, false)}`;
   });
 
-  return { markdown: output, stash };
+  return { markdown: protectedCode.restore(output), stash };
 }
 
 function normalizeLegacyInlineMath(markdown) {
-  let inFence = false;
+  const protectedCode = protectMarkdownCode(markdown);
 
-  return String(markdown || "")
+  const normalized = protectedCode.markdown
     .split("\n")
     .map((line) => {
-      if (/^\s*(```|~~~)/.test(line)) {
-        inFence = !inFence;
-        return line;
-      }
-      if (inFence || !line.includes("$$")) return line;
+      if (!line.includes("$$")) return line;
 
       const parts = line.split("$$");
       const hasPairedDelimiters = parts.length >= 3 && parts.length % 2 === 1;
-      const hasTextOutsideMath = parts.filter((_, index) => index % 2 === 0).some((part) => part.trim());
+      const outsideMath = parts
+        .filter((_, index) => index % 2 === 0)
+        .join("")
+        .replace(/^\s*(?:(?:>\s*)+|(?:[-+*]|\d+[.)])\s*)/, "");
+      const hasTextOutsideMath = /[\p{L}\p{N}]/u.test(outsideMath);
       if (!hasPairedDelimiters || !hasTextOutsideMath) return line;
 
       return parts.map((part, index) => (index % 2 === 1 ? `$${part}$` : part)).join("");
     })
     .join("\n");
+
+  return protectedCode.restore(normalized);
 }
 
 function restoreMathPlaceholders(container, stash) {
