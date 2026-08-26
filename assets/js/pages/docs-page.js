@@ -44,6 +44,28 @@ function stashMarkdownMath(markdown) {
   return { markdown: output, stash };
 }
 
+function normalizeLegacyInlineMath(markdown) {
+  let inFence = false;
+
+  return String(markdown || "")
+    .split("\n")
+    .map((line) => {
+      if (/^\s*(```|~~~)/.test(line)) {
+        inFence = !inFence;
+        return line;
+      }
+      if (inFence || !line.includes("$$")) return line;
+
+      const parts = line.split("$$");
+      const hasPairedDelimiters = parts.length >= 3 && parts.length % 2 === 1;
+      const hasTextOutsideMath = parts.filter((_, index) => index % 2 === 0).some((part) => part.trim());
+      if (!hasPairedDelimiters || !hasTextOutsideMath) return line;
+
+      return parts.map((part, index) => (index % 2 === 1 ? `$${part}$` : part)).join("");
+    })
+    .join("\n");
+}
+
 function restoreMathPlaceholders(container, stash) {
   container.querySelectorAll("[data-locowiki-math-block], [data-locowiki-math-inline]").forEach((element) => {
     const rawId = element.getAttribute("data-locowiki-math-block") || element.getAttribute("data-locowiki-math-inline");
@@ -509,7 +531,7 @@ export async function renderDocsPage() {
       window.marked.setOptions({ gfm: true, breaks: false, mangle: false });
     }
 
-    const prepared = stashMarkdownMath(markdown);
+    const prepared = stashMarkdownMath(normalizeLegacyInlineMath(markdown));
     const stage = document.createElement("div");
     stage.innerHTML = typeof window.marked?.parse === "function" ? window.marked.parse(prepared.markdown) : prepared.markdown;
     restoreMathPlaceholders(stage, prepared.stash);
