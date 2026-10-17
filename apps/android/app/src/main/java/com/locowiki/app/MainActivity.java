@@ -29,6 +29,31 @@ public class MainActivity extends Activity {
     private static final String HOME_URL = "https://locowiki.com/";
     private static final String USER_AGENT_SUFFIX = "LocoWikiAndroid/0.1";
 
+    private static final String MOBILE_TWEAKS_JS = """
+            (function () {
+              var id = 'locowiki-mobile-tweaks';
+              var style = document.getElementById(id);
+              if (!style) {
+                style = document.createElement('style');
+                style.id = id;
+                document.head.appendChild(style);
+              }
+              style.textContent = `
+                @media (max-width: 760px) {
+                  .topbar-inner { gap: 4px 8px; padding-top: 6px; padding-bottom: 6px; }
+                  .brand img { width: 30px; height: 30px; }
+                  .brand span { font-size: 15px; }
+                  .topbar-actions { gap: 4px; }
+                  .topbar-actions .icon-btn { width: 32px; height: 32px; min-width: 32px; }
+                  .nav { gap: 2px; justify-content: flex-start; }
+                  .nav a { height: 30px; padding: 0 7px; font-size: 12px; gap: 0; }
+                  .nav-link-icon { display: none; }
+                  .topbar { min-height: 0; }
+                }
+              `;
+            })();
+            """;
+
     private WebView webView;
     private View splash;
     private SiteCache siteCache;
@@ -51,7 +76,7 @@ public class MainActivity extends Activity {
         configureWebView(webView);
         configureClients(webView);
 
-        webView.loadUrl(HOME_URL);
+        webView.loadUrl(resolveStartUrl(getIntent()));
 
         if (getIntent() != null && getIntent().getBooleanExtra("pin_shortcut", false)) {
             requestPinShortcut();
@@ -62,9 +87,27 @@ public class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+
+        if (intent != null && intent.getData() != null) {
+            Uri data = intent.getData();
+            if ("https".equalsIgnoreCase(data.getScheme()) && SiteCache.isSiteHost(data.getHost())) {
+                webView.loadUrl(data.toString());
+            }
+        }
+
         if (intent != null && intent.getBooleanExtra("pin_shortcut", false)) {
             requestPinShortcut();
         }
+    }
+
+    private static String resolveStartUrl(Intent intent) {
+        Uri data = intent != null ? intent.getData() : null;
+        if (data != null
+                && "https".equalsIgnoreCase(data.getScheme())
+                && SiteCache.isSiteHost(data.getHost())) {
+            return data.toString();
+        }
+        return HOME_URL;
     }
 
     private void requestPinShortcut() {
@@ -124,6 +167,8 @@ public class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
@@ -208,6 +253,7 @@ public class MainActivity extends Activity {
                 super.onPageFinished(webView, url);
                 if (!showingError) {
                     hideSplash();
+                    webView.evaluateJavascript(MOBILE_TWEAKS_JS, null);
                 }
             }
 
