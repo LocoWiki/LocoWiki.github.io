@@ -60,6 +60,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File apps/windows/build.ps1 -Self
 
 运行 `artifacts/windows/LocoWiki.exe` 即可测试。
 
+生成一键安装包（Inno Setup 6，内含自包含 .NET 运行时）：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File apps/windows/build-installer.ps1
+```
+
+产物：`artifacts/LocoWiki-Setup-0.1.0.exe`，安装后自动创建桌面和开始菜单快捷方式；目标机器只需 WebView2 Runtime。
+
 ## 缓存策略
 
 | 场景 | 行为 |
