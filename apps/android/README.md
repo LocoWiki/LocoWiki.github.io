@@ -58,6 +58,20 @@ powershell -NoProfile -ExecutionPolicy Bypass -File apps/android/build.ps1 -Inst
 adb install -r artifacts/android/LocoWiki-0.1.0-debug.apk
 ```
 
+## 正式签名构建
+
+release 签名从环境变量读取，密钥不进入仓库：
+
+```powershell
+$env:LOCOWIKI_KEYSTORE = "$env:USERPROFILE\.locowiki-toolchain\keys\locowiki-release.jks"
+$env:LOCOWIKI_KEYSTORE_PASSWORD = "<password>"
+$env:LOCOWIKI_KEY_ALIAS = "locowiki"
+$env:LOCOWIKI_KEY_PASSWORD = "<password>"
+powershell -NoProfile -ExecutionPolicy Bypass -File apps/android/build.ps1 -Configuration Release
+```
+
+输出 `artifacts/android/LocoWiki-0.1.0-release.apk`。签名密钥需长期备份，丢失后无法覆盖安装升级。
+
 ## 缓存策略
 
 | 场景 | 行为 |

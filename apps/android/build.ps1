@@ -51,6 +51,8 @@ try {
     $variant = $Configuration.ToLowerInvariant()
     if ($Configuration -eq "Debug") {
         $apkName = "app-debug.apk"
+    } elseif (Test-Path (Join-Path $PSScriptRoot "app\build\outputs\apk\$variant\app-release.apk")) {
+        $apkName = "app-release.apk"
     } else {
         $apkName = "app-release-unsigned.apk"
     }
