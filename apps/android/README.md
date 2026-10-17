@@ -64,6 +64,7 @@ adb install -r artifacts/android/LocoWiki-0.1.0-debug.apk
 | --- | --- |
 | 有网络 | 每个请求先访问线上，成功后写入应用缓存目录 |
 | 主站返回 404 | 自动回落到 `locowiki.github.io` 同名路径（例如 `papers.html`） |
+| GitHub raw 不可达 | 自动改用 `cdn.jsdelivr.net/gh` 镜像拉取文档正文 |
 | 断网 / 请求超时 | 使用该 URL 最近一次成功响应的磁盘缓存 |
 | 从未访问过且断网 | 使用 APK 内置的 `offline-site/` 快照 |
 | 重试 | 离线错误页「重试」会重置断网退避并重新联网 |
@@ -80,6 +81,16 @@ adb install -r artifacts/android/LocoWiki-0.1.0-debug.apk
 - 外部链接（GitHub、飞书等）通过系统浏览器打开
 - 内置快照不包含远程 Markdown 正文，只保证离线时站点可打开
 - 当前仅提供 debug APK 用于测试；正式发布需配置签名与 AAB
+
+## 桌面快捷方式
+
+安装后打开一次应用，然后执行：
+
+```powershell
+adb shell am start -n com.locowiki.app/.MainActivity --ez pin_shortcut true
+```
+
+系统会弹出「添加主屏幕快捷方式」确认框，点「添加」即可。也可以直接在桌面长按 LocoWiki 图标手动添加。
 
 ## 调试
 
