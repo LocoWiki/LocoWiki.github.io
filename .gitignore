@@ -21,5 +21,12 @@ apps/android/captures/
 *.keystore
 keystore.properties
 
+# Windows desktop client build output
+apps/windows/**/bin/
+apps/windows/**/obj/
+apps/windows/.vs/
+apps/windows/**/*.user
+*.nupkg
+
 # Shared build artifacts (never committed)
 artifacts/
