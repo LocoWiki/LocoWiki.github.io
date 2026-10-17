@@ -111,6 +111,7 @@ public sealed class WebResourceInterceptor : IDisposable
             {
                 if (string.Equals(name, "Content-Type", StringComparison.OrdinalIgnoreCase)) continue;
                 if (string.Equals(name, "Content-Length", StringComparison.OrdinalIgnoreCase)) continue;
+                if (string.Equals(name, "Access-Control-Allow-Origin", StringComparison.OrdinalIgnoreCase)) continue;
                 if (string.IsNullOrWhiteSpace(value)) continue;
                 builder.Append(name).Append(": ").Append(value).Append("\r\n");
             }

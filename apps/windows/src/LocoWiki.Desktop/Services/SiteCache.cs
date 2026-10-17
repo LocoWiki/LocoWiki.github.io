@@ -65,6 +65,22 @@ public sealed class SiteCache
             var outcome = await FetchAsync(uri).ConfigureAwait(false);
             var fresh = outcome.Response;
 
+            // raw.githubusercontent.com is intermittently blocked or slow in
+            // mainland China. Fall back to the jsDelivr GitHub mirror.
+            if (fresh is null && IsRawGitHubHost(uri.Host))
+            {
+                var jsDelivrUri = ToJsDelivrUri(uri);
+                if (jsDelivrUri is not null)
+                {
+                    var mirror = await FetchAsync(jsDelivrUri).ConfigureAwait(false);
+                    if (mirror.Response is not null)
+                    {
+                        Diagnostics.Log($"jsDelivr fallback: {uri}");
+                        fresh = mirror.Response;
+                    }
+                }
+            }
+
             // locowiki.com occasionally lacks a page that GitHub Pages already
             // has (for example papers.html). Try the mirror before going stale.
             if (fresh is null && outcome.StatusCode == 404 && IsPrimaryHost(uri.Host))
@@ -115,6 +131,21 @@ public sealed class SiteCache
         string.Equals(host, "locowiki.com", StringComparison.OrdinalIgnoreCase)
         || string.Equals(host, "www.locowiki.com", StringComparison.OrdinalIgnoreCase);
 
+    private static bool IsRawGitHubHost(string host) =>
+        string.Equals(host, "raw.githubusercontent.com", StringComparison.OrdinalIgnoreCase);
+
+    private static Uri? ToJsDelivrUri(Uri uri)
+    {
+        var segments = uri.AbsolutePath.Trim('/').Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (segments.Length < 4) return null;
+
+        var owner = segments[0];
+        var repo = segments[1];
+        var branch = segments[2];
+        var path = string.Join('/', segments.Skip(3));
+        return new Uri($"https://cdn.jsdelivr.net/gh/{owner}/{repo}@{branch}/{path}{uri.Query}");
+    }
+
     private async Task<FetchOutcome> FetchAsync(Uri uri)
     {
         try
@@ -141,11 +172,6 @@ public sealed class SiteCache
             {
                 ["Content-Type"] = contentType,
             };
-
-            if (response.Headers.TryGetValues("Access-Control-Allow-Origin", out var cors))
-            {
-                headers["Access-Control-Allow-Origin"] = string.Join(", ", cors);
-            }
 
             return new FetchOutcome(new CachedResponse(body, contentType, 200, "network", headers), 200);
         }
