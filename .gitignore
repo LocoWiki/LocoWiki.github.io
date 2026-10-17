@@ -16,6 +16,18 @@ apps/windows/.vs/
 apps/windows/**/*.user
 *.nupkg
 
+# Android client build output
+apps/android/.gradle/
+apps/android/**/build/
+apps/android/local.properties
+apps/android/.idea/
+apps/android/captures/
+*.apk
+*.aab
+*.jks
+*.keystore
+keystore.properties
+
 # Shared build artifacts (never committed)
 artifacts/
 
