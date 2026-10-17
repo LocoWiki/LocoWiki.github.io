@@ -124,6 +124,19 @@ final class SiteCache {
         if (networkGate.isOnline()) {
             FetchResult result = fetch(uri);
 
+            // raw.githubusercontent.com can be blocked or slow in mainland China.
+            // Fall back to the jsDelivr GitHub mirror before giving up.
+            if (result.data == null && "raw.githubusercontent.com".equalsIgnoreCase(uri.getHost())) {
+                Uri jsDelivr = toJsDelivr(uri);
+                if (jsDelivr != null) {
+                    FetchResult mirror = fetch(jsDelivr);
+                    if (mirror.data != null) {
+                        android.util.Log.i("LocoWikiCache", "jsDelivr fallback: " + uri);
+                        result = mirror;
+                    }
+                }
+            }
+
             // locowiki.com may miss a page that GitHub Pages already has
             // (for example papers.html). Try the mirror before serving stale data.
             if (result.data == null && result.status == 404 && isPrimaryHost(uri.getHost())) {
@@ -172,6 +185,35 @@ final class SiteCache {
 
     private static Uri withMirrorHost(Uri uri) {
         return uri.buildUpon().authority("locowiki.github.io").build();
+    }
+
+    private static Uri toJsDelivr(Uri uri) {
+        String path = uri.getPath();
+        if (path == null) {
+            return null;
+        }
+
+        String[] segments = path.replaceFirst("^/", "").split("/");
+        if (segments.length < 4) {
+            return null;
+        }
+
+        StringBuilder rest = new StringBuilder();
+        for (int i = 3; i < segments.length; i++) {
+            if (rest.length() > 0) {
+                rest.append('/');
+            }
+            rest.append(segments[i]);
+        }
+
+        String query = uri.getQuery();
+        String target = "https://cdn.jsdelivr.net/gh/"
+                + segments[0] + "/" + segments[1] + "@" + segments[2] + "/" + rest;
+        if (query != null && !query.isEmpty()) {
+            target += "?" + query;
+        }
+
+        return Uri.parse(target);
     }
 
     private FetchResult fetch(Uri uri) {

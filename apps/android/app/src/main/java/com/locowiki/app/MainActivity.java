@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +52,43 @@ public class MainActivity extends Activity {
         configureClients(webView);
 
         webView.loadUrl(HOME_URL);
+
+        if (getIntent() != null && getIntent().getBooleanExtra("pin_shortcut", false)) {
+            requestPinShortcut();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (intent != null && intent.getBooleanExtra("pin_shortcut", false)) {
+            requestPinShortcut();
+        }
+    }
+
+    private void requestPinShortcut() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+
+        ShortcutManager manager = getSystemService(ShortcutManager.class);
+        if (manager == null || !manager.isRequestPinShortcutSupported()) {
+            return;
+        }
+
+        Intent launchIntent = new Intent(this, MainActivity.class)
+                .setAction(Intent.ACTION_MAIN)
+                .addCategory(Intent.CATEGORY_LAUNCHER);
+
+        ShortcutInfo shortcut = new ShortcutInfo.Builder(this, "locowiki-home")
+                .setShortLabel("LocoWiki")
+                .setLongLabel("LocoWiki 机器人知识库")
+                .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
+                .setIntent(launchIntent)
+                .build();
+
+        manager.requestPinShortcut(shortcut, null);
     }
 
     private void configureEdgeToEdge(FrameLayout root) {
