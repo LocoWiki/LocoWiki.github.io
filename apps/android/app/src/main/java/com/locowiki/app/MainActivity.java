@@ -45,6 +45,9 @@ public class MainActivity extends Activity {
                   .brand span { font-size: 15px; }
                   .topbar-actions { gap: 4px; }
                   .topbar-actions .icon-btn { width: 32px; height: 32px; min-width: 32px; }
+                  .topbar-actions .language-toggle { width: 44px; min-width: 44px; padding: 0 6px; }
+                  .language-toggle-copy { gap: 0; font-size: 12px; }
+                  .language-toggle-option:not([data-active="true"]) { display: none; }
                   .nav { gap: 2px; justify-content: flex-start; }
                   .nav a { height: 30px; padding: 0 7px; font-size: 12px; gap: 0; }
                   .nav-link-icon { display: none; }
