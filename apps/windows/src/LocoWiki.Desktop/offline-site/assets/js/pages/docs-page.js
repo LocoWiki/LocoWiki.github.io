@@ -1,0 +1,636 @@
+import { getSiteConfig } from "../core/config.js";
+import { getDefaultDocPathForShell, getDocPageHref, getDocShellName, mapDocPathToLanguage } from "../core/docs-routing.js";
+import { t } from "../core/i18n.js";
+import { getCurrentLanguage, getCurrentTheme } from "../core/preferences.js";
+import { renderDocsFrameHead } from "../components/content-head.js";
+import { cssEscape, dirname, encodePath, escapeAttr, escapeHtml, isDangerousHref, isExternalHref, normalizePath, resolveRelativePath, safeDecode, splitHash, stripLeadingSlash } from "../core/utils.js";
+
+const state = {
+  currentDocPath: "",
+  currentDocTitle: "",
+  loadSeq: 0,
+  navigationBound: false
+};
+
+const FEISHU_DOCS_URL = "https://lain-database.feishu.cn/wiki/HwyJwB70niKbW7khmwlcbCH2nXb?from=from_copylink";
+
+function isLocalDocPath(path) {
+  return String(path || "").trim().startsWith("site-docs/");
+}
+
+function createMathPlaceholder(id, block) {
+  return block ? `<div data-locowiki-math-block="${id}"></div>` : `<span data-locowiki-math-inline="${id}"></span>`;
+}
+
+function protectMarkdownCode(markdown) {
+  const protectedSegments = [];
+  let inFence = false;
+
+  const tokenFor = (value) => {
+    const id = protectedSegments.push(value) - 1;
+    return `\uE000${id}\uE001`;
+  };
+
+  const lines = String(markdown || "").split("\n");
+  const output = lines
+    .map((line) => {
+      const fence = /^\s*(`{3,}|~{3,})/.test(line);
+      if (inFence || fence) {
+        if (fence && inFence) inFence = false;
+        else if (fence) inFence = true;
+        return tokenFor(line);
+      }
+      return line.replace(/(`+)([\s\S]*?)\1/g, (match) => tokenFor(match));
+    })
+    .join("\n");
+
+  return {
+    markdown: output,
+    restore(value) {
+      return String(value || "").replace(/\uE000(\d+)\uE001/g, (match, rawId) => protectedSegments[Number(rawId)] ?? match);
+    }
+  };
+}
+
+function stashMarkdownMath(markdown) {
+  const stash = [];
+  const protectedCode = protectMarkdownCode(markdown);
+  let output = protectedCode.markdown;
+
+  const replacePattern = (pattern, block) => {
+    output = output.replace(pattern, (match) => {
+      const id = stash.push(match) - 1;
+      return createMathPlaceholder(id, block);
+    });
+  };
+
+  replacePattern(/\$\$[\s\S]+?\$\$/g, true);
+  replacePattern(/\\\[[\s\S]+?\\\]/g, true);
+  replacePattern(/\\\((?:\\.|[^\\\n]|\\(?!\)))*\\\)/g, false);
+  output = output.replace(/(^|[^\\$])(\$(?:\\.|[^$\\\n])+\$)/g, (match, prefix, math) => {
+    const id = stash.push(math) - 1;
+    return `${prefix}${createMathPlaceholder(id, false)}`;
+  });
+
+  return { markdown: protectedCode.restore(output), stash };
+}
+
+function normalizeLegacyInlineMath(markdown) {
+  const protectedCode = protectMarkdownCode(markdown);
+
+  const normalized = protectedCode.markdown
+    .split("\n")
+    .map((line) => {
+      if (!line.includes("$$")) return line;
+
+      const parts = line.split("$$");
+      const hasPairedDelimiters = parts.length >= 3 && parts.length % 2 === 1;
+      const outsideMath = parts
+        .filter((_, index) => index % 2 === 0)
+        .join("")
+        .replace(/^\s*(?:(?:>\s*)+|(?:[-+*]|\d+[.)])\s*)/, "");
+      const hasTextOutsideMath = /[\p{L}\p{N}]/u.test(outsideMath);
+      if (!hasPairedDelimiters || !hasTextOutsideMath) return line;
+
+      return parts.map((part, index) => (index % 2 === 1 ? `$${part}$` : part)).join("");
+    })
+    .join("\n");
+
+  return protectedCode.restore(normalized);
+}
+
+function restoreMathPlaceholders(container, stash) {
+  container.querySelectorAll("[data-locowiki-math-block], [data-locowiki-math-inline]").forEach((element) => {
+    const rawId = element.getAttribute("data-locowiki-math-block") || element.getAttribute("data-locowiki-math-inline");
+    const id = Number.parseInt(rawId || "", 10);
+    if (!Number.isInteger(id) || !stash[id]) return;
+    element.replaceWith(document.createTextNode(stash[id]));
+  });
+}
+
+function getDocElements() {
+  const docEl = document.getElementById("doc");
+  if (!docEl) return null;
+  let metaEl = docEl.querySelector(".doc-meta");
+  let contentEl = docEl.querySelector("#doc-content");
+  let commentsEl = docEl.querySelector("#doc-comments");
+  let pagerEl = docEl.querySelector(".doc-pager");
+  if (metaEl && contentEl && commentsEl && pagerEl) return { docEl, metaEl, contentEl, commentsEl, pagerEl };
+
+  docEl.innerHTML = `
+    <div class="doc-meta"></div>
+    <div id="doc-content" class="doc-content-live"></div>
+    <section id="doc-comments" class="doc-comments" hidden></section>
+    <nav class="doc-pager" hidden></nav>
+  `;
+  return {
+    docEl,
+    metaEl: docEl.querySelector(".doc-meta"),
+    contentEl: docEl.querySelector("#doc-content"),
+    commentsEl: docEl.querySelector("#doc-comments"),
+    pagerEl: docEl.querySelector(".doc-pager")
+  };
+}
+
+function buildUrls(config, path) {
+  const cleanPath = stripLeadingSlash(path);
+  const encoded = encodePath(cleanPath);
+  if (isLocalDocPath(cleanPath)) {
+    return {
+      raw: encoded,
+      blob: encoded,
+      edit: "",
+      download: encoded,
+      isLocal: true
+    };
+  }
+
+  const owner = config.sourceRepo.owner;
+  const repo = config.sourceRepo.repo;
+  const branch = config.sourceRepo.branch;
+  return {
+    raw: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encoded}`,
+    blob: `https://github.com/${owner}/${repo}/blob/${branch}/${encoded}`,
+    edit: `https://github.com/${owner}/${repo}/edit/${branch}/${encoded}`,
+    download: `https://github.com/${owner}/${repo}/raw/${branch}/${encoded}`,
+    isLocal: false
+  };
+}
+
+function getTargetDocPath(config) {
+  const lang = getCurrentLanguage();
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
+  const params = new URLSearchParams(window.location.search);
+  const requested = params.get("path") || getDefaultDocPathForShell(config, lang, shell);
+  return mapDocPathToLanguage(requested, lang, config);
+}
+
+function ensureHeadingIds(container) {
+  const used = new Set();
+  container.querySelectorAll("[id]").forEach((element) => used.add(element.id));
+  let counter = 0;
+  container.querySelectorAll("h2, h3, h4").forEach((heading) => {
+    if (heading.id) return;
+    let slug = (heading.textContent || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-+|-+$/g, "");
+    if (!slug) slug = `section-${counter++}`;
+    let candidate = slug;
+    let suffix = 2;
+    while (used.has(candidate)) {
+      candidate = `${slug}-${suffix++}`;
+    }
+    heading.id = candidate;
+    used.add(candidate);
+  });
+}
+
+function rewriteLinksAndMedia(container, config, currentDocPath) {
+  container.querySelectorAll("a[href]").forEach((anchor) => {
+    const rawHref = anchor.getAttribute("href") || "";
+    if (!rawHref || rawHref.startsWith("#")) return;
+    if (isDangerousHref(rawHref)) {
+      anchor.removeAttribute("href");
+      return;
+    }
+    if (isExternalHref(rawHref)) {
+      anchor.setAttribute("target", "_blank");
+      anchor.setAttribute("rel", "noopener noreferrer");
+      return;
+    }
+
+    const { base, hash } = splitHash(rawHref);
+    const resolved = resolveRelativePath(currentDocPath, safeDecode(base));
+    if (base.toLowerCase().endsWith(".md")) {
+      anchor.setAttribute("href", `${getDocPageHref(resolved, config, getCurrentLanguage())}${hash}`);
+      return;
+    }
+
+    anchor.setAttribute("href", buildUrls(config, resolved).download);
+    anchor.setAttribute("target", "_blank");
+    anchor.setAttribute("rel", "noopener noreferrer");
+  });
+
+  container.querySelectorAll("img[src]").forEach((image) => {
+    const rawSrc = image.getAttribute("src") || "";
+    if (!rawSrc || isDangerousHref(rawSrc) || isExternalHref(rawSrc) || rawSrc.startsWith("data:")) return;
+    const resolved = resolveRelativePath(currentDocPath, safeDecode(rawSrc));
+    image.src = buildUrls(config, resolved).raw;
+    image.loading = "lazy";
+    image.decoding = "async";
+  });
+}
+
+function renderMath(container) {
+  if (typeof window.renderMathInElement !== "function") return;
+  window.renderMathInElement(container, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "$", right: "$", display: false }
+    ],
+    throwOnError: false,
+    strict: "ignore",
+    ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"]
+  });
+}
+
+function collectHeadings(container) {
+  return Array.from(container.querySelectorAll("h2, h3"))
+    .map((heading) => ({
+      id: heading.id,
+      text: (heading.textContent || "").trim(),
+      level: heading.tagName === "H3" ? 1 : 0
+    }))
+    .filter((item) => item.id && item.text);
+}
+
+function collectSidebarHeadings(container) {
+  return Array.from(container.querySelectorAll("h2"))
+    .map((heading) => ({
+      id: heading.id,
+      text: (heading.textContent || "").trim()
+    }))
+    .filter((item) => item.id && item.text);
+}
+
+function renderDocToc(headings) {
+  const root = document.getElementById("toc-items");
+  if (!root) return;
+  if (!headings.length) {
+    root.innerHTML = `<div class="toc-empty">${escapeHtml(t("common.tocEmpty", { fallback: "None" }))}</div>`;
+    return;
+  }
+  root.innerHTML = headings
+    .map(
+      (heading) => `
+        <a href="#${encodeURIComponent(heading.id)}" style="padding-left:${10 + heading.level * 14}px">${escapeHtml(heading.text)}</a>
+      `
+    )
+    .join("");
+}
+
+function formatDocDate(rawValue) {
+  const date = new Date(String(rawValue || "").trim());
+  if (Number.isNaN(date.getTime())) return "";
+  const locale = getCurrentLanguage() === "en" ? "en-US" : "zh-CN";
+  return new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric"
+  }).format(date);
+}
+
+function getSidebarContext(docPath) {
+  const link = document.querySelector(`#site-sidebar a[data-doc-link][data-doc-path="${cssEscape(docPath)}"]`);
+  const title = (link?.getAttribute("data-doc-title") || link?.textContent || docPath).trim();
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
+  const lang = getCurrentLanguage();
+  const shellMap = {
+    papers: {
+      title: lang === "en" ? "Papers" : "论文",
+      href: "papers.html"
+    },
+    quickstart: {
+      title: lang === "en" ? "Papers" : "论文",
+      href: "papers.html"
+    },
+    docs: {
+      title: lang === "en" ? "Docs" : "文档",
+      href: "docs.html"
+    },
+    "open-source": {
+      title: lang === "en" ? "Open Source" : "开源",
+      href: "open-source.html"
+    },
+    developer: {
+      title: lang === "en" ? "Developer Docs" : "开发文档",
+      href: "developer-docs.html"
+    },
+    about: {
+      title: lang === "en" ? "About" : "关于本站",
+      href: "about.html"
+    }
+  };
+  const currentShell = shellMap[shell] || shellMap.papers;
+  return {
+    title,
+    shellTitle: currentShell.title,
+    shellHref: currentShell.href
+  };
+}
+
+function renderDocMeta(metaEl, docPath, urls, options = {}) {
+  const context = getSidebarContext(docPath);
+  const title = options.title || context.title || docPath;
+  const date = formatDocDate(options.lastModified);
+  metaEl.className = "doc-meta content-head content-head-doc";
+  metaEl.innerHTML = renderDocsFrameHead({
+    title,
+    breadcrumbs: [
+      {
+        label: { zh: "主页", en: "Home" },
+        href: "index.html"
+      },
+      {
+        label: {
+          zh: context.shellTitle,
+          en: context.shellTitle
+        },
+        href: context.shellHref
+      },
+      {
+        label: {
+          zh: title,
+          en: title
+        }
+      }
+    ],
+    date,
+    docPath,
+    editHref: urls.edit
+  });
+}
+
+function setSidebarActiveDoc(docPath) {
+  document.querySelectorAll("#site-sidebar a[data-doc-link]").forEach((link) => {
+    const path = link.getAttribute("data-doc-path") || "";
+    link.dataset.active = path === docPath ? "true" : "false";
+  });
+}
+
+function syncSidebarOutline(docPath, docTitle, headings, config) {
+  const activeItem = document.querySelector(`#site-sidebar [data-doc-item][data-doc-path="${cssEscape(docPath)}"]`);
+  document.querySelectorAll("#site-sidebar [data-sidebar-subtree]").forEach((subtree) => {
+    subtree.innerHTML = "";
+    subtree.hidden = true;
+  });
+  document.querySelectorAll("#site-sidebar [data-doc-item]").forEach((item) => {
+    item.dataset.expanded = "false";
+  });
+  if (!activeItem || !headings.length) return;
+
+  const subtree = activeItem.querySelector("[data-sidebar-subtree]");
+  if (!subtree) return;
+  subtree.innerHTML = headings
+    .map(
+      (heading) => `
+        <a class="sidebar-sub-link" href="${escapeAttr(getDocPageHref(docPath, config, getCurrentLanguage()))}#${encodeURIComponent(heading.id)}">${escapeHtml(
+          heading.text
+        )}</a>
+      `
+    )
+    .join("");
+  activeItem.dataset.expanded = window.location.hash ? "true" : "false";
+  subtree.hidden = !window.location.hash;
+}
+
+function renderDocPager(pagerEl, docPath, config) {
+  const sequence = Array.from(document.querySelectorAll("#site-sidebar a[data-doc-link]"))
+    .map((link) => ({
+      path: link.getAttribute("data-doc-path") || "",
+      title: (link.getAttribute("data-doc-title") || link.textContent || "").trim()
+    }))
+    .filter((item, index, list) => item.path && list.findIndex((candidate) => candidate.path === item.path) === index);
+
+  const index = sequence.findIndex((item) => item.path === docPath);
+  const prev = index > 0 ? sequence[index - 1] : null;
+  const next = index >= 0 && index < sequence.length - 1 ? sequence[index + 1] : null;
+  if (!prev && !next) {
+    pagerEl.hidden = true;
+    pagerEl.innerHTML = "";
+    return;
+  }
+  pagerEl.hidden = false;
+  pagerEl.innerHTML = [prev, next]
+    .map((item, itemIndex) => {
+      if (!item) return "";
+      const dir = itemIndex === 0 ? "prev" : "next";
+      const label = dir === "prev" ? t("docs.prevPage", { fallback: "Previous" }) : t("docs.nextPage", { fallback: "Next" });
+      const arrow = dir === "prev" ? "←" : "→";
+      return `
+        <a class="doc-pager-link" data-dir="${dir}" href="${escapeAttr(getDocPageHref(item.path, config, getCurrentLanguage()))}">
+          <span class="doc-pager-head">
+            <span class="doc-pager-arrow" aria-hidden="true">${arrow}</span>
+            <span class="doc-pager-label">${escapeHtml(label)}</span>
+          </span>
+          <span class="doc-pager-title">${escapeHtml(item.title)}</span>
+        </a>
+      `;
+    })
+    .join("");
+}
+
+function scrollToHash() {
+  if (!window.location.hash) return;
+  const id = decodeURIComponent(window.location.hash.slice(1));
+  const target = document.getElementById(id) || document.querySelector(`[name="${cssEscape(id)}"]`);
+  if (target) target.scrollIntoView();
+}
+
+function consumeDocTitle(container, fallback) {
+  const heading = container.querySelector("h1");
+  const title = (heading?.textContent || "").trim() || fallback;
+  if (heading) heading.remove();
+  return title;
+}
+
+function renderError(contentEl, docPath, urls) {
+  const viewLabel = urls.isLocal ? "View source file:" : t("docs.tipGitHub", { fallback: "View directly on GitHub:" });
+  const fetchTarget = urls.isLocal ? "local site document" : t("docs.cannotFetch", { fallback: "Unable to fetch from the source repository" });
+  contentEl.className = "error doc-content-live";
+  contentEl.innerHTML = `
+    <div><strong>${escapeHtml(t("docs.loadFailed", { fallback: "Failed to load" }))}</strong></div>
+    <div style="margin-top: 8px; color: var(--muted);">
+      ${escapeHtml(typeof fetchTarget === "string" ? fetchTarget : "")}
+      <code>${escapeHtml(docPath)}</code>${escapeHtml(t("docs.fetchSeparator", { fallback: "." }))}
+      ${escapeHtml(t("docs.youCan", { fallback: "You can:" }))}
+      <ul>
+        ${
+          urls.isLocal
+            ? `<li>${escapeHtml(getCurrentLanguage() === "en" ? "Verify that the local Markdown file exists in this repository" : "确认这个本地 Markdown 文件已经存在于当前仓库中")}</li>`
+            : `<li>${escapeHtml(t("docs.tipNetwork", { fallback: "Check whether raw.githubusercontent.com is reachable" }))}</li>`
+        }
+        <li>${escapeHtml(t("docs.tipPath", { fallback: "Verify that the file path exists" }))}</li>
+        <li>${escapeHtml(viewLabel)} <a href="${escapeAttr(urls.blob)}" target="_blank" rel="noopener noreferrer">${escapeHtml(urls.blob)}</a></li>
+      </ul>
+    </div>
+  `;
+}
+
+function renderShellNotice(docPath) {
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
+  if (shell !== "docs") return "";
+  if (!String(docPath || "").trim().startsWith("wiki/Lain-database/")) return "";
+
+  const lang = getCurrentLanguage();
+  const title = lang === "en" ? "Original Feishu Reading" : "飞书原文阅读";
+  const body =
+    lang === "en"
+      ? `For a better reading experience, open the original page on <a href="${escapeAttr(FEISHU_DOCS_URL)}" target="_blank" rel="noopener noreferrer">Feishu</a>.`
+      : `为获得更优阅读体验，请前往 <a href="${escapeAttr(FEISHU_DOCS_URL)}" target="_blank" rel="noopener noreferrer">飞书</a> 查看原文。`;
+
+  return `
+    <section class="page-callout">
+      <strong>${escapeHtml(title)}</strong>
+      <p>${body}</p>
+    </section>
+  `;
+}
+
+function getGiscusTheme() {
+  return getCurrentTheme() === "dark" ? "dark" : "light";
+}
+
+function getCanonicalCommentTerm(docPath, config) {
+  return mapDocPathToLanguage(docPath, "zh", config);
+}
+
+function syncGiscusTheme() {
+  const iframe = document.querySelector("#doc-comments iframe.giscus-frame");
+  if (!iframe?.contentWindow) return;
+  iframe.contentWindow.postMessage(
+    {
+      giscus: {
+        setConfig: {
+          theme: getGiscusTheme()
+        }
+      }
+    },
+    "https://giscus.app"
+  );
+}
+
+function renderDocComments(commentsEl, config, docPath) {
+  const shell = document.body?.dataset.docShell || getDocShellName() || "papers";
+  const comments = config?.comments;
+  commentsEl.hidden = true;
+  commentsEl.innerHTML = "";
+
+  if (shell === "about" || comments?.provider !== "giscus" || comments.enabled !== true) return;
+  if (!comments.repo || !comments.repoId || !comments.category || !comments.categoryId) {
+    console.warn("Giscus is not configured yet: enable GitHub Discussions and set comments.categoryId in assets/site-config.json.");
+    return;
+  }
+
+  const lang = getCurrentLanguage();
+  const title = t("docs.commentsTitle", { lang, fallback: "Comments" });
+  const giscus = document.createElement("div");
+  giscus.className = "giscus";
+
+  const script = document.createElement("script");
+  script.src = "https://giscus.app/client.js";
+  script.async = true;
+  script.crossOrigin = "anonymous";
+  script.setAttribute("data-repo", comments.repo);
+  script.setAttribute("data-repo-id", comments.repoId);
+  script.setAttribute("data-category", comments.category);
+  script.setAttribute("data-category-id", comments.categoryId);
+  script.setAttribute("data-mapping", comments.mapping || "specific");
+  script.setAttribute("data-term", getCanonicalCommentTerm(docPath, config));
+  script.setAttribute("data-strict", comments.strict || "1");
+  script.setAttribute("data-reactions-enabled", comments.reactionsEnabled || "1");
+  script.setAttribute("data-input-position", comments.inputPosition || "top");
+  script.setAttribute("data-theme", getGiscusTheme());
+  script.setAttribute("data-lang", comments.lang?.[lang] || (lang === "en" ? "en" : "zh-CN"));
+  script.addEventListener("load", syncGiscusTheme, { once: true });
+
+  commentsEl.hidden = false;
+  commentsEl.innerHTML = `<h2 class="doc-comments-title">${escapeHtml(title)}</h2>`;
+  commentsEl.append(giscus);
+  giscus.append(script);
+}
+
+export async function renderDocsPage() {
+  const elements = getDocElements();
+  if (!elements) return;
+  const { metaEl, contentEl, commentsEl, pagerEl } = elements;
+  const config = await getSiteConfig();
+  const docPath = getTargetDocPath(config);
+  const urls = buildUrls(config, docPath);
+  const loadSeq = ++state.loadSeq;
+  setSidebarActiveDoc(docPath);
+
+  try {
+    const response = await fetch(urls.raw, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const markdown = await response.text();
+    if (loadSeq !== state.loadSeq) return;
+
+    if (typeof window.marked?.setOptions === "function") {
+      window.marked.setOptions({ gfm: true, breaks: false, mangle: false });
+    }
+
+    const prepared = stashMarkdownMath(normalizeLegacyInlineMath(markdown));
+    const stage = document.createElement("div");
+    stage.innerHTML = typeof window.marked?.parse === "function" ? window.marked.parse(prepared.markdown) : prepared.markdown;
+    restoreMathPlaceholders(stage, prepared.stash);
+    rewriteLinksAndMedia(stage, config, docPath);
+    ensureHeadingIds(stage);
+    const docTitle = consumeDocTitle(stage, getSidebarContext(docPath).title || docPath);
+
+    renderDocMeta(metaEl, docPath, urls, {
+      title: docTitle,
+      lastModified: response.headers.get("last-modified") || ""
+    });
+    contentEl.className = "doc-content-live";
+    contentEl.innerHTML = `${renderShellNotice(docPath)}${stage.innerHTML}`;
+    renderMath(contentEl);
+    renderDocToc(collectHeadings(contentEl));
+    syncSidebarOutline(docPath, docTitle, collectSidebarHeadings(contentEl), config);
+    renderDocComments(commentsEl, config, docPath);
+    renderDocPager(pagerEl, docPath, config);
+    state.currentDocPath = docPath;
+    state.currentDocTitle = docTitle;
+    document.title = `${config?.site?.title || "LocoWiki"} · ${docTitle}`;
+    scrollToHash();
+  } catch (error) {
+    renderDocMeta(metaEl, docPath, urls, { title: docPath });
+    renderError(contentEl, docPath, urls);
+    renderDocToc([]);
+    commentsEl.hidden = true;
+    commentsEl.innerHTML = "";
+    renderDocPager(pagerEl, docPath, config);
+  }
+}
+
+export function initDocsNavigation() {
+  if (state.navigationBound) return;
+  state.navigationBound = true;
+
+  document.addEventListener("click", (event) => {
+    const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
+    if (!anchor) return;
+    if (anchor.target && anchor.target !== "_self") return;
+    const href = anchor.getAttribute("href") || "";
+    if (!href || href.startsWith("#")) return;
+
+    let url;
+    try {
+      url = new URL(anchor.href, window.location.href);
+    } catch {
+      return;
+    }
+
+    const currentShell = document.body?.dataset.docShell || getDocShellName();
+    const targetShell = getDocShellName(url.pathname);
+    if (targetShell !== currentShell) return;
+
+    event.preventDefault();
+    window.history.pushState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    renderDocsPage().catch((error) => console.error(error));
+  });
+
+  window.addEventListener("popstate", () => {
+    renderDocsPage().catch((error) => console.error(error));
+  });
+
+  window.addEventListener("hashchange", () => scrollToHash());
+  window.addEventListener("locowiki:themechange", () => syncGiscusTheme());
+  window.addEventListener("locowiki:languagechange", () => {
+    renderDocsPage().catch((error) => console.error(error));
+  });
+}
