@@ -75,6 +75,15 @@ adb install -r artifacts/android/LocoWiki-0.1.0-debug.apk
 - 文档正文（GitHub raw Markdown）同样会缓存，读过的文档可离线阅读
 - 所有内容均走 HTTPS，明文流量被禁止
 
+## 移动端顶部栏适配
+
+页面加载完成后会注入一段仅在手机宽度生效的样式：
+
+- logo 38px → 30px
+- 导航字号 13px → 12px，行高 34px → 30px，隐藏导航图标
+- 搜索 / 语言 / 主题按钮 32px
+- 顶栏高度约 101px → 79px，5 个主导航保持单行显示
+
 ## 已知限制
 
 - 评论区（giscus）需要网络与 GitHub 登录，离线不可用
@@ -91,6 +100,12 @@ adb shell am start -n com.locowiki.app/.MainActivity --ez pin_shortcut true
 ```
 
 系统会弹出「添加主屏幕快捷方式」确认框，点「添加」即可。也可以直接在桌面长按 LocoWiki 图标手动添加。
+
+打开指定页面：
+
+```powershell
+adb shell am start -n com.locowiki.app/.MainActivity -d "https://locowiki.com/docs.html"
+```
 
 ## 调试
 
