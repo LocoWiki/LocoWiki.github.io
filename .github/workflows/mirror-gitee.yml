@@ -1,0 +1,43 @@
+name: Mirror to Gitee
+
+# locowiki.com 的 ECS 只能访问国内网络，无法直连 GitHub，
+# 因此每次 push 后把本仓库镜像到 Gitee，ECS 从 Gitee 拉取部署。
+#
+# 需要在仓库 Settings 里配置：
+#   Actions secrets  -> GITEE_TOKEN = Gitee 私人令牌（勾选 projects 权限）
+#   Actions variables -> GITEE_REPO  = <Gitee 用户名>/<仓库名>，例如 Lain-Ego0/locowiki-site
+# 未配置 GITEE_REPO 时本工作流自动跳过。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-gitee
+  cancel-in-progress: true
+
+jobs:
+  mirror:
+    if: ${{ vars.GITEE_REPO != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push mirror to Gitee
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_REPO: ${{ vars.GITEE_REPO }}
+        run: |
+          set -euo pipefail
+          echo "::add-mask::${GITEE_TOKEN}"
+          if [ -z "${GITEE_TOKEN:-}" ]; then
+            echo "::error::GITEE_TOKEN secret is not configured"
+            exit 1
+          fi
+          user="${GITEE_REPO%%/*}"
+          remote="https://${user}:${GITEE_TOKEN}@gitee.com/${GITEE_REPO}.git"
+          git push --force "${remote}" HEAD:refs/heads/main HEAD:refs/heads/master
+          echo "Mirrored $(git rev-parse --short HEAD) to gitee.com/${GITEE_REPO}"
