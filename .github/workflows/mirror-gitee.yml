@@ -40,7 +40,15 @@ jobs:
           fi
           user="${GITEE_REPO%%/*}"
           auth="$(printf '%s:%s' "${user}" "${token}" | base64 -w0)"
-          git -c http.extraheader="Authorization: Basic ${auth}" \
-            push --force "https://gitee.com/${GITEE_REPO}.git" \
-            HEAD:refs/heads/main HEAD:refs/heads/master
-          echo "Mirrored $(git rev-parse --short HEAD) to gitee.com/${GITEE_REPO}"
+          for attempt in 1 2 3; do
+            if git -c http.extraheader="Authorization: Basic ${auth}" \
+              push --force "https://gitee.com/${GITEE_REPO}.git" \
+              HEAD:refs/heads/main HEAD:refs/heads/master; then
+              echo "Mirrored $(git rev-parse --short HEAD) to gitee.com/${GITEE_REPO}"
+              exit 0
+            fi
+            echo "push attempt ${attempt} failed, retrying in 15s"
+            sleep 15
+          done
+          echo "::error::failed to mirror to Gitee after 3 attempts"
+          exit 1
