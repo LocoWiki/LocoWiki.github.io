@@ -76,7 +76,7 @@ rsync -a --delete \
   --exclude='.wrangler' \
   --exclude='test-results' \
   --exclude='.well-known' \
-  --exclude="$CONTENT_BASE_PATH" \
+  --exclude="/$CONTENT_BASE_PATH" \
   "$SRC_DIR"/ "$WEB_ROOT"/
 
 # 文档正文同源：从 Gitee 内容镜像拉取并同步到 $WEB_ROOT/content/
