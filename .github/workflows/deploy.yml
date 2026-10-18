@@ -4,6 +4,19 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only check SSH connectivity and preview rsync changes (no writes, no Nginx reload)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: ecs-deploy
+  cancel-in-progress: false
+
+env:
+  ECS_HOST: 47.107.154.165
+  ECS_DIR: /var/www/locowiki
 
 jobs:
   deploy:
@@ -18,12 +31,34 @@ jobs:
           known_hosts: unnecessary
           if_key_exists: replace
 
-      - name: Add host to known_hosts
-        run: ssh-keyscan -H 47.107.154.165 >> ~/.ssh/known_hosts
+      - name: Resolve host key
+        run: |
+          key=""
+          for attempt in 1 2 3; do
+            key=$(ssh-keyscan -T 10 "$ECS_HOST" 2>/dev/null || true)
+            if [ -n "$key" ]; then break; fi
+            echo "ssh-keyscan attempt ${attempt} failed, retrying in 5s"
+            sleep 5
+          done
+          if [ -z "$key" ]; then
+            echo "::error::Cannot reach ${ECS_HOST}:22 from the GitHub runner (ssh-keyscan returned nothing). Check the Aliyun security group / sshd."
+            exit 1
+          fi
+          printf '%s\n' "$key" >> ~/.ssh/known_hosts
+          echo "Host key resolved."
 
       - name: Deploy via rsync
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
         run: |
-          rsync -avz --delete \
+          set -eo pipefail
+          extra=""
+          if [ "$DRY_RUN" = "true" ]; then
+            extra="--dry-run"
+            echo "::notice::dry-run mode: rsync will only preview changes"
+          fi
+          rsync -avz $extra --delete \
+            -e "ssh -o ConnectTimeout=20 -o BatchMode=yes" \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='.vscode' \
@@ -32,7 +67,14 @@ jobs:
             --exclude='node_modules' \
             --exclude='.wrangler' \
             --exclude='test-results' \
-            ./ root@47.107.154.165:/var/www/locowiki/
+            --exclude='.well-known' \
+            ./ "root@${ECS_HOST}:${ECS_DIR}/"
 
       - name: Reload Nginx
-        run: ssh root@47.107.154.165 "systemctl reload nginx"
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
+        run: ssh -o ConnectTimeout=20 -o BatchMode=yes "root@${ECS_HOST}" "systemctl reload nginx"
+
+      - name: Summary
+        run: |
+          echo "target: ${ECS_HOST}:${ECS_DIR}"
+          echo "dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}"
