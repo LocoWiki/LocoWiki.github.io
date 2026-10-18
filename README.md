@@ -37,7 +37,9 @@ node scripts/update-remote-doc-index.mjs
 ## 部署
 
 - **locowiki.github.io**：推送到 main 分支后由 GitHub Pages 自动构建
-- **locowiki.com**：手动同步至阿里云 ECS（`root@47.107.154.165:/var/www/locowiki`），同步后在 CDN 控制台执行目录刷新。仓库内的 `.github/workflows/deploy.yml` 封装了同样的 rsync + Nginx reload 步骤，但该 workflow 目前处于手动禁用状态，需要时请在 Actions 页面重新启用
+- **locowiki.com**：ECS 拉模式部署。[scripts/ecs-pull-deploy.sh](scripts/ecs-pull-deploy.sh) + systemd timer 每 2 分钟拉取本仓库并 rsync 到 `/var/www/locowiki`，安装步骤见脚本头部注释。CDN 缓存为 `max-age=300`，部署后 5 分钟内自动生效，无需再手动刷新目录
+
+GitHub 托管的 runner 无法连接 ECS 的 22 端口（`ssh-keyscan` 超时），因此 `.github/workflows/deploy.yml` 保持禁用，仅作为需要时的手动备用方案；要恢复推送式部署，需要放开安全组或改用自托管 runner。
 
 部署只同步静态文件，文档正文由浏览器在运行时从内容仓库的 `raw.githubusercontent.com` 拉取；内容仓库更新后无需重新部署本仓库，只会触发索引与贡献者缓存刷新。
 
