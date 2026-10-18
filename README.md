@@ -41,8 +41,8 @@ node scripts/update-remote-doc-index.mjs
 
 GitHub 托管的 runner 无法连接 ECS 的 22 端口（`ssh-keyscan` 超时），因此 `.github/workflows/deploy.yml` 保持禁用。代码与内容都通过 Gitee 镜像中转：
 
-- [mirror-gitee.yml](.github/workflows/mirror-gitee.yml)：`LocoWiki.github.io` → `gitee.com/Hua-CM-014/locowiki-site`
-- [mirror-content-gitee.yml](.github/workflows/mirror-content-gitee.yml)：`LocoWiki/LocoWiki` → `gitee.com/Hua-CM-014/locowiki-content`
+- [mirror-gitee.yml](.github/workflows/mirror-gitee.yml)：网站仓库 push 后镜像到 `gitee.com/Hua-CM-014/locowiki-site`
+- 内容仓库不需要 Actions：使用 Gitee 仓库的「管理 → 仓库镜像管理 → Pull 方向」，由 Gitee 服务器从 `LocoWiki/LocoWiki` 自动同步到 `gitee.com/Hua-CM-014/locowiki-content`（需 GitHub 私人令牌，勾选「自动从 GitHub 同步仓库」）
 
 ECS 部署脚本还会把内容镜像同步到 `/var/www/locowiki/content/`，并将 `sourceRepo.contentBase` 设为 `/content/`：locowiki.com 的文档正文因此是同源读取，不再依赖 `raw.githubusercontent.com`；GitHub Pages 上的配置没有该字段，自动回退到 raw。
 
