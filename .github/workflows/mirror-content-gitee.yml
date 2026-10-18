@@ -1,8 +1,12 @@
 name: Mirror content to Gitee
 
 # locowiki.com 的 ECS 只能访问国内网络，无法直连 GitHub。
-# 内容仓库变化时（repository_dispatch: wiki-updated），把当前内容快照推到 Gitee，
+# 内容仓库变化时（repository_dispatch: wiki-updated），把内容快照推到 Gitee，
 # ECS 再从 Gitee 拉取并同步到 /var/www/locowiki/content/，实现文档正文同源读取。
+#
+# GitHub runner 推送 Gitee 的带宽很低（约 0.2 MB/s），因此用 actions/cache 保存上一次
+# 的快照仓库：首次全量上传，之后只在缓存基础上提交，git 只推送变化的对象。
+# technical-sharing 下两个 40 MB 级 pptx 不参与镜像（网页不展示，仅作为附件下载）。
 #
 # 需要 Actions variables: GITEE_CONTENT_REPO = <Gitee 用户名>/<仓库名>
 # 复用 Actions secrets:    GITEE_TOKEN
@@ -11,23 +15,25 @@ on:
   repository_dispatch:
     types: [wiki-updated]
   workflow_dispatch:
-    inputs:
-      scope:
-        description: "all = 全量内容；markdown = 仅 *.md（诊断用）"
-        type: choice
-        options: [all, markdown]
-        default: all
 
 concurrency:
   group: mirror-content-gitee
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   mirror:
     if: ${{ vars.GITEE_CONTENT_REPO != '' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
+      - name: Restore previous snapshot
+        uses: actions/cache/restore@v4
+        with:
+          path: mirror
+          key: content-mirror-${{ github.run_id }}
+          restore-keys: |
+            content-mirror-
+
       - name: Checkout content repository
         uses: actions/checkout@v4
         with:
@@ -35,24 +41,36 @@ jobs:
           path: content
           fetch-depth: 1
 
-      - name: Build snapshot
-        env:
-          SCOPE: ${{ inputs.scope || 'all' }}
+      - name: Sync snapshot
         run: |
           set -euo pipefail
-          mkdir -p snapshot
-          if [ "$SCOPE" = "markdown" ]; then
-            rsync -a --include='*/' --include='*.md' --exclude='*' content/ snapshot/
-          else
-            rsync -a --exclude='.git' --exclude='.github' content/ snapshot/
+          mkdir -p mirror
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='recommended-papers' \
+            --exclude='technical-sharing/*.pptx' \
+            content/ mirror/
+          echo "snapshot: $(du -sh mirror | cut -f1), files: $(find mirror -type f | wc -l)"
+
+          cd mirror
+          if [ ! -d .git ]; then
+            git init -q -b main
           fi
-          echo "snapshot size: $(du -sh snapshot | cut -f1), files: $(find snapshot -type f | wc -l)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config http.postBuffer 524288000
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no content changes"
+          else
+            git commit -q -m "content snapshot ${GITHUB_SHA::7}"
+          fi
 
       - name: Push snapshot to Gitee
         env:
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
           GITEE_CONTENT_REPO: ${{ vars.GITEE_CONTENT_REPO }}
-          SCOPE: ${{ inputs.scope || 'all' }}
         run: |
           set -euo pipefail
           token="$(printf '%s' "$GITEE_TOKEN" | tr -d '[:space:]')"
@@ -63,15 +81,14 @@ jobs:
           fi
           user="${GITEE_CONTENT_REPO%%/*}"
           auth="$(printf '%s:%s' "$user" "$token" | base64 -w0)"
-
-          cd snapshot
-          git init -q -b main
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config http.postBuffer 524288000
-          git add -A
-          git commit -q -m "content snapshot (${SCOPE}) ${GITHUB_SHA::7}"
-          git -c http.extraheader="Authorization: Basic ${auth}" push --force \
+          git -C mirror -c http.extraheader="Authorization: Basic ${auth}" push --force \
             "https://gitee.com/${GITEE_CONTENT_REPO}.git" \
             HEAD:refs/heads/main HEAD:refs/heads/master
-          echo "Mirrored ${SCOPE} content snapshot to gitee.com/${GITEE_CONTENT_REPO}"
+          echo "Mirrored content $(git -C mirror rev-parse --short HEAD) to gitee.com/${GITEE_CONTENT_REPO}"
+
+      - name: Save snapshot cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: mirror
+          key: content-mirror-${{ github.run_id }}
