@@ -37,9 +37,9 @@ node scripts/update-remote-doc-index.mjs
 ## 部署
 
 - **locowiki.github.io**：推送到 main 分支后由 GitHub Pages 自动构建
-- **locowiki.com**：推送到 main 分支后由 `.github/workflows/deploy.yml` 自动 rsync 到阿里云 ECS（`root@47.107.154.165:/var/www/locowiki`）并 reload Nginx；CDN 缓存仍需在控制台手动执行目录刷新
+- **locowiki.com**：手动同步至阿里云 ECS（`root@47.107.154.165:/var/www/locowiki`），同步后在 CDN 控制台执行目录刷新。仓库内的 `.github/workflows/deploy.yml` 封装了同样的 rsync + Nginx reload 步骤，但该 workflow 目前处于手动禁用状态，需要时请在 Actions 页面重新启用
 
-两个目标都只同步静态文件：文档正文由浏览器在运行时从内容仓库 `raw.githubusercontent.com` 拉取，因此内容仓库更新后无需重新部署本仓库。
+部署只同步静态文件，文档正文由浏览器在运行时从内容仓库的 `raw.githubusercontent.com` 拉取；内容仓库更新后无需重新部署本仓库，只会触发索引与贡献者缓存刷新。
 
 ## License
 
