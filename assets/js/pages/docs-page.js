@@ -132,6 +132,12 @@ function getDocElements() {
   };
 }
 
+function getContentBase(config) {
+  const base = String(config?.sourceRepo?.contentBase || "").trim();
+  if (!base) return "";
+  return base.endsWith("/") ? base : `${base}/`;
+}
+
 function buildUrls(config, path) {
   const cleanPath = stripLeadingSlash(path);
   const encoded = encodePath(cleanPath);
@@ -148,11 +154,16 @@ function buildUrls(config, path) {
   const owner = config.sourceRepo.owner;
   const repo = config.sourceRepo.repo;
   const branch = config.sourceRepo.branch;
+  const contentBase = getContentBase(config);
+  const githubRaw = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encoded}`;
+
   return {
-    raw: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encoded}`,
+    // contentBase 存在时（ECS 部署）从站点同源目录读取，避免依赖 raw.githubusercontent.com；
+    // 未配置时（GitHub Pages）仍回退到 GitHub raw。
+    raw: contentBase ? `${contentBase}${encoded}` : githubRaw,
     blob: `https://github.com/${owner}/${repo}/blob/${branch}/${encoded}`,
     edit: `https://github.com/${owner}/${repo}/edit/${branch}/${encoded}`,
-    download: `https://github.com/${owner}/${repo}/raw/${branch}/${encoded}`,
+    download: contentBase ? `${contentBase}${encoded}` : `https://github.com/${owner}/${repo}/raw/${branch}/${encoded}`,
     isLocal: false
   };
 }

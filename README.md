@@ -36,12 +36,15 @@ node scripts/update-remote-doc-index.mjs
 
 ## 部署
 
-- **locowiki.github.io**：推送到 main 分支后由 GitHub Pages 自动构建
-- **locowiki.com**：ECS 拉模式部署。[scripts/ecs-pull-deploy.sh](scripts/ecs-pull-deploy.sh) + systemd timer 每 2 分钟拉取本仓库并 rsync 到 `/var/www/locowiki`，安装步骤见脚本头部注释。CDN 缓存为 `max-age=300`，部署后 5 分钟内自动生效，无需再手动刷新目录
+- **locowiki.github.io**：推送到 main 分支后由 GitHub Pages 自动构建；正文由浏览器从 `raw.githubusercontent.com` 读取
+- **locowiki.com**：ECS 拉模式部署。[scripts/ecs-pull-deploy.sh](scripts/ecs-pull-deploy.sh) + systemd timer 每 2 分钟拉取本仓库并 rsync 到 `/var/www/locowiki`。CDN 缓存为 `max-age=300`，部署后 5 分钟内生效
 
-GitHub 托管的 runner 无法连接 ECS 的 22 端口（`ssh-keyscan` 超时），因此 `.github/workflows/deploy.yml` 保持禁用，仅作为需要时的手动备用方案；要恢复推送式部署，需要放开安全组或改用自托管 runner。
+GitHub 托管的 runner 无法连接 ECS 的 22 端口（`ssh-keyscan` 超时），因此 `.github/workflows/deploy.yml` 保持禁用。代码与内容都通过 Gitee 镜像中转：
 
-部署只同步静态文件，文档正文由浏览器在运行时从内容仓库的 `raw.githubusercontent.com` 拉取；内容仓库更新后无需重新部署本仓库，只会触发索引与贡献者缓存刷新。
+- [mirror-gitee.yml](.github/workflows/mirror-gitee.yml)：`LocoWiki.github.io` → `gitee.com/Hua-CM-014/locowiki-site`
+- [mirror-content-gitee.yml](.github/workflows/mirror-content-gitee.yml)：`LocoWiki/LocoWiki` → `gitee.com/Hua-CM-014/locowiki-content`
+
+ECS 部署脚本还会把内容镜像同步到 `/var/www/locowiki/content/`，并将 `sourceRepo.contentBase` 设为 `/content/`：locowiki.com 的文档正文因此是同源读取，不再依赖 `raw.githubusercontent.com`；GitHub Pages 上的配置没有该字段，自动回退到 raw。
 
 ## License
 

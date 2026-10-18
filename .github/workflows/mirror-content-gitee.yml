@@ -1,0 +1,58 @@
+name: Mirror content to Gitee
+
+# locowiki.com 的 ECS 只能访问国内网络，无法直连 GitHub。
+# 内容仓库变化时（repository_dispatch: wiki-updated），把当前内容快照推到 Gitee，
+# ECS 再从 Gitee 拉取并同步到 /var/www/locowiki/content/，实现文档正文同源读取。
+#
+# 需要 Actions variables: GITEE_CONTENT_REPO = <Gitee 用户名>/<仓库名>
+# 复用 Actions secrets:    GITEE_TOKEN
+
+on:
+  repository_dispatch:
+    types: [wiki-updated]
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-content-gitee
+  cancel-in-progress: true
+
+jobs:
+  mirror:
+    if: ${{ vars.GITEE_CONTENT_REPO != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout content repository
+        uses: actions/checkout@v4
+        with:
+          repository: LocoWiki/LocoWiki
+          path: content
+          fetch-depth: 1
+
+      - name: Push snapshot to Gitee
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_CONTENT_REPO: ${{ vars.GITEE_CONTENT_REPO }}
+        run: |
+          set -euo pipefail
+          token="$(printf '%s' "$GITEE_TOKEN" | tr -d '[:space:]')"
+          echo "::add-mask::$token"
+          if [ -z "$token" ]; then
+            echo "::error::GITEE_TOKEN secret is not configured"
+            exit 1
+          fi
+          user="${GITEE_CONTENT_REPO%%/*}"
+          auth="$(printf '%s:%s' "$user" "$token" | base64 -w0)"
+
+          rm -rf content/.git content/.github
+          cd content
+          git init -q -b main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config http.postBuffer 524288000
+          git add -A
+          git commit -q -m "content snapshot ${GITHUB_SHA::7}"
+          git -c http.extraheader="Authorization: Basic ${auth}" push --force \
+            "https://gitee.com/${GITEE_CONTENT_REPO}.git" \
+            HEAD:refs/heads/main HEAD:refs/heads/master
+          echo "Mirrored content snapshot to gitee.com/${GITEE_CONTENT_REPO}"
