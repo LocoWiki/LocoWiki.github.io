@@ -32,12 +32,15 @@ jobs:
           GITEE_REPO: ${{ vars.GITEE_REPO }}
         run: |
           set -euo pipefail
-          echo "::add-mask::${GITEE_TOKEN}"
-          if [ -z "${GITEE_TOKEN:-}" ]; then
+          token="$(printf '%s' "${GITEE_TOKEN}" | tr -d '[:space:]')"
+          echo "::add-mask::${token}"
+          if [ -z "${token}" ]; then
             echo "::error::GITEE_TOKEN secret is not configured"
             exit 1
           fi
           user="${GITEE_REPO%%/*}"
-          remote="https://${user}:${GITEE_TOKEN}@gitee.com/${GITEE_REPO}.git"
-          git push --force "${remote}" HEAD:refs/heads/main HEAD:refs/heads/master
+          auth="$(printf '%s:%s' "${user}" "${token}" | base64 -w0)"
+          git -c http.extraheader="Authorization: Basic ${auth}" \
+            push --force "https://gitee.com/${GITEE_REPO}.git" \
+            HEAD:refs/heads/main HEAD:refs/heads/master
           echo "Mirrored $(git rev-parse --short HEAD) to gitee.com/${GITEE_REPO}"
