@@ -48,6 +48,13 @@
           }
         },
         {
+          "href": "tools/train-kline/index.html",
+          "label": {
+            "zh": "训练行情",
+            "en": "Training K-Line"
+          }
+        },
+        {
           "href": "https://github.com/LocoWiki/LocoWiki",
           "label": {
             "zh": "GitHub 仓库",
