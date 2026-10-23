@@ -1,0 +1,17 @@
+[Unit]
+Description=train-kline training dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/user/train-kline
+ExecStart=/usr/bin/env python3 train-kline.pyz --logdir /home/user/project/logs/rsl_rl --port 8791 --no-open
+Restart=on-failure
+RestartSec=3
+# 只读训练日志；如需跨域读取，保持默认来源或追加 --allow-origin
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

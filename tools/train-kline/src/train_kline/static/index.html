@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="train-kline-agent" content="1" />
+  <title>训练行情 · K 线看板</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f0a93b'/%3E%3Ctext x='16' y='23' font-size='20' font-family='monospace' font-weight='700' text-anchor='middle' fill='%230a0f16'%3EK%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">K</div>
+      <div class="brand-text">
+        <strong>训练行情</strong>
+        <span>TRAINING K-LINE</span>
+      </div>
+    </div>
+
+    <div class="run-select">
+      <span class="field-label">训练任务</span>
+      <select id="run-select"></select>
+    </div>
+
+    <div class="live-badge" id="live-badge">
+      <i class="pulse"></i>
+      <span id="live-text">LIVE</span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <a class="tb-link" id="tb-link" hidden target="_blank" rel="noreferrer">TensorBoard <span>↗</span></a>
+
+    <label class="control">
+      <span>刷新</span>
+      <select id="refresh-select">
+        <option value="5">5 秒</option>
+        <option value="10" selected>10 秒</option>
+        <option value="30">30 秒</option>
+        <option value="0">关闭</option>
+      </select>
+    </label>
+    <label class="control switch">
+      <input type="checkbox" id="color-mode" checked />
+      <span class="track"><span class="knob"></span></span>
+      <span>红涨绿跌</span>
+    </label>
+
+    <div class="clock" id="clock">--:--:--</div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel runs-panel">
+      <div class="panel-head">
+        <span>训练任务</span>
+        <span class="counter" id="run-count">0</span>
+      </div>
+      <div class="run-list" id="run-list"></div>
+      <div class="panel-foot">只读 · 直接读取 tfevents</div>
+    </aside>
+
+    <section class="center">
+      <div class="quote">
+        <div class="quote-main">
+          <div class="quote-title">
+            <span id="quote-tag">--</span>
+            <span class="badge" id="quote-group"></span>
+          </div>
+          <div class="quote-price" id="quote-price">--</div>
+          <div class="quote-delta" id="quote-delta">--</div>
+        </div>
+        <div class="quote-stats" id="quote-stats"></div>
+        <div class="progress">
+          <div class="progress-bar" id="progress-bar"></div>
+          <div class="progress-text" id="progress-text"></div>
+        </div>
+      </div>
+
+      <div class="chart-wrap" id="chart-wrap">
+        <canvas id="chart"></canvas>
+        <div class="chart-tooltip" id="chart-tooltip" hidden></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="seg" id="mode-tabs">
+          <button type="button" data-mode="line">分时</button>
+          <button type="button" data-mode="candle" class="active">K 线</button>
+        </div>
+        <div class="seg" id="bucket-tabs"></div>
+        <div class="toolbar-hint">滚轮缩放 · 拖动平移 · 双击复位</div>
+      </div>
+
+      <div class="quick" id="quick-tags"></div>
+    </section>
+
+    <aside class="panel side-panel">
+      <div class="side-block tags-block">
+        <div class="panel-head">
+          <span>指标行情</span>
+          <span class="counter" id="tag-count">0</span>
+        </div>
+        <input class="search" id="tag-search" placeholder="搜索指标，例如 reward / amp / fps" autocomplete="off" />
+        <div class="tag-list" id="tag-list"></div>
+      </div>
+
+      <div class="side-block recent-block">
+        <div class="panel-head">
+          <span>最近区间</span>
+          <span class="counter" id="recent-count">0</span>
+        </div>
+        <div class="recent-scroll">
+          <table class="recent-table">
+            <thead>
+              <tr><th>区间</th><th class="num">开</th><th class="num">高</th><th class="num">低</th><th class="num">收</th><th class="num">涨跌</th></tr>
+            </thead>
+            <tbody id="recent-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="statusbar">
+    <span id="status-run">--</span>
+    <span class="sep">/</span>
+    <span id="status-points">--</span>
+    <span class="sep">/</span>
+    <span id="status-updated">--</span>
+    <span class="spacer"></span>
+    <span id="status-refresh">--</span>
+    <span class="sep">/</span>
+    <span class="status-source">数据源 events.out.tfevents · 本地只读</span>
+  </footer>
+
+  <div class="connect-overlay" id="connect-overlay" hidden>
+    <div class="connect-card">
+      <div class="connect-head">
+        <div class="brand-mark">K</div>
+        <div>
+          <h1>训练行情</h1>
+          <p>把训练曲线看成 K 线</p>
+        </div>
+      </div>
+      <p class="connect-desc">连接本地 train-kline 服务。只读 tfevents，不影响训练。</p>
+      <div class="connect-form">
+        <label><span>主机</span><input id="connect-host" value="127.0.0.1" spellcheck="false" autocomplete="off" /></label>
+        <label><span>端口</span><input id="connect-port" value="8791" inputmode="numeric" spellcheck="false" autocomplete="off" /></label>
+      </div>
+      <button type="button" class="connect-btn" id="connect-btn">连接本地服务</button>
+      <p class="connect-error" id="connect-error" hidden></p>
+      <div class="connect-help">
+        <p>本地服务未启动？</p>
+        <pre>python3 train-kline.pyz --logdir ./logs</pre>
+        <p>TensorBoard 的 6006 端口不能被网页直接读取，请连接 train-kline 的 8791。</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>
