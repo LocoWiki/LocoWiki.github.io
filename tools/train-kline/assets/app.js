@@ -202,18 +202,8 @@ async function healthy(base) {
 }
 
 async function resolveApiBase() {
-  const explicit = new URLSearchParams(location.search).get("api");
-  if (explicit) {
-    const base = normalizeBase(explicit);
-    if (await healthy(base)) return base;
-    return null;
-  }
-  const saved = localStorage.getItem(API_KEY);
-  if (saved) {
-    const base = normalizeBase(saved);
-    if (await healthy(base)) return base;
-    localStorage.removeItem(API_KEY);
-  }
+  // 本地服务直接托管页面时走同源；站点版必须由用户点击后再连接，
+  // 因为浏览器访问本地网络需要一次用户手势才能弹出授权。
   if (document.querySelector('meta[name="train-kline-agent"]') && await healthy("")) return "";
   return null;
 }
@@ -228,7 +218,7 @@ function showConnect(message = "") {
     error.textContent = message;
     error.hidden = false;
   }
-  const saved = localStorage.getItem(API_KEY) || "";
+  const saved = new URLSearchParams(location.search).get("api") || localStorage.getItem(API_KEY) || "";
   if (saved) {
     try {
       const parsed = new URL(saved);
