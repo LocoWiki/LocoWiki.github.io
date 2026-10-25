@@ -1352,6 +1352,40 @@ body[data-page-id="downloads"] .code-panel code {
   font-size: calc(16px * var(--doc-font-scale));
 }
 
+/* 首页「常用工具站点」「外部入口」同样是卡片：正文排版带来的标题/段落外边距
+   会把卡片内容撑开，这里按 UI 密度收紧（选择器权重高于 .md h2/.md h3/.md p） */
+body[data-layout="home"] .section-head {
+  gap: 8px;
+}
+
+body[data-layout="home"] .section-kicker,
+body[data-layout="home"] .section-desc {
+  margin: 0;
+  line-height: 1.6;
+}
+
+body[data-layout="home"] .section-title {
+  margin: 0;
+}
+
+body[data-layout="home"] .section-shell + .section-shell {
+  margin-top: 26px;
+}
+
+body[data-layout="home"] .card h3 {
+  margin: 0;
+  line-height: 1.32;
+}
+
+body[data-layout="home"] .card p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+body[data-layout="home"] .card a {
+  line-height: 1.5;
+}
+
 /* 贡献者页是卡片式布局：正文的 1.85 行距与段落外边距会让留白过大，这里按 UI 密度收紧 */
 body[data-page-id="contributors"] .page-article {
   line-height: 1.6;
