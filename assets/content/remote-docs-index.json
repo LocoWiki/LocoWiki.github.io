@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26T12:45:41.446Z",
+  "generatedAt": "2026-10-25T08:02:51.884Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -482,6 +482,7 @@
       "network-open-source/paper-reproductions/go2-trot-gait-control.md",
       "network-open-source/paper-reproductions/m20-dreamwaq-highplatform.md",
       "network-open-source/paper-reproductions/smp-score-matching-motion-priors.md",
+      "network-open-source/paper-reproductions/supermimic.md",
       "network-open-source/paper-reproductions/twist.md",
       "network-open-source/paper-reproductions/twist2.md",
       "network-open-source/projects-and-competition/fuzhou-quadruped-robot-lab.md",

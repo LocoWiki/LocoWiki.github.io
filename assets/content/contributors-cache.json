@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-23T06:21:53.513Z",
+  "generatedAt": "2026-10-25T08:02:52.372Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki"
@@ -10,7 +10,7 @@
       "login": "Lain-Ego0",
       "avatar_url": "https://avatars.githubusercontent.com/u/153184676?v=4",
       "html_url": "https://github.com/Lain-Ego0",
-      "contributions": 80,
+      "contributions": 90,
       "type": "User"
     },
     {
@@ -28,6 +28,13 @@
       "type": "User"
     },
     {
+      "login": "chenHurry00",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92495063?v=4",
+      "html_url": "https://github.com/chenHurry00",
+      "contributions": 2,
+      "type": "User"
+    },
+    {
       "login": "tonitrain",
       "avatar_url": "https://avatars.githubusercontent.com/u/198196491?v=4",
       "html_url": "https://github.com/tonitrain",
@@ -35,9 +42,37 @@
       "type": "User"
     },
     {
+      "login": "XC-star3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/183062439?v=4",
+      "html_url": "https://github.com/XC-star3",
+      "contributions": 2,
+      "type": "User"
+    },
+    {
+      "login": "Imwsy043",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231915980?v=4",
+      "html_url": "https://github.com/Imwsy043",
+      "contributions": 1,
+      "type": "User"
+    },
+    {
+      "login": "LnDws",
+      "avatar_url": "https://avatars.githubusercontent.com/u/132082848?v=4",
+      "html_url": "https://github.com/LnDws",
+      "contributions": 1,
+      "type": "User"
+    },
+    {
       "login": "Lumivers",
       "avatar_url": "https://avatars.githubusercontent.com/u/65070531?v=4",
       "html_url": "https://github.com/Lumivers",
+      "contributions": 1,
+      "type": "User"
+    },
+    {
+      "login": "uwvwko-zzz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/222942329?v=4",
+      "html_url": "https://github.com/uwvwko-zzz",
       "contributions": 1,
       "type": "User"
     }
