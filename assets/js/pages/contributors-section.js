@@ -23,7 +23,7 @@ function formatUpdatedAt(value) {
   const date = new Date(String(value || ""));
   if (Number.isNaN(date.getTime())) return "";
   const lang = document.documentElement.dataset.lang === "en" ? "en-US" : "zh-CN";
-  return new Intl.DateTimeFormat(lang, { dateStyle: "medium", timeStyle: "short" }).format(date);
+  return new Intl.DateTimeFormat(lang, { dateStyle: "short", timeStyle: "short" }).format(date);
 }
 
 function readBrowserCache() {
@@ -75,7 +75,7 @@ function renderSummary(metaEl, contributors, contributorsUrl, generatedAt) {
     </div>
     <div class="contributors-summary-item">
       <div class="contributors-summary-label">${escapeHtml(t("contributors.summary.updatedAt", { fallback: "Updated" }))}</div>
-      <div class="contributors-summary-value">${escapeHtml(formatUpdatedAt(generatedAt) || t("contributors.summary.cached", { fallback: "Cached snapshot" }))}</div>
+      <div class="contributors-summary-value contributors-summary-date">${escapeHtml(formatUpdatedAt(generatedAt) || t("contributors.summary.cached", { fallback: "Cached snapshot" }))}</div>
     </div>
   `;
 }

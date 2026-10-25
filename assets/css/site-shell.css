@@ -1352,6 +1352,64 @@ body[data-page-id="downloads"] .code-panel code {
   font-size: calc(16px * var(--doc-font-scale));
 }
 
+/* 贡献者页是卡片式布局：正文的 1.85 行距与段落外边距会让留白过大，这里按 UI 密度收紧 */
+body[data-page-id="contributors"] .page-article {
+  line-height: 1.6;
+}
+
+body[data-page-id="contributors"] .section-desc {
+  line-height: 1.6;
+}
+
+body[data-page-id="contributors"] .contributors-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body[data-page-id="contributors"] .contributors-summary-label {
+  line-height: 1.3;
+}
+
+body[data-page-id="contributors"] .contributors-summary-value {
+  margin-top: 0;
+  line-height: 1.15;
+}
+
+body[data-page-id="contributors"] .contributors-summary-date {
+  font-size: calc(17px * var(--doc-font-scale));
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+body[data-page-id="contributors"] .contributors-page {
+  gap: 12px;
+}
+
+body[data-page-id="contributors"] .contributors-page > h3 {
+  margin: 0;
+  line-height: 1.3;
+}
+
+body[data-page-id="contributors"] .contributors-page > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+body[data-page-id="contributors"] .contributor-info {
+  gap: 2px;
+  line-height: 1.4;
+}
+
+body[data-page-id="contributors"] .contributor-avatar {
+  margin: 0;
+}
+
+body[data-page-id="contributors"] .contributor-meta {
+  line-height: 1.4;
+}
+
 .loading,
 .error,
 .contributor-empty {
