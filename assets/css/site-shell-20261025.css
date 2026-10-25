@@ -1410,6 +1410,11 @@ body[data-page-id="contributors"] .contributor-meta {
   line-height: 1.4;
 }
 
+body[data-page-id="contributors"] .contributor-card,
+body[data-page-id="contributors"] .contributor-card:hover {
+  text-decoration: none;
+}
+
 .loading,
 .error,
 .contributor-empty {
