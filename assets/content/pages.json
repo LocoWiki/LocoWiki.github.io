@@ -175,6 +175,38 @@
           },
           {
             "title": {
+              "zh": "Genesis",
+              "en": "Genesis"
+            },
+            "desc": {
+              "zh": "生成式物理引擎，统一仿真、渲染与数据生成，适合大规模机器人学习。",
+              "en": "Generative physics engine unifying simulation, rendering, and data generation for robot learning."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://github.com/Genesis-Embodied-AI/Genesis",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "MuJoCo Playground",
+              "en": "MuJoCo Playground"
+            },
+            "desc": {
+              "zh": "基于 MuJoCo 的 GPU 并行训练环境与官方强化学习示例。",
+              "en": "GPU-parallel training environments and official RL examples built on MuJoCo."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://playground.mujoco.org/",
+            "external": true
+          },
+          {
+            "title": {
               "zh": "RobotsFan Viewer",
               "en": "RobotsFan Viewer"
             },
@@ -223,6 +255,22 @@
           },
           {
             "title": {
+              "zh": "Pinocchio",
+              "en": "Pinocchio"
+            },
+            "desc": {
+              "zh": "刚体动力学与运动学库，常用于足式机器人建模、正逆运动学与轨迹优化。",
+              "en": "Rigid-body dynamics and kinematics library for legged-robot modeling, FK/IK, and trajectory optimization."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://github.com/stack-of-tasks/pinocchio",
+            "external": true
+          },
+          {
+            "title": {
               "zh": "ArduPilot",
               "en": "ArduPilot"
             },
@@ -255,6 +303,22 @@
           },
           {
             "title": {
+              "zh": "RoboParty",
+              "en": "RoboParty"
+            },
+            "desc": {
+              "zh": "开源人形机器人 ROBOTO 01 / Origin 的官网与开发文档入口。",
+              "en": "Official site and docs for the open-source humanoid robots ROBOTO 01 / Origin."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://roboparty.com/",
+            "external": true
+          },
+          {
+            "title": {
               "zh": "Unitree RL Gym",
               "en": "Unitree RL Gym"
             },
@@ -283,6 +347,22 @@
               "en": "Open Site"
             },
             "href": "https://github.com/unitreerobotics/unitree_rl_lab",
+            "external": true
+          },
+          {
+            "title": {
+              "zh": "LeRobot",
+              "en": "LeRobot"
+            },
+            "desc": {
+              "zh": "Hugging Face 的机器人学习库，提供数据集、预训练策略与真机/仿真训练流程。",
+              "en": "Hugging Face robotics library with datasets, pretrained policies, and real/sim training pipelines."
+            },
+            "linkLabel": {
+              "zh": "打开官网",
+              "en": "Open Site"
+            },
+            "href": "https://github.com/huggingface/lerobot",
             "external": true
           },
           {
