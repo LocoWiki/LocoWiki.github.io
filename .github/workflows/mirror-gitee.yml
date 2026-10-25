@@ -11,6 +11,12 @@ name: Mirror to Gitee
 on:
   push:
     branches: [main]
+  # 定时同步缓存的工作流用 GITHUB_TOKEN 提交并 push，
+  # 这类推送不会触发 on: push 的其它工作流（GitHub 防递归机制），
+  # 因此额外监听 Sync Remote Docs Index 完成事件，保证 Gitee 镜像与 ECS 能跟上。
+  workflow_run:
+    workflows: ["Sync Remote Docs Index"]
+    types: [completed]
   workflow_dispatch:
 
 concurrency:
