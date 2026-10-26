@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T08:02:51.884Z",
+  "generatedAt": "2026-10-26T02:05:05.040Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki",
@@ -463,6 +463,7 @@
     ],
     "open-source": [
       "network-open-source/development-tools/blender-mujoco-hfield.md",
+      "network-open-source/development-tools/draft.md",
       "network-open-source/development-tools/go2-depth-parkour.md",
       "network-open-source/development-tools/leggedgym-ex.md",
       "network-open-source/development-tools/leggedskilldeploy.md",

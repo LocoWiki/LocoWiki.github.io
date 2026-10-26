@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-25T08:02:52.372Z",
+  "generatedAt": "2026-10-26T02:05:05.475Z",
   "sourceRepo": {
     "owner": "LocoWiki",
     "repo": "LocoWiki"
@@ -10,7 +10,7 @@
       "login": "Lain-Ego0",
       "avatar_url": "https://avatars.githubusercontent.com/u/153184676?v=4",
       "html_url": "https://github.com/Lain-Ego0",
-      "contributions": 90,
+      "contributions": 91,
       "type": "User"
     },
     {
@@ -73,6 +73,13 @@
       "login": "uwvwko-zzz",
       "avatar_url": "https://avatars.githubusercontent.com/u/222942329?v=4",
       "html_url": "https://github.com/uwvwko-zzz",
+      "contributions": 1,
+      "type": "User"
+    },
+    {
+      "login": "wusi321",
+      "avatar_url": "https://avatars.githubusercontent.com/u/189382062?v=4",
+      "html_url": "https://github.com/wusi321",
       "contributions": 1,
       "type": "User"
     }
